@@ -18,15 +18,17 @@ class Etapa(models.Model):
 
 
 class Practica(models.Model):
-    materia = models.ForeignKey(Materia, models.CASCADE)
-    etapa = models.ForeignKey(Etapa, models.CASCADE)
+    materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
+    etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
+    numero = models.IntegerField()
+    titulo = models.CharField(max_length=1023, default='')
 
 
 class Enunciado(models.Model):
-    practica = models.ForeignKey(Practica, models.CASCADE)
+    practica = models.ForeignKey(Practica, on_delete=models.CASCADE)
     texto = models.TextField()
 
 
 class Solucion(models.Model):
-    enunciado = models.ForeignKey(Enunciado, models.CASCADE)
+    enunciado = models.ForeignKey(Enunciado, on_delete=models.CASCADE)
     texto = models.TextField()
