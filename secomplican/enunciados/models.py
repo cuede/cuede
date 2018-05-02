@@ -18,18 +18,21 @@ class Etapa(models.Model):
     """
     anio = models.IntegerField()
 
-    class Cuatrimestre(Enum):
-        PRIMERO = 1
-        SEGUNDO = 2
-        VERANO = 3
+    PRIMERO = 1
+    SEGUNDO = 2
+    VERANO = 3
+    CUATRIMESTRE_CHOICES = (
+        (PRIMERO, 'Primer Cuatrimestre'),
+        (SEGUNDO, 'Segundo Cuatrimestre'),
+        (VERANO, 'Verano')
+    )
 
-    # Las opciones son los valores del enum Cuatrimestre
-    cuatrimestre = models.IntegerField(choices=[(cuatri, cuatri.value) for cuatri in Cuatrimestre])
+    cuatrimestre = models.IntegerField(choices=CUATRIMESTRE_CHOICES)
 
     def __str_cuatrimestre(self):
-        if self.cuatrimestre == self.Cuatrimestre.PRIMERO.value:
+        if self.cuatrimestre == self.PRIMERO:
             return 'Primer Cuatrimestre'
-        elif self.cuatrimestre == self.Cuatrimestre.SEGUNDO.value:
+        elif self.cuatrimestre == self.SEGUNDO:
             return 'Segundo Cuatrimestre'
         else:
             return 'Verano'
