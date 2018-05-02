@@ -56,6 +56,8 @@ class Practica(models.Model):
 
 class Enunciado(models.Model):
     practica = models.ForeignKey(Practica, on_delete=models.CASCADE)
+    # El numero de enunciado en la practica
+    numero = models.IntegerField()
     texto = models.TextField()
 
     def __str__(self):
