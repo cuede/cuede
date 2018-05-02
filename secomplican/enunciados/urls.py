@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('materias', views.MateriasView.as_view(), name='materias'),
+    path('<materia>/<etapa>/practica<int:practica>/<int:numero>', views.enunciado, name='enunciado')
 ]

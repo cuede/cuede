@@ -1,0 +1,9 @@
+<h1>Materias</h1>
+<ul>
+{% for materia in object_list %}
+    <li>{{ materia.nombre }}</li>
+{% empty %}
+    <li>No hay materias.</li>
+{% endfor %}
+</ul>
+
