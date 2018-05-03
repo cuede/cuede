@@ -1,1 +1,10 @@
 <h1> {{ materia.nombre }} </h1>
+<h2>Prácticas</h2>
+{% for practica in materia.practica_set.all %}
+    {{ practica.numero }}<br>
+{% empty %}
+    No hay practicas.
+{% endfor %}
+
+<h2>Parciales</h2>
+TODO
