@@ -1,7 +1,9 @@
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views import generic
 from django.shortcuts import get_object_or_404, get_list_or_404, render
-from enunciados.models import Materia, Cuatrimestre, Practica, Enunciado
+
+import enunciados.cuatrimestres_url_parser as cuatrimestres_url_parser
+from enunciados.models import Materia, Practica, Enunciado
 
 
 def index(request):
@@ -12,29 +14,36 @@ class MateriasView(generic.ListView):
     model = Materia
 
 
-def materia(request, nombre):
-    objeto = get_object_or_404(Materia, nombre=nombre)
-    return render(request, 'enunciados/materia.html', {'materia': objeto})
-
-
-def __parsear_cuatrimestre(cuatrimestre):
+# TODO: hacer tests de esto, y quiza ponerlo en un lugar mejor
+def __ultimas_practicas(materia):
     """
-    Devuelve el numero de cuatrimestre parseando el parámetro de una url.
-
-    :returns: None si es que cuatrimestre no es uno entre '1cuatri', '2cuatri' o 'verano'
+    Devuelve todas las practicas de la materia que esten en el ultimo cuatrimestre en el que
+    hay practicas para la materia.
+    :param materia:
+    :return:
     """
-    if cuatrimestre == '1cuatri':
-        return Cuatrimestre.PRIMERO
-    elif cuatrimestre == '2cuatri':
-        return Cuatrimestre.SEGUNDO
-    elif cuatrimestre == 'verano':
-        return Cuatrimestre.VERANO
+    practicas_descendientes = materia.practica_set.order_by('-cuatrimestre__anio', '-cuatrimestre__cuatrimestre')
+    if practicas_descendientes:
+        ultimo_cuatrimestre = practicas_descendientes[0].cuatrimestre
+        return practicas_descendientes.filter(cuatrimestre=ultimo_cuatrimestre)
     else:
-        return None
+        return []
+
+
+def materia(request, nombre):
+    contexto = {
+        'materia': get_object_or_404(Materia, nombre=nombre),
+    }
+    contexto['practicas'] = __ultimas_practicas(contexto['materia'])
+    if contexto['practicas']:
+        ultimo_cuatrimestre = contexto['practicas'][0].cuatrimestre
+        contexto['url_cuatrimestre_practicas'] = cuatrimestres_url_parser.numero_a_url(ultimo_cuatrimestre.cuatrimestre)
+        contexto['ultimo_anio_practicas'] = ultimo_cuatrimestre.anio
+    return render(request, 'enunciados/materia.html', contexto)
 
 
 def practica(request, materia, anio, cuatrimestre, numero):
-    numero_cuatri = __parsear_cuatrimestre(cuatrimestre)
+    numero_cuatri = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
     if not numero_cuatri:
         return HttpResponseBadRequest('El cuatrimestre puede ser uno entre: "1cuatri", "2cuatri", "verano"')
 

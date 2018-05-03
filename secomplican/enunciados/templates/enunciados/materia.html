@@ -1,9 +1,10 @@
 <h1> {{ materia.nombre }} </h1>
-<h2>Prácticas</h2>
-{% for practica in materia.practica_set.all %}
-    {{ practica.numero }}<br>
+<h2>Prácticas{% if practicas %} del {{ practicas.0.cuatrimestre }}{% endif %}</h2>
+{% for practica in practicas %}
+    <a href="{% url 'practica' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=practica.numero %}">
+        {{ practica.numero }}</a><br>
 {% empty %}
-    No hay practicas.
+    No hay prácticas.
 {% endfor %}
 
 <h2>Parciales</h2>
