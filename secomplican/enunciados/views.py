@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.views import generic
 from django.db.models import Count
-from django.shortcuts import get_list_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404, render
 from enunciados.models import Materia, Cuatrimestre, Practica, Enunciado
 import enunciados.models_utils as models_utils
 
@@ -12,6 +12,11 @@ def index(request):
 
 class MateriasView(generic.ListView):
     model = Materia
+
+
+def materia(request, nombre):
+    objeto = get_object_or_404(Materia, nombre=nombre)
+    return render(request, 'enunciados/materia.html', {'materia': objeto})
 
 
 class CuatrimestreView(generic.ListView):
