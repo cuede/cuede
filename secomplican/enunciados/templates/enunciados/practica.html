@@ -1,0 +1,7 @@
+<h1> {{ practica.materia.nombre }} - Practica {{ practica.numero }} ({{ practica.cuatrimestre }})</h1>
+{% for enunciado in practica.enunciado_set.all %}
+    <h2>Ejercicio {{ enunciado.numero }}</h2>
+    {{ enunciado.texto }}
+{% empty %}
+    Todavía no hay enunciados en esta práctica. <a> ¿Querés agregar uno? </a>
+{% endfor %}
