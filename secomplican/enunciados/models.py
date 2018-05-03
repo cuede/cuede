@@ -9,9 +9,7 @@ class Materia(models.Model):
         return self.nombre
 
 
-# No estoy seguro de que Etapa haga falta, podemos simplemente poner los datos de la etapa
-# en cada practica o parcial.
-class Etapa(models.Model):
+class Cuatrimestre(models.Model):
     """
     Representa la etapa de un año: 1er cuatrimestre, 2do cuatrimestre, o verano.
     """
@@ -42,7 +40,7 @@ class Etapa(models.Model):
 
 class Practica(models.Model):
     materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
-    etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
+    cuatrimestre = models.ForeignKey(Cuatrimestre, on_delete=models.CASCADE)
     numero = models.IntegerField()
     titulo = models.CharField(max_length=1023, default='')
 
