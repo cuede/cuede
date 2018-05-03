@@ -1,7 +1,7 @@
 <h1>Materias</h1>
 <ul>
 {% for materia in object_list %}
-    <li>{{ materia.nombre }}</li>
+    <li><a href="{% url 'materia' materia.nombre %}">{{ materia.nombre }}</a></li>
 {% empty %}
     <li>No hay materias.</li>
 {% endfor %}
