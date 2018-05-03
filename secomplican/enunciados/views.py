@@ -5,7 +5,7 @@ from enunciados.models import Materia, Enunciado
 
 
 def index(request):
-    return HttpResponse("Se complican :)")
+    return HttpResponse("QED.com.ar: donde tooodos te piden que la demuestres.")
 
 
 class MateriasView(generic.ListView):
