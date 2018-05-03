@@ -52,6 +52,8 @@ class Practica(models.Model):
 
 
 class Enunciado(models.Model):
+    ordering = ['numero']
+
     practica = models.ForeignKey(Practica, on_delete=models.CASCADE)
     # El numero de enunciado en la practica
     numero = models.IntegerField()
