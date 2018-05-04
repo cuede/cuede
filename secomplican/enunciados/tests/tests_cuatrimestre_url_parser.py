@@ -1,4 +1,4 @@
-from django.test import TestCase
+from unittest import TestCase
 from enunciados.cuatrimestres_url_parser import *
 
 
