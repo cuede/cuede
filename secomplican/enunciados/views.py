@@ -23,7 +23,9 @@ def __ultimas_practicas(materia):
     :param materia:
     :return:
     """
-    practicas_descendientes = materia.practica_set.order_by('-cuatrimestre__anio', '-cuatrimestre__cuatrimestre')
+    practicas_descendientes = materia.conjuntodeenunciados_set \
+        .filter(practica__isnull=False) \
+        .order_by('-cuatrimestre__anio', '-cuatrimestre__cuatrimestre')
     if practicas_descendientes:
         ultimo_cuatrimestre = practicas_descendientes[0].cuatrimestre
         return practicas_descendientes.filter(cuatrimestre=ultimo_cuatrimestre)
