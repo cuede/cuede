@@ -28,9 +28,8 @@ def __ultimas_practicas(materia):
         .order_by('-cuatrimestre__anio', '-cuatrimestre__cuatrimestre')
     if practicas_descendientes:
         ultimo_cuatrimestre = practicas_descendientes[0].cuatrimestre
-        return practicas_descendientes.filter(cuatrimestre=ultimo_cuatrimestre)
-    else:
-        return []
+        practicas_descendientes = practicas_descendientes.filter(cuatrimestre=ultimo_cuatrimestre)
+    return practicas_descendientes
 
 
 def materia(request, nombre):
