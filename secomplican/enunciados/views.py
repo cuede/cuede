@@ -36,7 +36,7 @@ def practica(request, materia, anio, cuatrimestre, numero):
         return HttpResponseBadRequest('El cuatrimestre puede ser uno entre: "1cuatri", "2cuatri", "verano"')
 
     practica = get_object_or_404(Practica, materia__nombre=materia, cuatrimestre__anio=anio,
-                                 cuatrimestre__cuatrimestre=numero_cuatri,
+                                 cuatrimestre__numero=numero_cuatri,
                                  numero=numero)
     return render(request, 'enunciados/practica.html', {'practica': practica})
 
@@ -47,7 +47,7 @@ def parcial(request, materia, anio, cuatrimestre, numero):
         return HttpResponseBadRequest('El cuatrimestre puede ser uno entre: "1cuatri", "2cuatri", "verano"')
 
     parcial = get_object_or_404(Parcial, materia__nombre=materia, cuatrimestre__anio=anio,
-                                cuatrimestre__cuatrimestre=numero_cuatri,
+                                cuatrimestre__numero=numero_cuatri,
                                 numero=numero, recuperatorio=False)
     return render(request, 'enunciados/parcial.html', {'parcial': parcial})
 
