@@ -3,7 +3,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404, get_list_or_404, render
 
 import enunciados.cuatrimestres_url_parser as cuatrimestres_url_parser
-from enunciados.models import Materia, Practica, Enunciado
+from enunciados.models import Materia, Practica, Parcial, Enunciado
 
 
 def index(request):
@@ -54,6 +54,17 @@ def practica(request, materia, anio, cuatrimestre, numero):
                                  cuatrimestre__cuatrimestre=numero_cuatri,
                                  numero=numero)
     return render(request, 'enunciados/practica.html', {'practica': practica})
+
+
+def parcial(request, materia, anio, cuatrimestre, numero):
+    numero_cuatri = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
+    if not numero_cuatri:
+        return HttpResponseBadRequest('El cuatrimestre puede ser uno entre: "1cuatri", "2cuatri", "verano"')
+
+    parcial = get_object_or_404(Parcial, materia__nombre=materia, cuatrimestre__anio=anio,
+                                cuatrimestre__cuatrimestre=numero_cuatri,
+                                numero=numero, recuperatorio=False)
+    return render(request, 'enunciados/parcial.html', {'parcial': parcial})
 
 
 def enunciado(request, materia, anio, cuatrimestre, practica, numero):

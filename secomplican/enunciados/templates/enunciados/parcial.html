@@ -1,0 +1,7 @@
+<h1> {{ parcial.materia.nombre }} - Parcial {{ parcial.numero }} ({{ parcial.cuatrimestre }})</h1>
+{% for enunciado in parcial.enunciado_set.all %}
+    <h2>Ejercicio {{ enunciado.numero }}</h2>
+    {{ enunciado.texto }}
+{% empty %}
+    Todavía no hay enunciados en este parcial. <a> ¿Querés agregar uno? </a>
+{% endfor %}
