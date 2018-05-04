@@ -4,4 +4,4 @@ def truncar(texto, max_caracteres=32):
     contando los tres puntos que se agregan al final si es que el texto tiene mas de
     max_caracteres caracteres.
     """
-    return (texto[:max_caracteres - 3] + '...') if len(texto) > max_caracteres + 3 else texto
+    return (texto[:max_caracteres - 3] + '...') if len(texto) > max_caracteres else texto
