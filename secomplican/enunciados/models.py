@@ -18,18 +18,18 @@ class Cuatrimestre(models.Model):
     PRIMERO = 1
     SEGUNDO = 2
     VERANO = 3
-    CUATRIMESTRE_CHOICES = (
+    NUMERO_CHOICES = (
         (PRIMERO, 'Primer Cuatrimestre'),
         (SEGUNDO, 'Segundo Cuatrimestre'),
         (VERANO, 'Verano')
     )
 
-    cuatrimestre = models.IntegerField(choices=CUATRIMESTRE_CHOICES)
+    numero = models.IntegerField(choices=NUMERO_CHOICES)
 
     def __str_cuatrimestre(self):
-        if self.cuatrimestre == self.PRIMERO:
+        if self.numero == self.PRIMERO:
             return 'Primer Cuatrimestre'
-        elif self.cuatrimestre == self.SEGUNDO:
+        elif self.numero == self.SEGUNDO:
             return 'Segundo Cuatrimestre'
         else:
             return 'Verano'
