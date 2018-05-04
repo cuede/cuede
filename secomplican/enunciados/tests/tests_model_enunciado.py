@@ -12,7 +12,7 @@ class EnunciadoTests(TestCase):
     def setUp(self):
         materia = Materia(nombre='Materia')
         materia.save()
-        cuatrimestre = Cuatrimestre(anio=2018, cuatrimestre=1)
+        cuatrimestre = Cuatrimestre(anio=2018, numero=1)
         cuatrimestre.save()
         self.conjunto = ConjuntoDeEnunciados(materia=materia, cuatrimestre=cuatrimestre)
         self.conjunto.save()
