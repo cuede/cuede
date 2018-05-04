@@ -67,8 +67,6 @@ class Parcial(ConjuntoDeEnunciados):
 
 
 class Enunciado(models.Model):
-    ordering = ['numero']
-
     conjunto = models.ForeignKey(ConjuntoDeEnunciados, on_delete=models.CASCADE)
     # El numero de enunciado en la practica
     numero = models.IntegerField()
@@ -76,6 +74,9 @@ class Enunciado(models.Model):
 
     def __str__(self):
         return truncar(self.texto)
+
+    class Meta:
+        ordering = ['numero']
 
 
 class Solucion(models.Model):
