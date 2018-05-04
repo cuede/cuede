@@ -38,9 +38,12 @@ class Cuatrimestre(models.Model):
         return '{} del {}'.format(self.__str_cuatrimestre(), self.anio)
 
 
-class Practica(models.Model):
+class ConjuntoDeEnunciados(models.Model):
     materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
     cuatrimestre = models.ForeignKey(Cuatrimestre, on_delete=models.CASCADE)
+
+
+class Practica(ConjuntoDeEnunciados):
     numero = models.IntegerField()
     titulo = models.CharField(max_length=1023, default='')
 
@@ -51,10 +54,22 @@ class Practica(models.Model):
         return resultado
 
 
+class Parcial(ConjuntoDeEnunciados):
+    numero = models.IntegerField()
+    fecha = models.DateField(blank=True, null=True)
+    recuperatorio = models.BooleanField(default=False)
+
+    def __str__(self):
+        template = 'Parcial {}'
+        if self.recuperatorio:
+            template = 'Recuperatorio {}'
+        return template.format(self.numero)
+
+
 class Enunciado(models.Model):
     ordering = ['numero']
 
-    practica = models.ForeignKey(Practica, on_delete=models.CASCADE)
+    conjunto = models.ForeignKey(ConjuntoDeEnunciados, on_delete=models.CASCADE)
     # El numero de enunciado en la practica
     numero = models.IntegerField()
     texto = models.TextField()
