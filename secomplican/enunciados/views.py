@@ -2,8 +2,9 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.views import generic
 from django.shortcuts import get_object_or_404, get_list_or_404, render
 
-import enunciados.cuatrimestres_url_parser as cuatrimestres_url_parser
+from enunciados import cuatrimestres_url_parser
 from enunciados.models import Materia, Practica, Parcial, Enunciado
+from enunciados import models_utils
 
 
 def index(request):
@@ -41,6 +42,8 @@ def materia(request, nombre):
         ultimo_cuatrimestre = contexto['practicas'][0].cuatrimestre
         contexto['url_cuatrimestre_practicas'] = cuatrimestres_url_parser.numero_a_url(ultimo_cuatrimestre.cuatrimestre)
         contexto['ultimo_anio_practicas'] = ultimo_cuatrimestre.anio
+
+    contexto['parciales'] = models_utils.parciales_ordenados(contexto['materia'])
     return render(request, 'enunciados/materia.html', contexto)
 
 

@@ -8,4 +8,9 @@
 {% endfor %}
 
 <h2>Parciales</h2>
-TODO
+{% for parcial in parciales %}
+    <a href="{% url 'parcial' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=parcial.parcial.numero %}">
+        Parcial {{ parcial.parcial.numero }} del {{ parcial.parcial.cuatrimestre }}</a><br>
+{% empty %}
+    No hay parciales.
+{% endfor %}
