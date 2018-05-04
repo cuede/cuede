@@ -16,28 +16,11 @@ class MateriasView(generic.ListView):
     model = Materia
 
 
-# TODO: hacer tests de esto, y quiza ponerlo en un lugar mejor
-def __ultimas_practicas(materia):
-    """
-    Devuelve todas las practicas de la materia que esten en el ultimo cuatrimestre en el que
-    hay practicas para la materia.
-    :param materia:
-    :return:
-    """
-    practicas_descendientes = materia.conjuntodeenunciados_set \
-        .filter(practica__isnull=False) \
-        .order_by('-cuatrimestre__anio', '-cuatrimestre__cuatrimestre')
-    if practicas_descendientes:
-        ultimo_cuatrimestre = practicas_descendientes[0].cuatrimestre
-        practicas_descendientes = practicas_descendientes.filter(cuatrimestre=ultimo_cuatrimestre)
-    return practicas_descendientes
-
-
 def materia(request, nombre):
     contexto = {
         'materia': get_object_or_404(Materia, nombre=nombre),
     }
-    contexto['practicas'] = __ultimas_practicas(contexto['materia'])
+    contexto['practicas'] = models_utils.ultimas_practicas_ordenadas(contexto['materia'])
     if contexto['practicas']:
         ultimo_cuatrimestre = contexto['practicas'][0].cuatrimestre
         contexto['url_cuatrimestre_practicas'] = cuatrimestres_url_parser.numero_a_url(ultimo_cuatrimestre.cuatrimestre)
