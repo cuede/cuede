@@ -48,10 +48,7 @@ class Practica(ConjuntoDeEnunciados):
     titulo = models.CharField(max_length=1023, default='')
 
     def __str__(self):
-        resultado = 'Practica {}'.format(self.numero)
-        if self.titulo != '':
-            resultado += ': {}'.format(self.titulo)
-        return resultado
+        return '{} - Practica {} del {}'.format(self.materia, self.numero, self.cuatrimestre)
 
 
 class Parcial(ConjuntoDeEnunciados):
@@ -60,10 +57,10 @@ class Parcial(ConjuntoDeEnunciados):
     recuperatorio = models.BooleanField(default=False)
 
     def __str__(self):
-        template = 'Parcial {}'
+        nombre = 'Parcial'
         if self.recuperatorio:
-            template = 'Recuperatorio {}'
-        return template.format(self.numero)
+            nombre = 'Recuperatorio'
+        return '{} - {} {} del {}'.format(self.materia, nombre, self.numero, self.cuatrimestre)
 
 
 class Enunciado(models.Model):
