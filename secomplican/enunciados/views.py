@@ -26,7 +26,7 @@ def materia(request, nombre):
         contexto['url_cuatrimestre_practicas'] = cuatrimestres_url_parser.numero_a_url(ultimo_cuatrimestre.numero)
         contexto['ultimo_anio_practicas'] = ultimo_cuatrimestre.anio
 
-    contexto['parciales'] = models_utils.parciales_ordenados(contexto['materia'])
+    contexto['parciales'] = models_utils.parciales_de_materia_ordenados(contexto['materia'])
     return render(request, 'enunciados/materia.html', contexto)
 
 

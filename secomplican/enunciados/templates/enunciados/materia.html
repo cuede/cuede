@@ -1,16 +1,32 @@
 <h1> {{ materia.nombre }} </h1>
 <h2>Prácticas{% if practicas %} del {{ practicas.0.cuatrimestre }}{% endif %}</h2>
 {% for practica in practicas %}
-    <a href="{% url 'practica' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=practica.practica.numero %}">
-        Práctica {{ practica.practica.numero }}</a><br>
+    <a href="{% url 'practica' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=practica.numero %}">
+        Práctica {{ practica.numero }}</a><br>
 {% empty %}
     No hay prácticas.
 {% endfor %}
 
-<h2>Parciales</h2>
-{% for parcial in parciales %}
-    <a href="{% url 'parcial' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=parcial.parcial.numero %}">
-        Parcial {{ parcial.parcial.numero }} del {{ parcial.parcial.cuatrimestre }}</a><br>
-{% empty %}
-    No hay parciales.
-{% endfor %}
+{% if parciales.1 %}
+    <h2>Primeros Parciales</h2>
+    {% for parcial in parciales.1 %}
+        <a href="{% url 'parcial' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=parcial.numero %}">
+            Parcial {{ parcial.numero }} del {{ parcial.cuatrimestre }}</a><br>
+    {% endfor %}
+{% endif %}
+
+{% if parciales.2 %}
+<h2>Segundos Parciales</h2>
+    {% for parcial in parciales.2 %}
+        <a href="{% url 'parcial' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=parcial.numero %}">
+            Parcial {{ parcial.numero }} del {{ parcial.cuatrimestre }}</a><br>
+    {% endfor %}
+{% endif %}
+
+{% if parciales.3 %}
+<h2>Segundos Parciales</h2>
+    {% for parcial in parciales.3 %}
+        <a href="{% url 'parcial' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=parcial.numero %}">
+            Parcial {{ parcial.numero }} del {{ parcial.cuatrimestre }}</a><br>
+    {% endfor %}
+{% endif %}
