@@ -1,9 +1,15 @@
 from django.test import TestCase
-from enunciados.models import Materia, Cuatrimestre, Parcial
+from enunciados.models import Materia, Cuatrimestre, Parcial, Practica
 from enunciados.models_utils import *
 
 
-class ModelsUtilsTests(TestCase):
+def assert_lista_equals(testCase, primera, segunda):
+    testCase.assertEquals(len(primera), len(segunda))
+    for i, elemento in enumerate(primera):
+        testCase.assertEquals(elemento, segunda[i])
+
+
+class ParcialesDeMateriaOrdenadosTests(TestCase):
     def setUp(self):
         self.materia = Materia(nombre='materia')
         self.materia.save()
@@ -14,7 +20,7 @@ class ModelsUtilsTests(TestCase):
             parciales_de_materia_ordenados(None)
 
     def test_parciales_de_materia_ordenados_sin_parciales(self):
-        """Debería devolver un diccionario vacía."""
+        """Debería devolver un diccionario vacío."""
         self.assertEquals(len(parciales_de_materia_ordenados(self.materia)), 0)
 
     def test_parciales_de_materia_ordenados_con_primeros_parciales_con_igual_anio(self):
@@ -42,10 +48,7 @@ class ModelsUtilsTests(TestCase):
         parciales = [parcial3, parcial2, parcial1]
         ordenados = parciales_de_materia_ordenados(self.materia)
         self.assertEquals(len(ordenados), 1)
-        primeros_parciales = ordenados[1]
-        self.assertEquals(len(primeros_parciales), len(parciales))
-        for index, parcial in enumerate(primeros_parciales):
-            self.assertEquals(parcial, parciales[index])
+        assert_lista_equals(self, ordenados[1], parciales)
 
     def test_parciales_de_materia_ordenados_con_primeros_parciales_diferente_anio(self):
         """
@@ -75,10 +78,7 @@ class ModelsUtilsTests(TestCase):
         parciales = [parcial1, parcial2, parcial3, parcial4]
         ordenados = parciales_de_materia_ordenados(self.materia)
         self.assertEquals(len(ordenados), 1)
-        primeros_parciales = ordenados[1]
-        self.assertEquals(len(primeros_parciales), len(parciales))
-        for index, parcial in enumerate(primeros_parciales):
-            self.assertEquals(parcial, parciales[index])
+        assert_lista_equals(self, ordenados[1], parciales)
 
     def test_parciales_de_materia_ordenados_con_parciales_de_numeros_diferentes(self):
         """
@@ -113,14 +113,8 @@ class ModelsUtilsTests(TestCase):
 
         ordenados = parciales_de_materia_ordenados(self.materia)
         self.assertEquals(len(ordenados), 2)
-        primeros_parciales = ordenados[1]
-        self.assertEquals(len(primeros_parciales), len(primeros))
-        for index, parcial in enumerate(primeros_parciales):
-            self.assertEquals(parcial, primeros[index])
-        segundos_parciales = ordenados[2]
-        self.assertEquals(len(segundos_parciales), len(segundos))
-        for index, parcial in enumerate(segundos_parciales):
-            self.assertEquals(parcial, segundos[index])
+        assert_lista_equals(self, ordenados[1], primeros)
+        assert_lista_equals(self, ordenados[2], segundos)
 
     def test_parciales_de_materia_ordenados_con_recuperatorios(self):
         """Debería devolver los recuperatorios antes que los parciales."""
@@ -141,7 +135,62 @@ class ModelsUtilsTests(TestCase):
         parciales = [parcial2, recu, parcial1]
         ordenados = parciales_de_materia_ordenados(self.materia)
         self.assertEquals(len(ordenados), 1)
-        primeros_parciales = ordenados[1]
-        self.assertEquals(len(primeros_parciales), len(parciales))
-        for index, parcial1 in enumerate(primeros_parciales):
-            self.assertEquals(parcial1, parciales[index])
+        assert_lista_equals(self, ordenados[1], parciales)
+
+
+class UltimasPracticasOrdenadasTests(TestCase):
+    def setUp(self):
+        self.materia = Materia(nombre='materia')
+        self.materia.save()
+
+    def test_ultimas_practicas_ordenadas_sin_materia(self):
+        """Debería levantar un ValueError."""
+        with self.assertRaises(ValueError):
+            ultimas_practicas_ordenadas(None)
+
+    def test_ultimas_practicas_ordenadas_sin_practicas(self):
+        """Debería devolver una lista vacía."""
+        self.assertEquals(len(ultimas_practicas_ordenadas(self.materia)), 0)
+
+    def test_ultimas_practicas_ordenadas_con_practicas_de_mismo_cuatrimestre(self):
+        """Debería devolver todas las prácticas."""
+        cuatri = Cuatrimestre(anio=2018, numero=Cuatrimestre.VERANO)
+        cuatri.save()
+
+        practicas = []
+        # Creamos 10 prácticas
+        for i in range(1, 11):
+            practicas.append(Practica(cuatrimestre=cuatri, materia=self.materia, numero=i))
+
+        # Las guardamos en desorden
+        for i in range(9, -1, -1):
+            practicas[i].save()
+
+        resultado = ultimas_practicas_ordenadas(self.materia)
+        assert_lista_equals(self, resultado, practicas)
+
+    def test_ultimas_practicas_ordenadas_con_practicas_de_distinto_cuatrimestre(self):
+        """Debería devolver solo las del último cuatrimestre."""
+        cuatri1 = Cuatrimestre(anio=2018, numero=Cuatrimestre.VERANO)
+        cuatri1.save()
+        cuatri2 = Cuatrimestre(anio=2018, numero=Cuatrimestre.SEGUNDO)
+        cuatri2.save()
+
+        practicas_viejas = []
+        practicas_nuevas = []
+        # Creamos 10 prácticas de cada cuatri
+        for i in range(1, 11):
+            practicas_viejas.append(
+                Practica(cuatrimestre=cuatri1, materia=self.materia, numero=i)
+            )
+            practicas_nuevas.append(
+                Practica(cuatrimestre=cuatri2, materia=self.materia, numero=i)
+            )
+
+        # Las guardamos en desorden
+        for i in range(9, -1, -1):
+            practicas_viejas[i].save()
+            practicas_nuevas[i].save()
+
+        resultado = ultimas_practicas_ordenadas(self.materia)
+        assert_lista_equals(self, resultado, practicas_nuevas)

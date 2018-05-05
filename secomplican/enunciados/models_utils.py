@@ -5,6 +5,10 @@ def __castear_a_parciales(conjuntos_de_enunciados):
     return [conjunto.parcial for conjunto in conjuntos_de_enunciados]
 
 
+def __castear_a_practicas(conjuntos_de_enunciados):
+    return [conjunto.practica for conjunto in conjuntos_de_enunciados]
+
+
 def __separar_por_numero(parciales):
     """Devuelve un conjunto de conjuntos de parciales, separados por numero."""
     separados = {}
@@ -42,6 +46,14 @@ def __comparador_cuatrimestre(cuatrimestre):
     return int(string_comparador)
 
 
+def __comparador_practica(practica):
+    """
+    Devuelve un número que se puede usar para comparar entre prácticas.
+    """
+    # Asumimos que el número de práctica no va a superar 99
+    return __comparador_cuatrimestre(practica.cuatrimestre) * 100 + (100 - practica.numero)
+
+
 def __comparador_parcial(parcial):
     """
     Devuelve un número que se puede usar para comparar entre parciales.
@@ -51,7 +63,15 @@ def __comparador_parcial(parcial):
     return int(string_comparador)
 
 
-def __ordenar_por_cuatrimestre(parciales):
+def __ordenar_practicas(practicas):
+    """
+    Ordena las prácticas de mayor a menor en cuatrimestre y de menor a
+    mayor en número.
+    """
+    return sorted(practicas, key=__comparador_practica, reverse=True)
+
+
+def __ordenar_parciales(parciales):
     """
     Ordena los parciales de más reciente a menos reciente.
 
@@ -83,8 +103,21 @@ def parciales_de_materia_ordenados(materia):
     parciales = parciales_de_materia(materia)
     parciales_por_numero = __separar_por_numero(parciales)
     for numero, parciales_de_numero in parciales_por_numero.items():
-        parciales_por_numero[numero] = __ordenar_por_cuatrimestre(parciales_de_numero)
+        parciales_por_numero[numero] = __ordenar_parciales(parciales_de_numero)
     return parciales_por_numero
+
+
+def practicas_de_materia(materia):
+    """
+    Devuelve una lista de los parciales que pertenecen a la materia.
+
+    :param materia: No puede ser None.
+    """
+    if not materia:
+        raise ValueError('Materia no debería ser None.')
+
+    conjuntos = materia.conjuntodeenunciados_set.filter(practica__isnull=False)
+    return __castear_a_practicas(conjuntos)
 
 
 def ultimas_practicas_ordenadas(materia):
@@ -92,10 +125,9 @@ def ultimas_practicas_ordenadas(materia):
     Devuelve todas las practicas de la materia que esten en el ultimo cuatrimestre en el que
     hay practicas para la materia.
     """
-    practicas_descendientes = materia.conjuntodeenunciados_set \
-        .filter(practica__isnull=False) \
-        .order_by('-cuatrimestre__anio', '-cuatrimestre__numero')
-    if practicas_descendientes:
-        ultimo_cuatrimestre = practicas_descendientes[0].cuatrimestre
-        practicas_descendientes = practicas_descendientes.filter(cuatrimestre=ultimo_cuatrimestre)
-    return practicas_descendientes
+    practicas = practicas_de_materia(materia)
+    practicas_ordenadas = __ordenar_practicas(practicas)
+    if practicas_ordenadas:
+        ultimo_cuatrimestre = practicas_ordenadas[0].cuatrimestre
+        practicas_ordenadas = list(filter(lambda p: p.cuatrimestre == ultimo_cuatrimestre, practicas_ordenadas))
+    return practicas_ordenadas
