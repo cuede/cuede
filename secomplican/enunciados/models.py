@@ -84,7 +84,7 @@ class Enunciado(models.Model):
     texto = models.TextField()
 
     def __str__(self):
-        return truncar(self.texto)
+        return '{}. {}'.format(self.numero, truncar(self.texto))
 
     class Meta:
         ordering = ['numero']
