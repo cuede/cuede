@@ -3,7 +3,7 @@ from enunciados.models import Materia, Cuatrimestre, ConjuntoDeEnunciados, Enunc
 
 
 def agregar_enunciado(conjunto, numero):
-    enunciado = Enunciado(conjunto=conjunto, numero=numero, texto='')
+    enunciado = Enunciado(conjunto=conjunto, numero=numero)
     enunciado.save()
     return enunciado
 
