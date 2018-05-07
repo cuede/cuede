@@ -60,7 +60,21 @@ class Parcial(ConjuntoDeEnunciados):
         nombre = 'Parcial'
         if self.recuperatorio:
             nombre = 'Recuperatorio'
-        return '{} - {} {} del {}'.format(self.materia, nombre, self.numero, self.cuatrimestre)
+        return '{} - {} {} del {}'.format(self.materia, self.ordinal(), nombre, self.cuatrimestre)
+
+    def ordinal(self):
+        """
+        Devuelve el adjetivo ordinal correspondiente al número de este parcial,
+        tanto en singular como en plural.
+        """
+        # Asumimos que no hay mas de cuatro parciales. Deberíamos quizá usar una library que te provea los ordinales.
+        ordinales = [
+            {'singular': 'Primer', 'plural': 'Primeros'},
+            {'singular': 'Segundo', 'plural': 'Segundos'},
+            {'singular': 'Tercer', 'plural': 'Terceros'},
+            {'singular': 'Cuarto', 'plural': 'Cuartos'},
+        ]
+        return ordinales[self.numero - 1]
 
 
 class Enunciado(models.Model):
