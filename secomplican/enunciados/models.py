@@ -84,10 +84,9 @@ class Enunciado(models.Model):
     conjunto = models.ForeignKey(ConjuntoDeEnunciados, on_delete=models.CASCADE)
     # El numero de enunciado en el conjunto de enunciados.
     numero = models.IntegerField()
-    texto = models.TextField()
 
     def __str__(self):
-        return '{}. {}'.format(self.numero, truncar(self.texto))
+        return 'Enunciado {}'.format(self.numero)
 
     class Meta:
         ordering = ['numero']
@@ -95,9 +94,23 @@ class Enunciado(models.Model):
         unique_together = ('numero', 'conjunto')
 
 
-class Solucion(models.Model):
-    enunciado = models.ForeignKey(Enunciado, on_delete=models.CASCADE)
+class VersionTexto(models.Model):
+    tiempo = models.DateTimeField(auto_now_add=True)
     texto = models.TextField()
 
-    def __str__(self):
-        return truncar(self.texto)
+    class Meta:
+        # Ordenamos del más reciente al más viejo.
+        ordering = ['-tiempo']
+        abstract = True
+
+
+class VersionTextoEnunciado(VersionTexto):
+    enunciado = models.ForeignKey(Enunciado, on_delete=models.CASCADE, related_name='versiones')
+
+
+class Solucion(models.Model):
+    enunciado = models.ForeignKey(Enunciado, on_delete=models.CASCADE)
+
+
+class VersionTextoSolucion(VersionTexto):
+    solucion = models.ForeignKey(Solucion, on_delete=models.CASCADE, related_name='versiones')
