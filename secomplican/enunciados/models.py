@@ -37,6 +37,9 @@ class Cuatrimestre(models.Model):
     def __str__(self):
         return '{} del {}'.format(self.__str_cuatrimestre(), self.anio)
 
+    class Meta:
+        unique_together = ('anio', 'numero')
+
 
 class ConjuntoDeEnunciados(models.Model):
     materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
@@ -88,6 +91,8 @@ class Enunciado(models.Model):
 
     class Meta:
         ordering = ['numero']
+        # No puede haber dos ejercicios con el mismo número en el mismo conjunto.
+        unique_together = ('numero', 'conjunto')
 
 
 class Solucion(models.Model):
