@@ -7,26 +7,12 @@
     No hay prácticas.
 {% endfor %}
 
-{% if parciales.1 %}
-    <h2>Primeros Parciales</h2>
-    {% for parcial in parciales.1 %}
-        <a href="{% url 'parcial' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=parcial.numero %}">
-            Parcial {{ parcial.numero }} del {{ parcial.cuatrimestre }}</a><br>
+{% for numero, parciales_actuales in parciales.items %}
+<h2>{{ parciales_actuales.0.ordinal.plural }} Parciales</h2>
+    {% for parcial in parciales_actuales %}
+        <a href="{% url 'parcial' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=numero %}">
+            {{ parcial.ordinal.singular }} Parcial del {{ parcial.cuatrimestre }}</a><br>
     {% endfor %}
-{% endif %}
-
-{% if parciales.2 %}
-<h2>Segundos Parciales</h2>
-    {% for parcial in parciales.2 %}
-        <a href="{% url 'parcial' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=parcial.numero %}">
-            Parcial {{ parcial.numero }} del {{ parcial.cuatrimestre }}</a><br>
-    {% endfor %}
-{% endif %}
-
-{% if parciales.3 %}
-<h2>Segundos Parciales</h2>
-    {% for parcial in parciales.3 %}
-        <a href="{% url 'parcial' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=parcial.numero %}">
-            Parcial {{ parcial.numero }} del {{ parcial.cuatrimestre }}</a><br>
-    {% endfor %}
-{% endif %}
+{% empty %}
+    Todavía no hay parciales.
+{% endfor %}
