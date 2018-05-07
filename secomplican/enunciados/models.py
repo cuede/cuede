@@ -79,7 +79,7 @@ class Parcial(ConjuntoDeEnunciados):
 
 class Enunciado(models.Model):
     conjunto = models.ForeignKey(ConjuntoDeEnunciados, on_delete=models.CASCADE)
-    # El numero de enunciado en la practica
+    # El numero de enunciado en el conjunto de enunciados.
     numero = models.IntegerField()
     texto = models.TextField()
 
