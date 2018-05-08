@@ -41,10 +41,16 @@ class Cuatrimestre(models.Model):
 
 class ConjuntoDeEnunciados(models.Model):
     materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
+
+
+class ConjuntoDeEnunciadosConCuatrimestre(ConjuntoDeEnunciados):
     cuatrimestre = models.ForeignKey(Cuatrimestre, on_delete=models.CASCADE)
 
+    class Meta:
+        abstract = True
 
-class Practica(ConjuntoDeEnunciados):
+
+class Practica(ConjuntoDeEnunciadosConCuatrimestre):
     numero = models.IntegerField()
     titulo = models.CharField(max_length=1023, default='')
 
@@ -52,7 +58,7 @@ class Practica(ConjuntoDeEnunciados):
         return '{} - Practica {} del {}'.format(self.materia, self.numero, self.cuatrimestre)
 
 
-class Parcial(ConjuntoDeEnunciados):
+class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
     numero = models.IntegerField()
     fecha = models.DateField(blank=True, null=True)
     recuperatorio = models.BooleanField(default=False)
@@ -76,6 +82,13 @@ class Parcial(ConjuntoDeEnunciados):
             {'singular': 'Cuarto', 'plural': 'Cuartos'},
         ]
         return ordinales[self.numero - 1]
+
+
+class Final(ConjuntoDeEnunciados):
+    fecha = models.DateField()
+
+    def __str__(self):
+        return '{} - Final del {}'.format(self.materia, self.fecha)
 
 
 class VersionesManager(models.Manager):
