@@ -61,7 +61,7 @@ class Parcial(ConjuntoDeEnunciados):
         nombre = 'Parcial'
         if self.recuperatorio:
             nombre = 'Recuperatorio'
-        return '{} - {} {} del {}'.format(self.materia, self.ordinal(), nombre, self.cuatrimestre)
+        return '{} - {} {} del {}'.format(self.materia, self.ordinal()['singular'], nombre, self.cuatrimestre)
 
     def ordinal(self):
         """
