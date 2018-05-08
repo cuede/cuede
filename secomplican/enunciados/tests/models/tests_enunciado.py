@@ -1,5 +1,5 @@
 from django.test import TestCase
-from enunciados.models import Materia, Cuatrimestre, ConjuntoDeEnunciados, Enunciado
+from enunciados.models import Materia, Cuatrimestre, Practica, Enunciado
 
 
 def agregar_enunciado(conjunto, numero):
@@ -14,7 +14,7 @@ class EnunciadoTests(TestCase):
         materia.save()
         cuatrimestre = Cuatrimestre(anio=2018, numero=1)
         cuatrimestre.save()
-        self.conjunto = ConjuntoDeEnunciados(materia=materia, cuatrimestre=cuatrimestre)
+        self.conjunto = Practica(materia=materia, cuatrimestre=cuatrimestre, numero=1)
         self.conjunto.save()
 
     def test_ordenamiento(self):
