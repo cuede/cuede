@@ -80,6 +80,11 @@ class Parcial(ConjuntoDeEnunciados):
         return ordinales[self.numero - 1]
 
 
+class VersionesManager(models.Manager):
+    def ultima(self):
+        return self.get_queryset().all()[0]
+
+
 class Enunciado(models.Model):
     conjunto = models.ForeignKey(ConjuntoDeEnunciados, on_delete=models.CASCADE)
     # El numero de enunciado en el conjunto de enunciados.
@@ -97,6 +102,10 @@ class Enunciado(models.Model):
 class VersionTexto(models.Model):
     tiempo = models.DateTimeField(auto_now_add=True)
     texto = models.TextField()
+    versiones = VersionesManager()
+
+    def __str__(self):
+        return self.texto
 
     class Meta:
         # Ordenamos del más reciente al más viejo.
