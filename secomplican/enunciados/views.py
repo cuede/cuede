@@ -41,17 +41,33 @@ def practica(request, materia, anio, cuatrimestre, numero):
     return render(request, 'enunciados/practica.html', {'practica': practica})
 
 
-def parcial(request, materia, anio, cuatrimestre, numero):
+def parcial(request, materia, anio, cuatrimestre, numero, recuperatorio):
     numero_cuatri = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
     if not numero_cuatri:
         return HttpResponseBadRequest('El cuatrimestre puede ser uno entre: "1cuatri", "2cuatri", "verano"')
 
     parcial = get_object_or_404(Parcial, materia__nombre=materia, cuatrimestre__anio=anio,
                                 cuatrimestre__numero=numero_cuatri,
-                                numero=numero, recuperatorio=False)
+                                numero=numero, recuperatorio=recuperatorio)
     return render(request, 'enunciados/parcial.html', {'parcial': parcial})
 
 
-def enunciado(request, materia, anio, cuatrimestre, practica, numero):
-    encontrado = get_list_or_404(Enunciado, practica__materia__nombre=materia)[0]
-    return HttpResponse('{}'.format(encontrado))
+def enunciado(request, materia, anio, cuatrimestre, conjunto_de_enunciados, tipo_conjunto, numero):
+    encontrados = Enunciado.objects.filter(
+        conjunto__materia__nombre=materia,
+        conjunto__cuatrimestre__anio=anio,
+        conjunto__cuatrimestre__numero=cuatrimestres_url_parser.url_a_numero(cuatrimestre),
+        numero=numero,
+    )
+    if tipo_conjunto == 'practica':
+        encontrados = encontrados.filter(conjunto__practica__isnull=False) \
+            .filter(conjunto__practica__numero=conjunto_de_enunciados)
+    else:
+        encontrados = encontrados.filter(conjunto__parcial__isnull=False)
+        es_recuperatorio = tipo_conjunto == 'recuperatorio'
+        encontrados = encontrados.filter(conjunto__parcial__recuperatorio=es_recuperatorio) \
+            .filter(conjunto__parcial__numero=conjunto_de_enunciados)
+
+    enunciado_encontrado = encontrados[0]
+    texto = enunciado_encontrado.versiones.ultima()
+    return HttpResponse('{}'.format(texto))

@@ -1,6 +1,4 @@
 from django.db import models
-from enunciados.string_utils import truncar
-
 
 class Materia(models.Model):
     nombre = models.CharField(max_length=1023)
@@ -82,7 +80,11 @@ class Parcial(ConjuntoDeEnunciados):
 
 class VersionesManager(models.Manager):
     def ultima(self):
-        return self.get_queryset().all()[0]
+        queryset = self.get_queryset()
+        if queryset:
+            return queryset.all()[0]
+        else:
+            return ''
 
 
 class Enunciado(models.Model):
@@ -92,6 +94,33 @@ class Enunciado(models.Model):
 
     def __str__(self):
         return 'Enunciado {}'.format(self.numero)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        from . import cuatrimestres_url_parser
+        kwargs = {
+            'materia': self.conjunto.materia.nombre,
+            'anio': self.conjunto.cuatrimestre.anio,
+            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.conjunto.cuatrimestre.numero),
+            'numero': self.numero,
+        }
+
+        try:
+            parcial = self.conjunto.parcial
+            kwargs['conjunto_de_enunciados'] = parcial.numero
+            if parcial.recuperatorio:
+                url = 'enunciado_recuperatorio'
+            else:
+                url = 'enunciado_parcial'
+        except Parcial.DoesNotExist:
+            try:
+                practica = self.conjunto.practica
+                kwargs['conjunto_de_enunciados'] = practica.numero
+                url = 'enunciado_practica'
+            except Practica.DoesNotExist:
+                raise Exception('El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
+
+        return reverse(url, kwargs=kwargs)
 
     class Meta:
         ordering = ['numero']
