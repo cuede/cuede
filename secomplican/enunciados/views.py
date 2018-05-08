@@ -41,7 +41,7 @@ def practica(request, materia, anio, cuatrimestre, numero):
     return render(request, 'enunciados/practica.html', {'practica': practica})
 
 
-def parcial(request, materia, anio, cuatrimestre, numero, recuperatorio):
+def parcial(request, materia, anio, cuatrimestre, numero, recuperatorio=False):
     numero_cuatri = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
     if not numero_cuatri:
         return HttpResponseBadRequest('El cuatrimestre puede ser uno entre: "1cuatri", "2cuatri", "verano"')
