@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, Http404
 from django.views import generic
 from django.shortcuts import get_object_or_404, get_list_or_404, render
 
@@ -30,26 +30,24 @@ def materia(request, nombre):
     return render(request, 'enunciados/materia.html', contexto)
 
 
-def practica(request, materia, anio, cuatrimestre, numero):
+def conjunto_de_enunciados(request, queryset, anio, cuatrimestre):
     numero_cuatri = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
     if not numero_cuatri:
-        return HttpResponseBadRequest('El cuatrimestre puede ser uno entre: "1cuatri", "2cuatri", "verano"')
+        raise Http404
 
-    practica = get_object_or_404(Practica, materia__nombre=materia, cuatrimestre__anio=anio,
-                                 cuatrimestre__numero=numero_cuatri,
-                                 numero=numero)
-    return render(request, 'enunciados/practica.html', {'practica': practica})
+    conjunto = get_object_or_404(queryset, cuatrimestre__anio=anio, cuatrimestre__numero=numero_cuatri)
+
+    return render(request, 'enunciados/conjunto_de_enunciados.html', {'conjunto': conjunto})
+
+
+def practica(request, materia, anio, cuatrimestre, numero):
+    practicas = Practica.objects.filter(materia__nombre=materia, numero=numero)
+    return conjunto_de_enunciados(request, practicas, anio, cuatrimestre)
 
 
 def parcial(request, materia, anio, cuatrimestre, numero, recuperatorio=False):
-    numero_cuatri = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
-    if not numero_cuatri:
-        return HttpResponseBadRequest('El cuatrimestre puede ser uno entre: "1cuatri", "2cuatri", "verano"')
-
-    parcial = get_object_or_404(Parcial, materia__nombre=materia, cuatrimestre__anio=anio,
-                                cuatrimestre__numero=numero_cuatri,
-                                numero=numero, recuperatorio=recuperatorio)
-    return render(request, 'enunciados/parcial.html', {'parcial': parcial})
+    parciales = Parcial.objects.filter(materia__nombre=materia, numero=numero, recuperatorio=recuperatorio)
+    return conjunto_de_enunciados(request, parciales, anio, cuatrimestre)
 
 
 def enunciado(request, materia, anio, cuatrimestre, conjunto_de_enunciados, tipo_conjunto, numero):

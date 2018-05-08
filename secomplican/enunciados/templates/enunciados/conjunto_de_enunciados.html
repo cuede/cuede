@@ -1,7 +1,7 @@
-<h1> {{ parcial }} </h1>
-{% for enunciado in parcial.enunciado_set.all %}
+<h1> {{ conjunto }} </h1>
+{% for enunciado in conjunto.enunciado_set.all %}
     <h2><a href="{{ enunciado.get_absolute_url }}">Ejercicio {{ enunciado.numero }}</a></h2>
     {{ enunciado.versiones.ultima }}
 {% empty %}
-    Todavía no hay enunciados en este parcial. <a> ¿Querés agregar uno? </a>
+    Todavía no hay enunciados. <a> ¿Querés agregar uno? </a>
 {% endfor %}
