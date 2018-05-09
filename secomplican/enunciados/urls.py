@@ -10,6 +10,7 @@ urlpatterns = [
     path('<materia>/<int:anio>/<cuatrimestre>/parciales/<int:numero>', views.parcial, name='parcial'),
     path('<materia>/<int:anio>/<cuatrimestre>/recuperatorios/<int:numero>', views.parcial, {'recuperatorio': True},
          name='recuperatorio'),
+    path('<materia>/finales/<int:anio>/<int:mes>/<int:dia>', views.final, name='final'),
     path(
         '<materia>/<int:anio>/<cuatrimestre>/practicas/<int:conjunto_de_enunciados>/<int:numero>',
         views.enunciado,
@@ -27,5 +28,11 @@ urlpatterns = [
         views.enunciado,
         {'tipo_conjunto': 'recuperatorio'},
         name='enunciado_recuperatorio'
+    ),
+    path(
+        '<materia>/finales/<int:anio>/<int:mes>/<int:dia>/<int:numero>',
+        views.enunciado,
+        {'tipo_conjunto': 'final'},
+        name='enunciado_final'
     ),
 ]

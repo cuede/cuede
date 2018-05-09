@@ -113,14 +113,15 @@ class Enunciado(models.Model):
         from . import cuatrimestres_url_parser
         kwargs = {
             'materia': self.conjunto.materia.nombre,
-            'anio': self.conjunto.cuatrimestre.anio,
-            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.conjunto.cuatrimestre.numero),
             'numero': self.numero,
         }
 
+        # Esto es horrible, pero no sé si hay otra forma de chequear de qué subtipo es el conjunto.
         try:
             parcial = self.conjunto.parcial
             kwargs['conjunto_de_enunciados'] = parcial.numero
+            kwargs['anio'] = parcial.cuatrimestre.anio
+            kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(parcial.cuatrimestre.numero)
             if parcial.recuperatorio:
                 url = 'enunciado_recuperatorio'
             else:
@@ -129,9 +130,18 @@ class Enunciado(models.Model):
             try:
                 practica = self.conjunto.practica
                 kwargs['conjunto_de_enunciados'] = practica.numero
+                kwargs['anio'] = practica.cuatrimestre.anio
+                kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(practica.cuatrimestre.numero)
                 url = 'enunciado_practica'
             except Practica.DoesNotExist:
-                raise Exception('El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
+                try:
+                    final = self.conjunto.final
+                    kwargs['anio'] = final.fecha.year
+                    kwargs['mes'] = final.fecha.month
+                    kwargs['dia'] = final.fecha.day
+                    url = 'enunciado_final'
+                except Final.DoesNotExist:
+                    raise Exception('El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
 
         return reverse(url, kwargs=kwargs)
 
