@@ -31,6 +31,10 @@ def materia(request, nombre):
     return render(request, 'enunciados/materia.html', contexto)
 
 
+def render_conjunto_de_enunciados(request, conjunto):
+    return render(request, 'enunciados/conjunto_de_enunciados.html', {'conjunto': conjunto})
+
+
 def conjunto_de_enunciados_con_cuatrimestre(request, queryset, anio, cuatrimestre):
     numero_cuatri = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
     if not numero_cuatri:
@@ -38,7 +42,7 @@ def conjunto_de_enunciados_con_cuatrimestre(request, queryset, anio, cuatrimestr
 
     conjunto = get_object_or_404(queryset, cuatrimestre__anio=anio, cuatrimestre__numero=numero_cuatri)
 
-    return render(request, 'enunciados/conjunto_de_enunciados.html', {'conjunto': conjunto})
+    return render_conjunto_de_enunciados(request, conjunto)
 
 
 def practica(request, materia, anio, cuatrimestre, numero):
@@ -52,8 +56,8 @@ def parcial(request, materia, anio, cuatrimestre, numero, recuperatorio=False):
 
 
 def final(request, materia, anio, mes, dia):
-    finales = Final.objects.filter(materia__nombre=materia, fecha__year=anio, fecha__month=mes, fecha__day=dia)
-    return conjunto_de_enunciados_con_cuatrimestre(request, finales, anio, cuatrimestre)
+    finales = get_object_or_404(Final, materia__nombre=materia, fecha__year=anio, fecha__month=mes, fecha__day=dia)
+    return render_conjunto_de_enunciados(request, finales)
 
 
 def render_enunciado(enunciado_elegido):
