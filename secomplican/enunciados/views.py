@@ -27,6 +27,7 @@ def materia(request, nombre):
         contexto['ultimo_anio_practicas'] = ultimo_cuatrimestre.anio
 
     contexto['parciales'] = models_utils.parciales_de_materia_ordenados(contexto['materia'])
+    contexto['finales'] = models_utils.finales_de_materia_ordenados(contexto['materia'])
     return render(request, 'enunciados/materia.html', contexto)
 
 

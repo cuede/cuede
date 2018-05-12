@@ -4,7 +4,7 @@
     <a href="{% url 'practica' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=practica.numero %}">
         Práctica {{ practica.numero }}</a><br>
 {% empty %}
-    No hay prácticas.
+    Todavía no hay prácticas.
 {% endfor %}
 
 {% for numero, parciales_actuales in parciales.items %}
@@ -14,5 +14,13 @@
             {{ parcial.ordinal.singular }} Parcial del {{ parcial.cuatrimestre }}</a><br>
     {% endfor %}
 {% empty %}
+    <h2> Parciales </h2>
     Todavía no hay parciales.
+{% endfor %}
+
+<h2>Finales</h2>
+{% for final in finales %}
+    <a href="{{ final.get_absolute_url }}">Final del {{ final.fecha|date:'d/m/Y' }}</a><br>
+{% empty %}
+    Todavía no hay finales.
 {% endfor %}
