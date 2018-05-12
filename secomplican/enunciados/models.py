@@ -1,5 +1,8 @@
 from django.db import models
 
+from enunciados.modelmanagers.versiones_manager import VersionesManager
+
+
 class Materia(models.Model):
     nombre = models.CharField(max_length=1023)
 
@@ -89,15 +92,6 @@ class Final(ConjuntoDeEnunciados):
 
     def __str__(self):
         return '{} - Final del {}'.format(self.materia, self.fecha)
-
-
-class VersionesManager(models.Manager):
-    def ultima(self):
-        queryset = self.get_queryset()
-        if queryset:
-            return queryset.all()[0]
-        else:
-            return ''
 
 
 class Enunciado(models.Model):
