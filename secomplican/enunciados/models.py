@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from enunciados.modelmanagers.versiones_manager import VersionesManager
 
@@ -93,6 +94,15 @@ class Final(ConjuntoDeEnunciados):
     def __str__(self):
         return '{} - Final del {}'.format(self.materia, self.fecha)
 
+    def get_absolute_url(self):
+        kwargs = {
+            'materia': self.materia.nombre,
+            'anio': self.fecha.year,
+            'mes': self.fecha.month,
+            'dia': self.fecha.day,
+        }
+        return reverse('final', kwargs=kwargs)
+
 
 class Enunciado(models.Model):
     conjunto = models.ForeignKey(ConjuntoDeEnunciados, on_delete=models.CASCADE)
@@ -103,7 +113,6 @@ class Enunciado(models.Model):
         return 'Enunciado {}'.format(self.numero)
 
     def get_absolute_url(self):
-        from django.urls import reverse
         from . import cuatrimestres_url_parser
         kwargs = {
             'materia': self.conjunto.materia.nombre,
