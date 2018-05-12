@@ -9,6 +9,10 @@ def __castear_a_practicas(conjuntos_de_enunciados):
     return [conjunto.practica for conjunto in conjuntos_de_enunciados]
 
 
+def __castear_a_finales(conjuntos_de_enunciados):
+    return [conjunto.final for conjunto in conjuntos_de_enunciados]
+
+
 def __separar_por_numero(parciales):
     """Devuelve un conjunto de conjuntos de parciales, separados por numero."""
     separados = {}
@@ -122,8 +126,8 @@ def practicas_de_materia(materia):
 
 def ultimas_practicas_ordenadas(materia):
     """
-    Devuelve todas las practicas de la materia que esten en el ultimo cuatrimestre en el que
-    hay practicas para la materia.
+    Devuelve todas las prácticas de la materia que estén en el último cuatrimestre en el que
+    hay prácticas para la materia.
     """
     practicas = practicas_de_materia(materia)
     practicas_ordenadas = __ordenar_practicas(practicas)
@@ -131,3 +135,26 @@ def ultimas_practicas_ordenadas(materia):
         ultimo_cuatrimestre = practicas_ordenadas[0].cuatrimestre
         practicas_ordenadas = list(filter(lambda p: p.cuatrimestre == ultimo_cuatrimestre, practicas_ordenadas))
     return practicas_ordenadas
+
+
+def finales_de_materia(materia):
+    """
+    Devuelve una lista de los finales que pertenecen a la materia.
+
+    :param materia: No puede ser None.
+    """
+    if not materia:
+        raise ValueError('Materia no debería ser None.')
+
+    conjuntos = materia.conjuntodeenunciados_set.filter(final__isnull=False)
+    return __castear_a_finales(conjuntos)
+
+
+def finales_de_materia_ordenados(materia):
+    """
+    Devuelve una lista de finales ordenados por fecha de último a primero.
+
+    :param materia: No puede ser None.
+    """
+    finales = finales_de_materia(materia)
+    return sorted(finales, key=lambda f: f.fecha, reverse=True)

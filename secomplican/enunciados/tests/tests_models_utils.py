@@ -1,5 +1,6 @@
 from django.test import TestCase
-from enunciados.models import Materia, Cuatrimestre, Parcial, Practica
+
+from enunciados.models import Materia, Parcial, Practica, Final
 from enunciados.models_utils import *
 
 
@@ -194,3 +195,35 @@ class UltimasPracticasOrdenadasTests(TestCase):
 
         resultado = ultimas_practicas_ordenadas(self.materia)
         assert_lista_equals(self, resultado, practicas_nuevas)
+
+
+class FinalesDeMateriaOrdenadosTests(TestCase):
+    def setUp(self):
+        self.materia = Materia(nombre='materia')
+        self.materia.save()
+
+    def test_finales_de_materia_ordenados_sin_materia(self):
+        """Debería levantar un ValueError."""
+        with self.assertRaises(ValueError):
+            finales_de_materia_ordenados(None)
+
+    def test_finales_de_materia_ordenados_sin_finales(self):
+        """Debería devolver una lista vacía."""
+        self.assertEquals(len(finales_de_materia_ordenados(self.materia)), 0)
+
+    def test_finales_de_materia_ordenados_con_finales(self):
+        """Debería devolver los finales ordenados por fecha de último a primero."""
+        import datetime
+        final1 = Final(materia=self.materia, fecha=datetime.date.today() + datetime.timedelta(days=1))
+        final2 = Final(materia=self.materia, fecha=datetime.date.today())
+        final3 = Final(materia=self.materia, fecha=datetime.date.today() - datetime.timedelta(days=1))
+
+        # Los guardamos en desorden
+        final2.save()
+        final3.save()
+        final1.save()
+
+        finales = [final1, final2, final3]
+
+        ordenados = finales_de_materia_ordenados(self.materia)
+        assert_lista_equals(self, ordenados, finales)
