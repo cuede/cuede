@@ -1,10 +1,10 @@
 from django.http import HttpResponse, Http404
+from django.shortcuts import get_object_or_404, render
 from django.views import generic
-from django.shortcuts import get_object_or_404, get_list_or_404, render
 
 from enunciados import cuatrimestres_url_parser
-from enunciados.models import Materia, Practica, Parcial, Enunciado
 from enunciados import models_utils
+from enunciados.models import Materia, Practica, Parcial, Final, Enunciado
 
 
 def index(request):
@@ -30,7 +30,7 @@ def materia(request, nombre):
     return render(request, 'enunciados/materia.html', contexto)
 
 
-def conjunto_de_enunciados(request, queryset, anio, cuatrimestre):
+def conjunto_de_enunciados_con_cuatrimestre(request, queryset, anio, cuatrimestre):
     numero_cuatri = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
     if not numero_cuatri:
         raise Http404
@@ -42,12 +42,21 @@ def conjunto_de_enunciados(request, queryset, anio, cuatrimestre):
 
 def practica(request, materia, anio, cuatrimestre, numero):
     practicas = Practica.objects.filter(materia__nombre=materia, numero=numero)
-    return conjunto_de_enunciados(request, practicas, anio, cuatrimestre)
+    return conjunto_de_enunciados_con_cuatrimestre(request, practicas, anio, cuatrimestre)
 
 
 def parcial(request, materia, anio, cuatrimestre, numero, recuperatorio=False):
     parciales = Parcial.objects.filter(materia__nombre=materia, numero=numero, recuperatorio=recuperatorio)
-    return conjunto_de_enunciados(request, parciales, anio, cuatrimestre)
+    return conjunto_de_enunciados_con_cuatrimestre(request, parciales, anio, cuatrimestre)
+
+
+def final(request, materia, anio, mes, dia):
+    finales = Final.objects.filter(materia__nombre=materia, fecha__year=anio, fecha__month=mes, fecha__day=dia)
+    return conjunto_de_enunciados_con_cuatrimestre(request, finales, anio, cuatrimestre)
+
+
+def render_enunciado(enunciado_elegido):
+    return HttpResponse('{}'.format(enunciado_elegido.versiones.ultima()))
 
 
 def enunciado(request, materia, anio, cuatrimestre, conjunto_de_enunciados, tipo_conjunto, numero):
@@ -67,5 +76,18 @@ def enunciado(request, materia, anio, cuatrimestre, conjunto_de_enunciados, tipo
             .filter(conjunto__parcial__numero=conjunto_de_enunciados)
 
     enunciado_encontrado = encontrados[0]
-    texto = enunciado_encontrado.versiones.ultima()
-    return HttpResponse('{}'.format(texto))
+    return render_enunciado(enunciado_encontrado)
+
+
+def enunciado_final(request, materia, anio, mes, dia, numero):
+    encontrado = get_object_or_404(
+        Enunciado,
+        conjunto__materia__nombre=materia,
+        numero=numero,
+        conjunto__final__isnull=False,
+        conjunto__final__fecha__year=anio,
+        conjunto__final__fecha__month=mes,
+        conjunto__final__fecha__day=dia,
+    )
+
+    return render_enunciado(encontrado)

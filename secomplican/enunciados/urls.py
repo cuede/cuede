@@ -31,8 +31,7 @@ urlpatterns = [
     ),
     path(
         '<materia>/finales/<int:anio>/<int:mes>/<int:dia>/<int:numero>',
-        views.enunciado,
-        {'tipo_conjunto': 'final'},
+        views.enunciado_final,
         name='enunciado_final'
     ),
 ]
