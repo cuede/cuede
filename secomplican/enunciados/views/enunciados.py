@@ -1,9 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic.edit import CreateView
+from django.forms import ModelForm
+from django.shortcuts import redirect
 
 from enunciados import cuatrimestres_url_parser
-from enunciados.models import Enunciado
+from enunciados.models import Enunciado, VersionTextoEnunciado
 
 
 def render_enunciado(enunciado_elegido):
@@ -44,6 +46,32 @@ def enunciado_final(request, materia, anio, mes, dia, numero):
     return render_enunciado(encontrado)
 
 
+class VersionTextoForm(ModelForm):
+    class Meta:
+        fields = ['texto']
+        model = VersionTextoEnunciado
+
+
 class CrearEnunciado(CreateView):
     model = Enunciado
     fields = ['conjunto', 'numero']
+
+    def get_context_data(self, **kwargs):
+        context = super(CrearEnunciado, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['texto_form'] = VersionTextoForm(self.request.POST)
+        else:
+            context['texto_form'] = VersionTextoForm()
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        texto_form = context['texto_form']
+        if texto_form.is_valid() and form.is_valid():
+            self.object = form.save()
+            version_texto = texto_form.save(commit=False)
+            version_texto.enunciado = self.object
+            version_texto.save()
+            return redirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
