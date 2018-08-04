@@ -173,7 +173,10 @@ class VersionTextoEnunciado(VersionTexto):
 
 
 class Solucion(models.Model):
-    enunciado = models.ForeignKey(Enunciado, on_delete=models.CASCADE)
+    enunciado = models.ForeignKey(Enunciado, on_delete=models.CASCADE, related_name='soluciones')
+
+    def __str__(self):
+        return str(self.versiones.ultima())
 
 
 class VersionTextoSolucion(VersionTexto):

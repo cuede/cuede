@@ -1,0 +1,10 @@
+<h1> {{ enunciado }} </h1>
+{{ enunciado.versiones.ultima }}
+
+<h2> Soluciones </h2>
+{% for solucion in enunciado.soluciones.all %}
+    {{ solucion }}
+{% empty %}
+    Todavía no hay soluciones <a> ¿Querés agregar una? </a>
+{% endfor %}
+

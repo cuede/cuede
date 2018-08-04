@@ -1,15 +1,15 @@
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic.edit import CreateView
 from django.forms import ModelForm
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 from enunciados import cuatrimestres_url_parser
 from enunciados.models import Enunciado, VersionTextoEnunciado
 
 
-def render_enunciado(enunciado_elegido):
-    return HttpResponse('{}'.format(enunciado_elegido.versiones.ultima()))
+def render_enunciado(request, enunciado_elegido):
+    contexto = {'enunciado': enunciado_elegido}
+    return render(request, 'enunciados/enunciado.html', contexto)
 
 
 def enunciado(request, materia, anio, cuatrimestre, conjunto_de_enunciados, tipo_conjunto, numero):
@@ -29,7 +29,7 @@ def enunciado(request, materia, anio, cuatrimestre, conjunto_de_enunciados, tipo
             .filter(conjunto__parcial__numero=conjunto_de_enunciados)
 
     enunciado_encontrado = encontrados[0]
-    return render_enunciado(enunciado_encontrado)
+    return render_enunciado(request, enunciado_encontrado)
 
 
 def enunciado_final(request, materia, anio, mes, dia, numero):
@@ -43,7 +43,7 @@ def enunciado_final(request, materia, anio, mes, dia, numero):
         conjunto__final__fecha__day=dia,
     )
 
-    return render_enunciado(encontrado)
+    return render_enunciado(request, encontrado)
 
 
 class VersionTextoForm(ModelForm):
