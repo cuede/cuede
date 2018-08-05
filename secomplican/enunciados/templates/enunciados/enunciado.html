@@ -3,7 +3,7 @@
 
 <h2> Soluciones </h2>
 {% for solucion in enunciado.soluciones.all %}
-    {{ solucion }}
+    <p> {{ solucion }} </p>
 {% empty %}
     Todavía no hay soluciones <a> ¿Querés agregar una? </a>
 {% endfor %}
