@@ -95,7 +95,10 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
             {'singular': 'Tercer', 'plural': 'Terceros'},
             {'singular': 'Cuarto', 'plural': 'Cuartos'},
         ]
-        return ordinales[self.numero - 1]
+        if self.numero > len(ordinales):
+            return {'singular': 'N-avo', 'plural': 'N-avos'}
+        else:
+            return ordinales[self.numero - 1]
 
     def get_absolute_url(self):
         from enunciados import cuatrimestres_url_parser
