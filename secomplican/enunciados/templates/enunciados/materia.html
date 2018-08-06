@@ -8,10 +8,12 @@
 {% endfor %}
 
 {% for numero, parciales_actuales in parciales.items %}
-<h2>{{ parciales_actuales.0.ordinal.plural }} Parciales</h2>
+    <h2>{{ parciales_actuales.0.ordinal.plural }} Parciales</h2>
     {% for parcial in parciales_actuales %}
         <a href="{{ parcial.get_absolute_url }}">
-            {{ parcial.ordinal.singular }} Parcial del {{ parcial.cuatrimestre }}</a><br>
+            {{ parcial.ordinal.singular }}
+            {% if parcial.recuperatorio %}Recuperatorio{% else %}Parcial{% endif %} del {{ parcial.cuatrimestre }}
+        </a><br>
     {% endfor %}
 {% empty %}
     <h2> Parciales </h2>
