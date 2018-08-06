@@ -1,7 +1,7 @@
 <h1> {{ materia.nombre }} </h1>
 <h2>Prácticas{% if practicas %} del {{ practicas.0.cuatrimestre }}{% endif %}</h2>
 {% for practica in practicas %}
-    <a href="{% url 'practica' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=practica.numero %}">
+    <a href="{{ practica.get_absolute_url }}">
         Práctica {{ practica.numero }}</a><br>
 {% empty %}
     Todavía no hay prácticas.
