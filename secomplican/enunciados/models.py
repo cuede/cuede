@@ -108,7 +108,10 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
             'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.cuatrimestre.numero),
             'numero': self.numero
         }
-        return reverse('parcial', kwargs=kwargs)
+        if self.recuperatorio:
+            return reverse('recuperatorio', kwargs=kwargs)
+        else:
+            return reverse('parcial', kwargs=kwargs)
 
 
 class Final(ConjuntoDeEnunciados):
