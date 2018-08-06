@@ -61,6 +61,16 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
     def __str__(self):
         return '{} - Practica {} del {}'.format(self.materia, self.numero, self.cuatrimestre)
 
+    def get_absolute_url(self):
+        from enunciados import cuatrimestres_url_parser
+        kwargs = {
+            'materia': self.materia.nombre,
+            'anio': self.cuatrimestre.anio,
+            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.cuatrimestre.numero),
+            'numero': self.numero
+        }
+        return reverse('practica', kwargs=kwargs)
+
 
 class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
     numero = models.IntegerField()
