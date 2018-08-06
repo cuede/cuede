@@ -10,7 +10,7 @@
 {% for numero, parciales_actuales in parciales.items %}
 <h2>{{ parciales_actuales.0.ordinal.plural }} Parciales</h2>
     {% for parcial in parciales_actuales %}
-        <a href="{% url 'parcial' materia=materia.nombre anio=ultimo_anio_practicas cuatrimestre=url_cuatrimestre_practicas numero=numero %}">
+        <a href="{{ parcial.get_absolute_url }}">
             {{ parcial.ordinal.singular }} Parcial del {{ parcial.cuatrimestre }}</a><br>
     {% endfor %}
 {% empty %}

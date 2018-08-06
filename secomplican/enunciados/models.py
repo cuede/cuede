@@ -87,6 +87,16 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
         ]
         return ordinales[self.numero - 1]
 
+    def get_absolute_url(self):
+        from enunciados import cuatrimestres_url_parser
+        kwargs = {
+            'materia': self.materia.nombre,
+            'anio': self.cuatrimestre.anio,
+            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.cuatrimestre.numero),
+            'numero': self.numero
+        }
+        return reverse('parcial', kwargs=kwargs)
+
 
 class Final(ConjuntoDeEnunciados):
     fecha = models.DateField()
