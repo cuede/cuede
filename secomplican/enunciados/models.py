@@ -148,7 +148,7 @@ class Enunciado(models.Model):
         # Esto es horrible, pero no sé si hay otra forma de chequear de qué subtipo es el conjunto.
         try:
             parcial = self.conjunto.parcial
-            kwargs['conjunto_de_enunciados'] = parcial.numero
+            kwargs['numero_parcial'] = parcial.numero
             kwargs['anio'] = parcial.cuatrimestre.anio
             kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(parcial.cuatrimestre.numero)
             if parcial.recuperatorio:
@@ -158,7 +158,7 @@ class Enunciado(models.Model):
         except Parcial.DoesNotExist:
             try:
                 practica = self.conjunto.practica
-                kwargs['conjunto_de_enunciados'] = practica.numero
+                kwargs['numero_practica'] = practica.numero
                 kwargs['anio'] = practica.cuatrimestre.anio
                 kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(practica.cuatrimestre.numero)
                 url = 'enunciado_practica'

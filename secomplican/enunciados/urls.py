@@ -14,21 +14,20 @@ urlpatterns = [
          name='recuperatorio'),
     path('<materia>/finales/<int:anio>/<int:mes>/<int:dia>', conjuntos_de_enunciados.final, name='final'),
     path(
-        '<materia>/<int:anio>/<cuatrimestre>/practicas/<int:conjunto_de_enunciados>/<int:numero>',
-        enunciados.enunciado,
-        {'tipo_conjunto': 'practica'},
+        '<materia>/<int:anio>/<cuatrimestre>/practicas/<int:numero_practica>/<int:numero>',
+        enunciados.enunciado_practica,
         name='enunciado_practica'
     ),
     path(
-        '<materia>/<int:anio>/<cuatrimestre>/parciales/<int:conjunto_de_enunciados>/<int:numero>',
-        enunciados.enunciado,
-        {'tipo_conjunto': 'parcial'},
+        '<materia>/<int:anio>/<cuatrimestre>/parciales/<int:numero_parcial>/<int:numero>',
+        enunciados.enunciado_parcial,
+        {'es_recuperatorio': False},
         name='enunciado_parcial'
     ),
     path(
-        '<materia>/<int:anio>/<cuatrimestre>/recuperatorios/<int:conjunto_de_enunciados>/<int:numero>',
-        enunciados.enunciado,
-        {'tipo_conjunto': 'recuperatorio'},
+        '<materia>/<int:anio>/<cuatrimestre>/recuperatorios/<int:numero_parcial>/<int:numero>',
+        enunciados.enunciado_parcial,
+        {'es_recuperatorio': True},
         name='enunciado_recuperatorio'
     ),
     path(

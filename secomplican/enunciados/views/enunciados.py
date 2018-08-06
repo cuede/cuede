@@ -12,24 +12,33 @@ def render_enunciado(request, enunciado_elegido):
     return render(request, 'enunciados/enunciado.html', contexto)
 
 
-def enunciado(request, materia, anio, cuatrimestre, conjunto_de_enunciados, tipo_conjunto, numero):
-    encontrados = Enunciado.objects.filter(
+def enunciado_practica(request, materia, anio, cuatrimestre, numero_practica, numero):
+    numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
+    encontrado = get_object_or_404(
+        Enunciado,
         conjunto__materia__nombre=materia,
-        conjunto__cuatrimestre__anio=anio,
-        conjunto__cuatrimestre__numero=cuatrimestres_url_parser.url_a_numero(cuatrimestre),
         numero=numero,
+        conjunto__practica__isnull=False,
+        conjunto__practica__cuatrimestre__anio=anio,
+        conjunto__practica__cuatrimestre__numero=numero_cuatrimestre,
+        conjunto__practica__numero=numero_practica,
     )
-    if tipo_conjunto == 'practica':
-        encontrados = encontrados.filter(conjunto__practica__isnull=False) \
-            .filter(conjunto__practica__numero=conjunto_de_enunciados)
-    else:
-        encontrados = encontrados.filter(conjunto__parcial__isnull=False)
-        es_recuperatorio = tipo_conjunto == 'recuperatorio'
-        encontrados = encontrados.filter(conjunto__parcial__recuperatorio=es_recuperatorio) \
-            .filter(conjunto__parcial__numero=conjunto_de_enunciados)
+    return render_enunciado(request, encontrado)
 
-    enunciado_encontrado = encontrados[0]
-    return render_enunciado(request, enunciado_encontrado)
+
+def enunciado_parcial(request, materia, anio, cuatrimestre, numero_parcial, numero, es_recuperatorio):
+    numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
+    encontrado = get_object_or_404(
+        Enunciado,
+        conjunto__materia__nombre=materia,
+        numero=numero,
+        conjunto__parcial__isnull=False,
+        conjunto__parcial__cuatrimestre__anio=anio,
+        conjunto__parcial__cuatrimestre__numero=numero_cuatrimestre,
+        conjunto__parcial__numero=numero_parcial,
+        conjunto__parcial__recuperatorio=es_recuperatorio,
+    )
+    return render_enunciado(request, encontrado)
 
 
 def enunciado_final(request, materia, anio, mes, dia, numero):
