@@ -1,10 +1,10 @@
-from django.shortcuts import get_object_or_404
 from django.views.generic.edit import CreateView
 from django.forms import ModelForm
 from django.shortcuts import redirect, render
 
 from enunciados import cuatrimestres_url_parser
 from enunciados.models import Enunciado, VersionTextoEnunciado
+from . import enunciados_utils
 
 
 def render_enunciado(request, enunciado_elegido):
@@ -14,44 +14,19 @@ def render_enunciado(request, enunciado_elegido):
 
 def enunciado_practica(request, materia, anio, cuatrimestre, numero_practica, numero):
     numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
-    encontrado = get_object_or_404(
-        Enunciado,
-        conjunto__materia__nombre=materia,
-        numero=numero,
-        conjunto__practica__isnull=False,
-        conjunto__practica__cuatrimestre__anio=anio,
-        conjunto__practica__cuatrimestre__numero=numero_cuatrimestre,
-        conjunto__practica__numero=numero_practica,
-    )
+    encontrado = enunciados_utils.enunciado_de_practica(materia, anio, numero_cuatrimestre, numero_practica, numero)
     return render_enunciado(request, encontrado)
 
 
 def enunciado_parcial(request, materia, anio, cuatrimestre, numero_parcial, numero, es_recuperatorio):
     numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
-    encontrado = get_object_or_404(
-        Enunciado,
-        conjunto__materia__nombre=materia,
-        numero=numero,
-        conjunto__parcial__isnull=False,
-        conjunto__parcial__cuatrimestre__anio=anio,
-        conjunto__parcial__cuatrimestre__numero=numero_cuatrimestre,
-        conjunto__parcial__numero=numero_parcial,
-        conjunto__parcial__recuperatorio=es_recuperatorio,
-    )
+    encontrado = enunciados_utils.enunciado_de_parcial(
+        materia, anio, numero_cuatrimestre, numero_parcial, numero, es_recuperatorio)
     return render_enunciado(request, encontrado)
 
 
 def enunciado_final(request, materia, anio, mes, dia, numero):
-    encontrado = get_object_or_404(
-        Enunciado,
-        conjunto__materia__nombre=materia,
-        numero=numero,
-        conjunto__final__isnull=False,
-        conjunto__final__fecha__year=anio,
-        conjunto__final__fecha__month=mes,
-        conjunto__final__fecha__day=dia,
-    )
-
+    encontrado = enunciados_utils.enunciado_de_final(materia, anio, mes, dia, numero)
     return render_enunciado(request, encontrado)
 
 
