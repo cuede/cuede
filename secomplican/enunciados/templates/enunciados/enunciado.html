@@ -5,6 +5,6 @@
 {% for solucion in enunciado.soluciones.all %}
     <p> {{ solucion }} </p>
 {% empty %}
-    Todavía no hay soluciones <a> ¿Querés agregar una? </a>
+    Todavía no hay soluciones <a href="{{ url_solucion }}"> ¿Querés agregar una? </a>
 {% endfor %}
 
