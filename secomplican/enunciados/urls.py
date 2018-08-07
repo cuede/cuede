@@ -1,6 +1,9 @@
 from django.urls import path
 
-from enunciados.views import index, materias, conjuntos_de_enunciados, enunciados
+from enunciados.views import index, materias, conjuntos_de_enunciados
+from enunciados.views.enunciados import enunciados
+from enunciados.views.enunciados import soluciones
+
 
 urlpatterns = [
     path('', index.index, name='index'),
@@ -13,6 +16,8 @@ urlpatterns = [
          conjuntos_de_enunciados.parcial, {'recuperatorio': True},
          name='recuperatorio'),
     path('<materia>/finales/<int:anio>/<int:mes>/<int:dia>', conjuntos_de_enunciados.final, name='final'),
+
+    # Enunciados
     path(
         '<materia>/<int:anio>/<cuatrimestre>/practicas/<int:numero_practica>/<int:numero>',
         enunciados.enunciado_practica,
@@ -35,9 +40,34 @@ urlpatterns = [
         enunciados.enunciado_final,
         name='enunciado_final'
     ),
+
+    # Soluciones
+    path(
+        '<materia>/<int:anio>/<cuatrimestre>/practicas/<int:numero_practica>/<int:numero>/nuevaSolucion',
+        soluciones.CrearSolucion.as_view(),
+        name='solucion_practica'
+    ),
+    path(
+        '<materia>/<int:anio>/<cuatrimestre>/parciales/<int:numero_parcial>/<int:numero>/nuevaSolucion',
+        soluciones.CrearSolucion.as_view(),
+        {'es_recuperatorio': False},
+        name='solucion_parcial'
+    ),
+    path(
+        '<materia>/<int:anio>/<cuatrimestre>/recuperatorios/<int:numero_parcial>/<int:numero>/nuevaSolucion',
+        soluciones.CrearSolucion.as_view(),
+        {'es_recuperatorio': True},
+        name='solucion_recuperatorio'
+    ),
+    path(
+        '<materia>/finales/<int:anio>/<int:mes>/<int:dia>/<int:numero>/nuevaSolucion',
+        soluciones.CrearSolucion.as_view(),
+        name='solucion_final'
+    ),
+
     path(
         '<materia>/agregarEnunciado',
         enunciados.CrearEnunciado.as_view(),
         name='agregar_enunciado'
-    )
+    ),
 ]
