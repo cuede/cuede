@@ -56,7 +56,7 @@ class EnunciadoTests(TestCase):
             'materia': practica.materia.nombre,
             'anio': practica.cuatrimestre.anio,
             'cuatrimestre': cuatrimestres_url_parser.numero_a_url(practica.cuatrimestre.numero),
-            'conjunto_de_enunciados': practica.numero,
+            'numero_practica': practica.numero,
             'numero': enunciado.numero,
         })
 
@@ -72,7 +72,7 @@ class EnunciadoTests(TestCase):
             'materia': parcial.materia.nombre,
             'anio': parcial.cuatrimestre.anio,
             'cuatrimestre': cuatrimestres_url_parser.numero_a_url(parcial.cuatrimestre.numero),
-            'conjunto_de_enunciados': parcial.numero,
+            'numero_parcial': parcial.numero,
             'numero': enunciado.numero,
         })
 
@@ -88,7 +88,7 @@ class EnunciadoTests(TestCase):
             'materia': recuperatorio.materia.nombre,
             'anio': recuperatorio.cuatrimestre.anio,
             'cuatrimestre': cuatrimestres_url_parser.numero_a_url(recuperatorio.cuatrimestre.numero),
-            'conjunto_de_enunciados': recuperatorio.numero,
+            'numero_parcial': recuperatorio.numero,
             'numero': enunciado.numero,
         })
 
