@@ -8,12 +8,12 @@ from . import enunciados_utils
 
 
 def enunciado_con_kwargs(kwargs):
-    if kwargs['numero_parcial']:
+    if 'numero_parcial' in kwargs:
         numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(kwargs['cuatrimestre'])
         return enunciados_utils.enunciado_de_parcial(
             kwargs['materia'], kwargs['anio'], numero_cuatrimestre,
             kwargs['numero_parcial'], kwargs['numero'], kwargs['es_recuperatorio'])
-    elif kwargs['numero_practica']:
+    elif 'numero_practica' in kwargs:
         numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(kwargs['cuatrimestre'])
         return enunciados_utils.enunciado_de_practica(
             kwargs['materia'], kwargs['anio'], numero_cuatrimestre,
