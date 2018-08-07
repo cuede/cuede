@@ -7,4 +7,7 @@
 {% empty %}
     Todavía no hay soluciones <a href="{{ url_solucion }}"> ¿Querés agregar una? </a>
 {% endfor %}
+{% if enunciado.soluciones.all %}
+    <a href="{{ url_solucion }}"> Agregar solución </a>
+{% endif %}
 
