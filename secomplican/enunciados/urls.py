@@ -66,7 +66,7 @@ urlpatterns = [
     ),
 
     path(
-        '<materia>/agregarEnunciado/',
+        '<materia>/nuevoEnunciado/',
         enunciados.CrearEnunciado.as_view(),
         name='agregar_enunciado'
     ),
