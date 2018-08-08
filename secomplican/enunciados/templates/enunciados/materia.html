@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+
 <h1> {{ materia.nombre }} </h1>
 <h2>Prácticas{% if practicas %} del {{ practicas.0.cuatrimestre }}{% endif %}</h2>
 {% for practica in practicas %}
@@ -25,4 +28,6 @@
     <a href="{{ final.get_absolute_url }}">Final del {{ final.fecha|date:'d/m/Y' }}</a><br>
 {% empty %}
     Todavía no hay finales.
-{% endfor %}
+    {% endfor %}
+
+{% endblock %}

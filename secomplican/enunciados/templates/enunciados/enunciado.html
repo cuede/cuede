@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+
 <h1> {{ enunciado }} </h1>
 {{ enunciado.versiones.ultima }}
 
@@ -5,9 +8,11 @@
 {% for solucion in enunciado.soluciones.all %}
     <p> {{ solucion }} </p>
 {% empty %}
-    Todavía no hay soluciones <a href="{{ url_solucion }}"> ¿Querés agregar una? </a>
+    Todavía no hay soluciones <a href="{{ url_solucion }}">
+      ¿Querés agregar una? </a>
 {% endfor %}
 {% if enunciado.soluciones.all %}
     <a href="{{ url_solucion }}"> Agregar solución. </a>
 {% endif %}
 
+{% endblock %}

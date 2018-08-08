@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+
+
 <h1> {{ enunciado }} </h1>
 {{ enunciado.versiones.ultima }}
 
@@ -6,3 +10,5 @@
     {{ form.as_p }}
     <input type="submit" value="Crear" />
 </form>
+
+{% endblock %}

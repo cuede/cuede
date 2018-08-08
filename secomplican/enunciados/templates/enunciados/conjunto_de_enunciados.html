@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+
+
 <h1> {{ conjunto }} </h1>
 {% for enunciado in conjunto.enunciado_set.all %}
     <h2><a href="{{ enunciado.get_absolute_url }}">Ejercicio {{ enunciado.numero }}</a></h2>
@@ -7,4 +11,6 @@
 {% endfor %}
 {% if conjunto.enunciado_set.all %}
     <a href="{% url 'agregar_enunciado' materia=conjunto.materia %}"> Agregar enunciado. </a>
-{% endif %}
+    {% endif %}
+
+{% endblock %}
