@@ -2,9 +2,12 @@
 {% block content %}
 
 
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    {{ texto_form }}
+<form method="post">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+        {{ texto_form.as_table }}
+    </table>
     <input type="submit" value="Crear" />
 </form>
 
