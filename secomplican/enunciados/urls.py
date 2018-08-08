@@ -9,28 +9,28 @@ urlpatterns = [
     path('', index.index, name='index'),
     path('materias/', materias.MateriasView.as_view(), name='materias'),
     path('<nombre>/', materias.materia, name='materia'),
-    path('<materia>/<int:anio>/<cuatrimestre>/practicas/<int:numero>/',
+    path('<materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero>/',
          conjuntos_de_enunciados.practica, name='practica'),
-    path('<materia>/<int:anio>/<cuatrimestre>/parciales/<int:numero>/', conjuntos_de_enunciados.parcial, name='parcial'),
-    path('<materia>/<int:anio>/<cuatrimestre>/recuperatorios/<int:numero>/',
+    path('<materia>/parciales/<int:anio>/<cuatrimestre>/<int:numero>/', conjuntos_de_enunciados.parcial, name='parcial'),
+    path('<materia>/recuperatorios/<int:anio>/<cuatrimestre>/<int:numero>/',
          conjuntos_de_enunciados.parcial, {'recuperatorio': True},
          name='recuperatorio'),
     path('<materia>/finales/<int:anio>/<int:mes>/<int:dia>/', conjuntos_de_enunciados.final, name='final'),
 
     # Enunciados
     path(
-        '<materia>/<int:anio>/<cuatrimestre>/practicas/<int:numero_practica>/<int:numero>/',
+        '<materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero_practica>/<int:numero>/',
         enunciados.enunciado_practica,
         name='enunciado_practica'
     ),
     path(
-        '<materia>/<int:anio>/<cuatrimestre>/parciales/<int:numero_parcial>/<int:numero>/',
+        '<materia>/parciales/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/',
         enunciados.enunciado_parcial,
         {'es_recuperatorio': False},
         name='enunciado_parcial'
     ),
     path(
-        '<materia>/<int:anio>/<cuatrimestre>/recuperatorios/<int:numero_parcial>/<int:numero>/',
+        '<materia>/recuperatorios/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/',
         enunciados.enunciado_parcial,
         {'es_recuperatorio': True},
         name='enunciado_recuperatorio'
@@ -43,18 +43,18 @@ urlpatterns = [
 
     # Soluciones
     path(
-        '<materia>/<int:anio>/<cuatrimestre>/practicas/<int:numero_practica>/<int:numero>/nuevaSolucion/',
+        '<materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero_practica>/<int:numero>/nuevaSolucion/',
         soluciones.CrearSolucion.as_view(),
         name='solucion_practica'
     ),
     path(
-        '<materia>/<int:anio>/<cuatrimestre>/parciales/<int:numero_parcial>/<int:numero>/nuevaSolucion/',
+        '<materia>/parciales/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/nuevaSolucion/',
         soluciones.CrearSolucion.as_view(),
         {'es_recuperatorio': False},
         name='solucion_parcial'
     ),
     path(
-        '<materia>/<int:anio>/<cuatrimestre>/recuperatorios/<int:numero_parcial>/<int:numero>/nuevaSolucion/',
+        '<materia>/recuperatorios/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/nuevaSolucion/',
         soluciones.CrearSolucion.as_view(),
         {'es_recuperatorio': True},
         name='solucion_recuperatorio'
