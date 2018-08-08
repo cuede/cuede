@@ -1,6 +1,7 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 
+import secomplican.settings as settings
 
 def index(request):
-    return HttpResponse(
-        '<h1>QED.com.ar: donde tooodos te piden que la demuestres.</h1><a href="/materias">Materias</a>')
+    return render (request, 'index.html')
