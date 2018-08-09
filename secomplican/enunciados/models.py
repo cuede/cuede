@@ -21,9 +21,9 @@ class Cuatrimestre(models.Model):
     SEGUNDO = 2
     VERANO = 3
     NUMERO_CHOICES = (
+        (VERANO, 'Verano'),
         (PRIMERO, 'Primer Cuatrimestre'),
         (SEGUNDO, 'Segundo Cuatrimestre'),
-        (VERANO, 'Verano')
     )
 
     numero = models.IntegerField(choices=NUMERO_CHOICES)
