@@ -14,7 +14,7 @@ def conjunto_de_enunciados_con_cuatrimestre(request, queryset, anio, cuatrimestr
     if not numero_cuatri:
         raise Http404
 
-    conjunto = get_object_or_404(queryset, cuatrimestre__anio=anio, cuatrimestre__numero=numero_cuatri)
+    conjunto = get_object_or_404(queryset, anio=anio, cuatrimestre=numero_cuatri)
 
     return render_conjunto_de_enunciados(request, conjunto)
 
