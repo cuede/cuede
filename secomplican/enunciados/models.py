@@ -13,10 +13,11 @@ class Materia(models.Model):
         return self.nombre
 
 
-class Cuatrimestre(models.Model):
-    """
-    Representa la etapa de un año: 1er cuatrimestre, 2do cuatrimestre, o verano.
-    """
+class ConjuntoDeEnunciados(models.Model):
+    materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
+
+
+class ConjuntoDeEnunciadosConCuatrimestre(ConjuntoDeEnunciados):
     anio = models.IntegerField()
 
     PRIMERO = 1
@@ -28,31 +29,10 @@ class Cuatrimestre(models.Model):
         (SEGUNDO, 'Segundo Cuatrimestre'),
     )
 
-    numero = models.IntegerField(choices=NUMERO_CHOICES)
-
-    def __str_cuatrimestre(self):
-        if self.numero == self.PRIMERO:
-            return 'Primer Cuatrimestre'
-        elif self.numero == self.SEGUNDO:
-            return 'Segundo Cuatrimestre'
-        else:
-            return 'Verano'
-
-    def __str__(self):
-        return '{} del {}'.format(self.__str_cuatrimestre(), self.anio)
+    cuatrimestre = models.IntegerField(choices=NUMERO_CHOICES)
 
     class Meta:
         unique_together = ('anio', 'numero')
-
-
-class ConjuntoDeEnunciados(models.Model):
-    materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
-
-
-class ConjuntoDeEnunciadosConCuatrimestre(ConjuntoDeEnunciados):
-    cuatrimestre = models.ForeignKey(Cuatrimestre, on_delete=models.CASCADE)
-
-    class Meta:
         abstract = True
 
 
@@ -61,14 +41,14 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
     titulo = models.CharField(max_length=1023, default='', blank=True)
 
     def __str__(self):
-        return '{} - Practica {} del {}'.format(self.materia, self.numero, self.cuatrimestre)
+        return '{} - Practica {} del {} del {}'.format(self.materia, self.numero, self.cuatrimestre, self.anio)
 
     def get_absolute_url(self):
         from enunciados import cuatrimestres_url_parser
         kwargs = {
             'materia': self.materia.nombre,
-            'anio': self.cuatrimestre.anio,
-            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.cuatrimestre.numero),
+            'anio': self.anio,
+            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.cuatrimestre),
             'numero': self.numero
         }
         return reverse('practica', kwargs=kwargs)
@@ -83,7 +63,8 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
         nombre = 'Parcial'
         if self.recuperatorio:
             nombre = 'Recuperatorio'
-        return '{} - {} {} del {}'.format(self.materia, self.ordinal()['singular'], nombre, self.cuatrimestre)
+        return '{} - {} {} del {} del {}'.format(
+            self.materia, self.ordinal()['singular'], nombre, self.cuatrimestre, self.anio)
 
     def ordinal(self):
         """
@@ -106,8 +87,8 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
         from enunciados import cuatrimestres_url_parser
         kwargs = {
             'materia': self.materia.nombre,
-            'anio': self.cuatrimestre.anio,
-            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.cuatrimestre.numero),
+            'anio': self.anio,
+            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.cuatrimestre),
             'numero': self.numero
         }
         if self.recuperatorio:
