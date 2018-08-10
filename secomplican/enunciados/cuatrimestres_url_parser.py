@@ -1,9 +1,9 @@
-from enunciados.models import Cuatrimestre
+from enunciados.models import ConjuntoDeEnunciadosConCuatrimestre
 
 __CONVERSOR = {
-    Cuatrimestre.PRIMERO: '1cuatri',
-    Cuatrimestre.SEGUNDO: '2cuatri',
-    Cuatrimestre.VERANO: 'verano',
+    ConjuntoDeEnunciadosConCuatrimestre.PRIMERO: '1cuatri',
+    ConjuntoDeEnunciadosConCuatrimestre.SEGUNDO: '2cuatri',
+    ConjuntoDeEnunciadosConCuatrimestre.VERANO: 'verano',
 }
 
 
