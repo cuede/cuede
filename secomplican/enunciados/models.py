@@ -58,7 +58,7 @@ class ConjuntoDeEnunciadosConCuatrimestre(ConjuntoDeEnunciados):
 
 class Practica(ConjuntoDeEnunciadosConCuatrimestre):
     numero = models.IntegerField()
-    titulo = models.CharField(max_length=1023, default='')
+    titulo = models.CharField(max_length=1023, default='', blank=True)
 
     def __str__(self):
         return '{} - Practica {} del {}'.format(self.materia, self.numero, self.cuatrimestre)
@@ -135,7 +135,6 @@ class Final(ConjuntoDeEnunciados):
         # Ver que no haya ya un final con igual fecha y materia
         if Final.objects.filter(materia=self.materia, fecha=self.fecha).exists():
             raise ValidationError(_('Ya hay un Final con esta materia y fecha.'))
-
 
 
 class Enunciado(models.Model):
