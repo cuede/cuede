@@ -1,5 +1,7 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 
 from enunciados.modelmanagers.versiones_manager import VersionesManager
 
@@ -128,6 +130,12 @@ class Final(ConjuntoDeEnunciados):
             'dia': self.fecha.day,
         }
         return reverse('final', kwargs=kwargs)
+
+    def clean(self):
+        # Ver que no haya ya un final con igual fecha y materia
+        if Final.objects.filter(materia=self.materia, fecha=self.fecha).exists():
+            raise ValidationError(_('Ya hay un Final con esta materia y fecha.'))
+
 
 
 class Enunciado(models.Model):
