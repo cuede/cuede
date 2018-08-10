@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from enunciados.models import Materia, Parcial, Practica, Final
+from enunciados.models import Materia, Parcial, Practica, Final, ConjuntoDeEnunciadosConCuatrimestre
 from enunciados.models_utils import *
 
 
@@ -29,16 +29,14 @@ class ParcialesDeMateriaOrdenadosTests(TestCase):
         Debería devolver un diccionario con los primeros parciales ordenados
         en la primer posición.
         """
-        cuatri1 = Cuatrimestre(anio=2018, numero=Cuatrimestre.VERANO)
-        cuatri1.save()
-        cuatri2 = Cuatrimestre(anio=2018, numero=Cuatrimestre.PRIMERO)
-        cuatri2.save()
-        cuatri3 = Cuatrimestre(anio=2018, numero=Cuatrimestre.SEGUNDO)
-        cuatri3.save()
+        anio = 2018
+        cuatri1 = ConjuntoDeEnunciadosConCuatrimestre.VERANO
+        cuatri2 = ConjuntoDeEnunciadosConCuatrimestre.PRIMERO
+        cuatri3 = ConjuntoDeEnunciadosConCuatrimestre.SEGUNDO
 
-        parcial1 = Parcial(materia=self.materia, cuatrimestre=cuatri1, numero=1)
-        parcial2 = Parcial(materia=self.materia, cuatrimestre=cuatri2, numero=1)
-        parcial3 = Parcial(materia=self.materia, cuatrimestre=cuatri3, numero=1)
+        parcial1 = Parcial(materia=self.materia, anio=anio, cuatrimestre=cuatri1, numero=1)
+        parcial2 = Parcial(materia=self.materia, anio=anio, cuatrimestre=cuatri2, numero=1)
+        parcial3 = Parcial(materia=self.materia, anio=anio, cuatrimestre=cuatri3, numero=1)
 
         # Los guardamos en desorden
         parcial2.save()
@@ -56,19 +54,18 @@ class ParcialesDeMateriaOrdenadosTests(TestCase):
         Debería devolver el diccionario con los primeros parciales ordenados
         de último año a primero.
         """
-        cuatri1 = Cuatrimestre(anio=2018, numero=Cuatrimestre.PRIMERO)
-        cuatri1.save()
-        cuatri2 = Cuatrimestre(anio=2018, numero=Cuatrimestre.VERANO)
-        cuatri2.save()
-        cuatri3 = Cuatrimestre(anio=2017, numero=Cuatrimestre.SEGUNDO)
-        cuatri3.save()
-        cuatri4 = Cuatrimestre(anio=2017, numero=Cuatrimestre.PRIMERO)
-        cuatri4.save()
 
-        parcial1 = Parcial(materia=self.materia, cuatrimestre=cuatri1, numero=1)
-        parcial2 = Parcial(materia=self.materia, cuatrimestre=cuatri2, numero=1)
-        parcial3 = Parcial(materia=self.materia, cuatrimestre=cuatri3, numero=1)
-        parcial4 = Parcial(materia=self.materia, cuatrimestre=cuatri4, numero=1)
+        anio1 = 2018
+        anio2 = 2017
+        cuatri1 = ConjuntoDeEnunciadosConCuatrimestre.PRIMERO
+        cuatri2 = ConjuntoDeEnunciadosConCuatrimestre.VERANO
+        cuatri3 = ConjuntoDeEnunciadosConCuatrimestre.SEGUNDO
+        cuatri4 = ConjuntoDeEnunciadosConCuatrimestre.PRIMERO
+
+        parcial1 = Parcial(materia=self.materia, anio=anio1, cuatrimestre=cuatri1, numero=1)
+        parcial2 = Parcial(materia=self.materia, anio=anio1, cuatrimestre=cuatri2, numero=1)
+        parcial3 = Parcial(materia=self.materia, anio=anio2, cuatrimestre=cuatri3, numero=1)
+        parcial4 = Parcial(materia=self.materia, anio=anio2, cuatrimestre=cuatri4, numero=1)
 
         # Los guardamos en desorden
         parcial2.save()
@@ -86,24 +83,22 @@ class ParcialesDeMateriaOrdenadosTests(TestCase):
         Debería devolver un diccionario con posiciones igual a la cantidad de
         números diferentes.
         """
-        cuatri1 = Cuatrimestre(anio=2018, numero=Cuatrimestre.PRIMERO)
-        cuatri1.save()
-        cuatri2 = Cuatrimestre(anio=2018, numero=Cuatrimestre.VERANO)
-        cuatri2.save()
-        cuatri3 = Cuatrimestre(anio=2017, numero=Cuatrimestre.SEGUNDO)
-        cuatri3.save()
-        cuatri4 = Cuatrimestre(anio=2017, numero=Cuatrimestre.PRIMERO)
-        cuatri4.save()
+        anio1 = 2018
+        anio2 = 2017
+        cuatri1 = ConjuntoDeEnunciadosConCuatrimestre.PRIMERO
+        cuatri2 = ConjuntoDeEnunciadosConCuatrimestre.VERANO
+        cuatri3 = ConjuntoDeEnunciadosConCuatrimestre.SEGUNDO
+        cuatri4 = ConjuntoDeEnunciadosConCuatrimestre.PRIMERO
 
         primeros = [
-            Parcial(materia=self.materia, cuatrimestre=cuatri1, numero=1),
-            Parcial(materia=self.materia, cuatrimestre=cuatri2, numero=1),
+            Parcial(materia=self.materia, anio=anio1, cuatrimestre=cuatri1, numero=1),
+            Parcial(materia=self.materia, anio=anio1, cuatrimestre=cuatri2, numero=1),
         ]
 
         segundos = [
-            Parcial(materia=self.materia, cuatrimestre=cuatri1, numero=2),
-            Parcial(materia=self.materia, cuatrimestre=cuatri3, numero=2),
-            Parcial(materia=self.materia, cuatrimestre=cuatri4, numero=2),
+            Parcial(materia=self.materia, anio=anio1, cuatrimestre=cuatri1, numero=2),
+            Parcial(materia=self.materia, anio=anio2, cuatrimestre=cuatri3, numero=2),
+            Parcial(materia=self.materia, anio=anio2, cuatrimestre=cuatri4, numero=2),
         ]
 
         for parcial in primeros:
@@ -119,15 +114,13 @@ class ParcialesDeMateriaOrdenadosTests(TestCase):
 
     def test_parciales_de_materia_ordenados_con_recuperatorios(self):
         """Debería devolver los recuperatorios antes que los parciales."""
-        cuatri1 = Cuatrimestre(anio=2018, numero=Cuatrimestre.PRIMERO)
-        cuatri1.save()
-        cuatri2 = Cuatrimestre(anio=2018, numero=Cuatrimestre.SEGUNDO)
-        cuatri2.save()
+        cuatri1 = ConjuntoDeEnunciadosConCuatrimestre.PRIMERO
+        cuatri2 = ConjuntoDeEnunciadosConCuatrimestre.SEGUNDO
 
-        parcial1 = Parcial(materia=self.materia, cuatrimestre=cuatri1, numero=1)
+        parcial1 = Parcial(materia=self.materia, anio=2018, cuatrimestre=cuatri1, numero=1)
         recu = Parcial(
-            materia=self.materia, cuatrimestre=cuatri1, numero=1, recuperatorio=True)
-        parcial2 = Parcial(materia=self.materia, cuatrimestre=cuatri2, numero=1)
+            materia=self.materia, anio=2018, cuatrimestre=cuatri1, numero=1, recuperatorio=True)
+        parcial2 = Parcial(materia=self.materia, anio=2018, cuatrimestre=cuatri2, numero=1)
 
         parcial1.save()
         parcial2.save()
@@ -155,13 +148,12 @@ class UltimasPracticasOrdenadasTests(TestCase):
 
     def test_ultimas_practicas_ordenadas_con_practicas_de_mismo_cuatrimestre(self):
         """Debería devolver todas las prácticas."""
-        cuatri = Cuatrimestre(anio=2018, numero=Cuatrimestre.VERANO)
-        cuatri.save()
+        cuatri = ConjuntoDeEnunciadosConCuatrimestre.VERANO
 
         practicas = []
         # Creamos 10 prácticas
         for i in range(1, 11):
-            practicas.append(Practica(cuatrimestre=cuatri, materia=self.materia, numero=i))
+            practicas.append(Practica(anio=2018, cuatrimestre=cuatri, materia=self.materia, numero=i))
 
         # Las guardamos en desorden
         for i in range(9, -1, -1):
@@ -172,20 +164,18 @@ class UltimasPracticasOrdenadasTests(TestCase):
 
     def test_ultimas_practicas_ordenadas_con_practicas_de_distinto_cuatrimestre(self):
         """Debería devolver solo las del último cuatrimestre."""
-        cuatri1 = Cuatrimestre(anio=2018, numero=Cuatrimestre.VERANO)
-        cuatri1.save()
-        cuatri2 = Cuatrimestre(anio=2018, numero=Cuatrimestre.SEGUNDO)
-        cuatri2.save()
+        cuatri1 = ConjuntoDeEnunciadosConCuatrimestre.VERANO
+        cuatri2 = ConjuntoDeEnunciadosConCuatrimestre.SEGUNDO
 
         practicas_viejas = []
         practicas_nuevas = []
         # Creamos 10 prácticas de cada cuatri
         for i in range(1, 11):
             practicas_viejas.append(
-                Practica(cuatrimestre=cuatri1, materia=self.materia, numero=i)
+                Practica(anio=2018, cuatrimestre=cuatri1, materia=self.materia, numero=i)
             )
             practicas_nuevas.append(
-                Practica(cuatrimestre=cuatri2, materia=self.materia, numero=i)
+                Practica(anio=2018, cuatrimestre=cuatri2, materia=self.materia, numero=i)
             )
 
         # Las guardamos en desorden
