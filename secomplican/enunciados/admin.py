@@ -4,7 +4,6 @@ from .models import *
 # Register your models here.
 
 admin.site.register(Materia)
-admin.site.register(Cuatrimestre)
 admin.site.register(Practica)
 admin.site.register(Parcial)
 admin.site.register(Final)
