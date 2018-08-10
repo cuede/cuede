@@ -66,35 +66,46 @@ class ConjuntoDeEnunciadosForm(forms.Form):
     # Si es final, necesitamos la fecha
     fecha = forms.DateField()
 
-    def clean(self):
-        # TODO: Checkear si las cosas necesarias están bien.
-        return super().clean()
+    def __init__(self, materia, data=None):
+        self.materia = materia
+        super().__init__(data)
 
-    def save(self, materia, commit=True):
-        # La materia habría que tenerla antes para ver si es válido este conjunto creo.
-        tipo = self.cleaned_data.get('tipo')
-        if tipo == self.PRACTICA:
-            conjunto = Practica(
-                materia=materia,
-                numero=self.cleaned_data.get('numero_practica'),
-                cuatrimestre=self.cleaned_data.get('cuatrimestre'),
-            )
-        elif tipo == self.PARCIAL:
-            conjunto = Parcial(
-                materia=materia,
-                numero=self.cleaned_data.get('numero_parcial'),
-                cuatrimestre=self.cleaned_data.get('cuatrimestre'),
-                recuperatorio=self.cleaned_data.get('es_recuperatorio'),
-            )
+    def _get_conjunto(self):
+        """
+        Devuelve el ConjuntoDeEnunciados que corresponde a los datos ingresados.
+
+        Los datos se asumen que están en self.cleaned_data. Quizá se necesite llamar a
+        super().clean() para esto primero.
+        """
+        tipo = int(self.cleaned_data.get('tipo'))
+        if tipo == self.FINAL:
+            fecha = self.cleaned_data.get('fecha')
+            return Final(materia=self.materia, fecha=fecha)
         else:
-            conjunto = Final(
-                materia=materia,
-                fecha=self.cleaned_data.get('fecha'),
-            )
+            anio = self.cleaned_data.get('anio')
+            cuatrimestre = int(self.cleaned_data.get('cuatrimestre'))
+            objeto_cuatrimestre, created = Cuatrimestre.objects.get_or_create(anio=anio, numero=cuatrimestre)
+            if tipo == self.PRACTICA:
+                numero_practica = int(self.cleaned_data.get('numero_practica'))
+                return Practica(materia=self.materia, cuatrimestre=objeto_cuatrimestre, numero=numero_practica)
+            elif tipo == self.PARCIAL:
+                numero_parcial = int(self.cleaned_data.get('numero_parcial'))
+                es_recuperatorio = self.cleaned_data.get('es_recuperatorio')
+                return Parcial(materia=self.materia, cuatrimestre=objeto_cuatrimestre, numero=numero_parcial,
+                               recuperatorio=es_recuperatorio)
+            else:
+                # No deberíamos llegar nunca a esta parte, porque la verificación del tipo se hizo en el clean()
+                raise VerificationError(_('El tipo no es válido.'))
 
+    def clean(self):
+        cleaned_data = super().clean()
+        self._get_conjunto().full_clean()
+        return cleaned_data
+
+    def save(self, commit=True):
+        conjunto = self._get_conjunto()
         if commit:
             conjunto.save()
-
         return conjunto
 
 
@@ -111,16 +122,17 @@ class VersionTextoForm(forms.ModelForm):
 
 
 def nuevo_enunciado(request, materia):
-    # Hacer el form de conjunto de enunciados, pero que vaya cambiando según el tipo de conjunto
+    objeto_materia = get_object_or_404(Materia, nombre=materia)
     if request.method == 'POST':
-        conjunto_form = ConjuntoDeEnunciadosForm(request.POST)
+        conjunto_form = ConjuntoDeEnunciadosForm(objeto_materia, request.POST)
         enunciado_form = EnunciadoForm(request.POST)
         version_texto_form = VersionTextoForm(request.POST)
         if conjunto_form.is_valid() and enunciado_form.is_valid() and version_texto_form.is_valid():
-            # TODO Chequear que el numero de enunciado está bien
+            # TODO Chequear que el numero de enunciado está bien, o sea, que no exista un enunciado
+            # del conjunto que ya tenga el mismo número que éste.
+            # Para eso se puede llamar directamente a Enunciado.full_clean() me parece.
             # TODO Chequear que el texto no sea vacío
-            objeto_materia = get_object_or_404(Materia, nombre=materia)
-            conjunto = conjunto_form.save(objeto_materia)
+            conjunto = conjunto_form.save()
             enunciado = enunciado_form.save(commit=False)
             enunciado.conjunto = conjunto
             enunciado.save()
@@ -129,7 +141,7 @@ def nuevo_enunciado(request, materia):
             version_texto.save()
             return redirect(enunciado.get_absolute_url())
     else:
-        conjunto_form = ConjuntoDeEnunciadosForm()
+        conjunto_form = ConjuntoDeEnunciadosForm(objeto_materia)
         enunciado_form = EnunciadoForm()
         version_texto_form = VersionTextoForm()
 
