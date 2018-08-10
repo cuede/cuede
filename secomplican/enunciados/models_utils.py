@@ -1,4 +1,4 @@
-from enunciados.models import Cuatrimestre
+from enunciados.models import ConjuntoDeEnunciadosConCuatrimestre
 
 
 def __castear_a_parciales(conjuntos_de_enunciados):
@@ -31,22 +31,22 @@ def __comparador_numero_cuatrimestre(numero_cuatrimestre):
     Devuelve un número que se puede usar para comparar entre
     números de cuatrimestre de anterior a posterior.
     """
-    if numero_cuatrimestre == Cuatrimestre.VERANO:
+    if numero_cuatrimestre == ConjuntoDeEnunciadosConCuatrimestre.VERANO:
         return 1
-    elif numero_cuatrimestre == Cuatrimestre.PRIMERO:
+    elif numero_cuatrimestre == ConjuntoDeEnunciadosConCuatrimestre.PRIMERO:
         return 2
     else:
         return 3
 
 
-def __comparador_cuatrimestre(cuatrimestre):
+def __comparador_cuatrimestre(conjunto):
     """
-    Devuelve un número que se puede usar para comparar entre cuatrimestres
+    Devuelve un número que se puede usar para comparar entre conjuntos con cuatrimestre
     para determinar cuál es más reciente.
     """
-    comparador_numero = __comparador_numero_cuatrimestre(cuatrimestre.numero)
+    comparador_numero = __comparador_numero_cuatrimestre(conjunto.cuatrimestre)
     string_comparador = '{anio}{numero}' \
-        .format(anio=cuatrimestre.anio, numero=comparador_numero)
+        .format(anio=conjunto.anio, numero=comparador_numero)
     return int(string_comparador)
 
 
@@ -55,7 +55,7 @@ def __comparador_practica(practica):
     Devuelve un número que se puede usar para comparar entre prácticas.
     """
     # Asumimos que el número de práctica no va a superar 99
-    return __comparador_cuatrimestre(practica.cuatrimestre) * 100 + (100 - practica.numero)
+    return __comparador_cuatrimestre(practica) * 100 + (100 - practica.numero)
 
 
 def __comparador_parcial(parcial):
@@ -63,7 +63,7 @@ def __comparador_parcial(parcial):
     Devuelve un número que se puede usar para comparar entre parciales.
     """
     comparador_recuperatorio = 1 if parcial.recuperatorio else 0
-    string_comparador = '{}{}'.format(__comparador_cuatrimestre(parcial.cuatrimestre), comparador_recuperatorio)
+    string_comparador = '{}{}'.format(__comparador_cuatrimestre(parcial), comparador_recuperatorio)
     return int(string_comparador)
 
 
@@ -124,6 +124,11 @@ def practicas_de_materia(materia):
     return __castear_a_practicas(conjuntos)
 
 
+def _mismo_momento(conjunto1, conjunto2):
+    """Determina si dos conjuntos con cuatrimestre ocurrieron en el mismo cuatrimestre del mismo año."""
+    return conjunto1.cuatrimestre == conjunto2.cuatrimestre and conjunto1.anio == conjunto2.anio
+
+
 def ultimas_practicas_ordenadas(materia):
     """
     Devuelve todas las prácticas de la materia que estén en el último cuatrimestre en el que
@@ -132,8 +137,9 @@ def ultimas_practicas_ordenadas(materia):
     practicas = practicas_de_materia(materia)
     practicas_ordenadas = __ordenar_practicas(practicas)
     if practicas_ordenadas:
-        ultimo_cuatrimestre = practicas_ordenadas[0].cuatrimestre
-        practicas_ordenadas = list(filter(lambda p: p.cuatrimestre == ultimo_cuatrimestre, practicas_ordenadas))
+        ultima_practica = practicas_ordenadas[0]
+        practicas_ordenadas = list(filter(lambda p: _mismo_momento(ultima_practica, p), practicas_ordenadas))
+
     return practicas_ordenadas
 
 
