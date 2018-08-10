@@ -5,7 +5,8 @@ from django.urls import reverse
 from django.utils import timezone
 
 from enunciados import cuatrimestres_url_parser
-from enunciados.models import Materia, Enunciado, VersionTextoEnunciado, Cuatrimestre, Practica, Parcial, Final
+from enunciados.models import Materia, Enunciado, VersionTextoEnunciado, Practica, Parcial, Final, \
+    ConjuntoDeEnunciadosConCuatrimestre
 from . import enunciados_utils
 
 
@@ -53,7 +54,8 @@ class ConjuntoDeEnunciadosForm(forms.Form):
     tipo = forms.ChoiceField(choices=TIPO_CHOICES)
     # Si es Parcial o Práctica necesitamos el año y el cuatrimestre
     anio = forms.IntegerField(initial=timezone.now().year)
-    cuatrimestre = forms.ChoiceField(choices=Cuatrimestre.NUMERO_CHOICES, widget=forms.RadioSelect)
+    cuatrimestre = forms.ChoiceField(choices=ConjuntoDeEnunciadosConCuatrimestre.NUMERO_CHOICES,
+                                     widget=forms.RadioSelect)
     # Si es Parcial, necesitamos el número de parcial, y saber si es un recu o no
     NUMERO_PARCIAL_CHOICES = [
         (1, 'Primer parcial'),
@@ -89,27 +91,27 @@ class ConjuntoDeEnunciadosForm(forms.Form):
                 conjunto = Final(materia=self.materia, fecha=fecha)
                 creado = True
         else:
-            anio = self.cleaned_data.get('anio')
+            anio = int(self.cleaned_data.get('anio'))
             cuatrimestre = int(self.cleaned_data.get('cuatrimestre'))
-            objeto_cuatrimestre, created = Cuatrimestre.objects.get_or_create(anio=anio, numero=cuatrimestre)
             if tipo == self.PRACTICA:
                 numero_practica = int(self.cleaned_data.get('numero_practica'))
                 try:
-                    conjunto = Practica.objects.get(materia=self.materia, cuatrimestre=objeto_cuatrimestre,
-                                                    numero=numero_practica)
+                    conjunto = Practica.objects.get(materia=self.materia, cuatrimestre=cuatrimestre,
+                                                    anio=anio, numero=numero_practica)
                 except Practica.DoesNotExist:
-                    conjunto = Practica(materia=self.materia, cuatrimestre=objeto_cuatrimestre, numero=numero_practica)
+                    conjunto = Practica(materia=self.materia, anio=anio, cuatrimestre=cuatrimestre,
+                                        numero=numero_practica)
                     creado = True
 
             elif tipo == self.PARCIAL:
                 numero_parcial = int(self.cleaned_data.get('numero_parcial'))
                 es_recuperatorio = self.cleaned_data.get('es_recuperatorio')
                 try:
-                    conjunto = Parcial.objects.get(materia=self.materia, cuatrimestre=objeto_cuatrimestre,
+                    conjunto = Parcial.objects.get(materia=self.materia, anio=anio, cuatrimestre=cuatrimestre,
                                                    numero=numero_parcial, recuperatorio=es_recuperatorio)
                 except Parcial.DoesNotExist:
-                    conjunto = Parcial(materia=self.materia, cuatrimestre=objeto_cuatrimestre, numero=numero_parcial,
-                                       recuperatorio=es_recuperatorio)
+                    conjunto = Parcial(materia=self.materia, anio=anio, cuatrimestre=cuatrimestre,
+                                       numero=numero_parcial, recuperatorio=es_recuperatorio)
                     creado = True
             else:
                 # No deberíamos llegar nunca a esta parte, porque la verificación del tipo se hizo en el clean()

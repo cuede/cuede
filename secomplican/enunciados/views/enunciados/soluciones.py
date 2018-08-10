@@ -1,9 +1,8 @@
-from django.views.generic.edit import CreateView
 from django.shortcuts import redirect
+from django.views.generic.edit import CreateView
 
-
-from enunciados.models import Solucion, VersionTextoSolucion
 from enunciados import cuatrimestres_url_parser
+from enunciados.models import Solucion, VersionTextoSolucion
 from . import enunciados_utils
 
 
