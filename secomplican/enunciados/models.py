@@ -32,7 +32,6 @@ class ConjuntoDeEnunciadosConCuatrimestre(ConjuntoDeEnunciados):
     cuatrimestre = models.IntegerField(choices=NUMERO_CHOICES)
 
     class Meta:
-        unique_together = ('anio', 'numero')
         abstract = True
 
 
@@ -137,8 +136,8 @@ class Enunciado(models.Model):
         try:
             parcial = self.conjunto.parcial
             kwargs['numero_parcial'] = parcial.numero
-            kwargs['anio'] = parcial.cuatrimestre.anio
-            kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(parcial.cuatrimestre.numero)
+            kwargs['anio'] = parcial.anio
+            kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(parcial.cuatrimestre)
             if parcial.recuperatorio:
                 url = 'enunciado_recuperatorio'
             else:
@@ -147,8 +146,8 @@ class Enunciado(models.Model):
             try:
                 practica = self.conjunto.practica
                 kwargs['numero_practica'] = practica.numero
-                kwargs['anio'] = practica.cuatrimestre.anio
-                kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(practica.cuatrimestre.numero)
+                kwargs['anio'] = practica.anio
+                kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(practica.cuatrimestre)
                 url = 'enunciado_practica'
             except Practica.DoesNotExist:
                 try:
