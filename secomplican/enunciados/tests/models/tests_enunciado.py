@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from enunciados.models import Materia, Cuatrimestre, Practica, Parcial, Enunciado, Final
 from enunciados import cuatrimestres_url_parser
+from enunciados.models import Materia, Practica, Parcial, Enunciado, Final
 
 
 def agregar_enunciado(conjunto, numero):
@@ -15,16 +15,15 @@ class EnunciadoTests(TestCase):
     def setUp(self):
         self.materia = Materia(nombre='Materia')
         self.materia.save()
-        self.cuatrimestre = Cuatrimestre(anio=2018, numero=1)
-        self.cuatrimestre.save()
+        self.cuatrimestre = 1
 
     def crear_practica(self):
-        practica = Practica(materia=self.materia, cuatrimestre=self.cuatrimestre, numero=1)
+        practica = Practica(materia=self.materia, anio=2018, cuatrimestre=self.cuatrimestre, numero=1)
         practica.save()
         return practica
 
     def crear_parcial(self, recuperatorio=False):
-        parcial = Parcial(materia=self.materia, cuatrimestre=self.cuatrimestre, numero=1, recuperatorio=recuperatorio)
+        parcial = Parcial(materia=self.materia, anio=2018, cuatrimestre=self.cuatrimestre, numero=1, recuperatorio=recuperatorio)
         parcial.save()
         return parcial
 
@@ -54,8 +53,8 @@ class EnunciadoTests(TestCase):
 
         url_esperada = reverse('enunciado_practica', kwargs={
             'materia': practica.materia.nombre,
-            'anio': practica.cuatrimestre.anio,
-            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(practica.cuatrimestre.numero),
+            'anio': practica.anio,
+            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(practica.cuatrimestre),
             'numero_practica': practica.numero,
             'numero': enunciado.numero,
         })
@@ -70,8 +69,8 @@ class EnunciadoTests(TestCase):
 
         url_esperada = reverse('enunciado_parcial', kwargs={
             'materia': parcial.materia.nombre,
-            'anio': parcial.cuatrimestre.anio,
-            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(parcial.cuatrimestre.numero),
+            'anio': parcial.anio,
+            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(parcial.cuatrimestre),
             'numero_parcial': parcial.numero,
             'numero': enunciado.numero,
         })
@@ -86,8 +85,8 @@ class EnunciadoTests(TestCase):
 
         url_esperada = reverse('enunciado_recuperatorio', kwargs={
             'materia': recuperatorio.materia.nombre,
-            'anio': recuperatorio.cuatrimestre.anio,
-            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(recuperatorio.cuatrimestre.numero),
+            'anio': recuperatorio.anio,
+            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(recuperatorio.cuatrimestre),
             'numero_parcial': recuperatorio.numero,
             'numero': enunciado.numero,
         })
