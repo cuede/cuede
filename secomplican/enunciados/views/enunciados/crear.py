@@ -19,19 +19,19 @@ class ConjuntoDeEnunciadosForm(forms.Form):
         (PARCIAL, 'Parcial'),
         (FINAL, 'Final'),
     ]
-    tipo = forms.ChoiceField(choices=TIPO_CHOICES)
+    tipo = forms.TypedChoiceField(choices=TIPO_CHOICES, coerce=int)
     # Si es Parcial o Práctica necesitamos el año y el cuatrimestre
     anio = forms.IntegerField(initial=timezone.now().year, required=False)
-    cuatrimestre = forms.ChoiceField(choices=ConjuntoDeEnunciadosConCuatrimestre.NUMERO_CHOICES,
-                                     widget=forms.RadioSelect, required=False)
+    cuatrimestre = forms.TypedChoiceField(choices=ConjuntoDeEnunciadosConCuatrimestre.NUMERO_CHOICES,
+                                     widget=forms.RadioSelect, coerce=int, required=False)
     # Si es Parcial, necesitamos el número de parcial, y saber si es un recu o no
     NUMERO_PARCIAL_CHOICES = [
         (1, 'Primer parcial'),
         (2, 'Segundo parcial'),
         (3, 'Tercer parcial'),
     ]
-    numero_parcial = forms.ChoiceField(
-        choices=NUMERO_PARCIAL_CHOICES, widget=forms.RadioSelect, required=False)
+    numero_parcial = forms.TypedChoiceField(
+        choices=NUMERO_PARCIAL_CHOICES, coerce=int, widget=forms.RadioSelect, required=False)
     es_recuperatorio = forms.BooleanField(required=False)
     # Si es Práctica, necesitamos el número de práctica
     numero_practica = forms.IntegerField(initial=1, required=False)
@@ -51,7 +51,7 @@ class ConjuntoDeEnunciadosForm(forms.Form):
         super().clean() para esto primero.
         """
         creado = False
-        tipo = int(self.cleaned_data.get('tipo'))
+        tipo = self.cleaned_data.get('tipo')
         if tipo == self.FINAL:
             fecha = self.cleaned_data.get('fecha')
             try:
@@ -60,10 +60,10 @@ class ConjuntoDeEnunciadosForm(forms.Form):
                 conjunto = Final(materia=self.materia, fecha=fecha)
                 creado = True
         else:
-            anio = int(self.cleaned_data.get('anio'))
-            cuatrimestre = int(self.cleaned_data.get('cuatrimestre'))
+            anio = self.cleaned_data.get('anio')
+            cuatrimestre = self.cleaned_data.get('cuatrimestre')
             if tipo == self.PRACTICA:
-                numero_practica = int(self.cleaned_data.get('numero_practica'))
+                numero_practica = self.cleaned_data.get('numero_practica')
                 try:
                     conjunto = Practica.objects.get(materia=self.materia, cuatrimestre=cuatrimestre,
                                                     anio=anio, numero=numero_practica)
@@ -73,7 +73,7 @@ class ConjuntoDeEnunciadosForm(forms.Form):
                     creado = True
 
             elif tipo == self.PARCIAL:
-                numero_parcial = int(self.cleaned_data.get('numero_parcial'))
+                numero_parcial = self.cleaned_data.get('numero_parcial')
                 es_recuperatorio = self.cleaned_data.get('es_recuperatorio')
                 try:
                     conjunto = Parcial.objects.get(materia=self.materia, anio=anio, cuatrimestre=cuatrimestre,
