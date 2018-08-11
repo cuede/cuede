@@ -8,7 +8,19 @@
 
 </head>
 <body>
+
   <img src="{% static "/img/cubo.png" %}" alt="Logo">
+
+  
+  {% if user.is_authenticated %}
+  Hola {{ user.username }}, estás logueado.
+  <p><a href="{% url 'logout' %}">logout</a></p>
+{% else %}
+  <p>No estás logueado che.</p>
+  <a href="{% url 'login' %}">login</a>
+  
+{% endif %}
+
 
   {% block content %}{% endblock %}
  
