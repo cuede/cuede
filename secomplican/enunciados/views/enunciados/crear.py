@@ -23,7 +23,7 @@ class ConjuntoDeEnunciadosForm(forms.Form):
     # Si es Parcial o Práctica necesitamos el año y el cuatrimestre
     anio = forms.IntegerField(initial=timezone.now().year, required=False)
     cuatrimestre = forms.TypedChoiceField(choices=ConjuntoDeEnunciadosConCuatrimestre.NUMERO_CHOICES,
-                                     widget=forms.RadioSelect, coerce=int, required=False)
+                                          widget=forms.RadioSelect, coerce=int, required=False)
     # Si es Parcial, necesitamos el número de parcial, y saber si es un recu o no
     NUMERO_PARCIAL_CHOICES = [
         (1, 'Primer parcial'),
@@ -88,11 +88,40 @@ class ConjuntoDeEnunciadosForm(forms.Form):
 
         return conjunto, creado
 
+    def _revisar_presente(self, field):
+        presente = True
+        valor = self.cleaned_data.get(field)
+        if not valor:
+            self.add_error(field, ValidationError(_('Se necesita ' + field + '.')))
+            presente = False
+        return presente
+
+    def _revisar_suficiente_informacion(self):
+        """Verifica que hay suficiente información para poder crear un conjunto del tipo pedido."""
+        tipo = self.cleaned_data.get('tipo')
+        if tipo == self.FINAL:
+            hay_suficiente_informacion = self._revisar_presente('fecha')
+        else:
+            hay_suficiente_informacion = self._revisar_presente('anio')
+            hay_suficiente_informacion = (hay_suficiente_informacion and
+                                          self._revisar_presente('cuatrimestre'))
+            if tipo == self.PRACTICA:
+                hay_suficiente_informacion = (hay_suficiente_informacion and
+                                              self._revisar_presente('numero_practica'))
+            elif tipo == self.PARCIAL:
+                hay_suficiente_informacion = (hay_suficiente_informacion and
+                                              self._revisar_presente('numero_parcial'))
+            else:
+                # No deberíamos llegar nunca a esta parte, porque la verificación del tipo se hizo en el clean()
+                raise ValidationError(_('El tipo no es válido.'))
+        return hay_suficiente_informacion
+
     def clean(self):
         cleaned_data = super().clean()
-        conjunto, creado = self._get_conjunto()
-        if creado:
-            conjunto.full_clean()
+        if self._revisar_suficiente_informacion():
+            conjunto, creado = self._get_conjunto()
+            if creado:
+                conjunto.full_clean()
         return cleaned_data
 
     def save(self, commit=True):
