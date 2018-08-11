@@ -5,11 +5,64 @@
 <form method="post">
     {% csrf_token %}
     <table>
-        {{ conjunto_form.as_table }}
+        {# Para poder referenciar las entradas de la tabla en el javascript. #}
+        {% for field in conjunto_form %}
+            <tr id="{{ field.name }}">
+                {{ field.errors }}
+                <th>
+                    {{ field.label_tag }}
+                </th>
+                <td>
+                    {{ field }}
+                </td>
+                {% if field.help_text %}
+                    <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        <tr>
         {{ enunciado_form.as_table }}
         {{ version_texto_form.as_table }}
     </table>
     <input type="submit" value="Crear" />
 </form>
+<script type="text/javascript">
+    function ocultar(id_elemento) {
+        document.getElementById(id_elemento).style.display = "none";
+    }
+
+    function mostrar(id_elemento) {
+        document.getElementById(id_elemento).style.display = "";
+    }
+
+    var select_tipo = document.getElementById("id_tipo");
+
+    var VALOR_PRACTICA = 0;
+    var VALOR_PARCIAL = 1;
+    var VALOR_FINAL = 2;
+
+    var inputs_practica = ["numero_practica", "cuatrimestre", "anio"];
+    var inputs_parcial = ["numero_parcial", "cuatrimestre", "anio", "es_recuperatorio"];
+    var inputs_final = ["fecha"];
+    function mostrar_u_ocultar() {
+        if (select_tipo.value == VALOR_PRACTICA) {
+            inputs_parcial.map(ocultar);
+            inputs_final.map(ocultar);
+            inputs_practica.map(mostrar);
+        } else if (select_tipo.value == VALOR_PARCIAL) {
+            inputs_final.map(ocultar);
+            inputs_practica.map(ocultar);
+            inputs_parcial.map(mostrar);
+        } else if (select_tipo.value == VALOR_FINAL) {
+            inputs_practica.map(ocultar);
+            inputs_parcial.map(ocultar);
+            inputs_final.map(mostrar);
+        }
+    }
+
+    mostrar_u_ocultar();
+    select_tipo.onchange = mostrar_u_ocultar;
+
+</script>
 
 {% endblock %}
