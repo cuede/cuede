@@ -21,9 +21,9 @@ class ConjuntoDeEnunciadosForm(forms.Form):
     ]
     tipo = forms.ChoiceField(choices=TIPO_CHOICES)
     # Si es Parcial o Práctica necesitamos el año y el cuatrimestre
-    anio = forms.IntegerField(initial=timezone.now().year)
+    anio = forms.IntegerField(initial=timezone.now().year, required=False)
     cuatrimestre = forms.ChoiceField(choices=ConjuntoDeEnunciadosConCuatrimestre.NUMERO_CHOICES,
-                                     widget=forms.RadioSelect)
+                                     widget=forms.RadioSelect, required=False)
     # Si es Parcial, necesitamos el número de parcial, y saber si es un recu o no
     NUMERO_PARCIAL_CHOICES = [
         (1, 'Primer parcial'),
@@ -31,12 +31,12 @@ class ConjuntoDeEnunciadosForm(forms.Form):
         (3, 'Tercer parcial'),
     ]
     numero_parcial = forms.ChoiceField(
-        choices=NUMERO_PARCIAL_CHOICES, widget=forms.RadioSelect)
+        choices=NUMERO_PARCIAL_CHOICES, widget=forms.RadioSelect, required=False)
     es_recuperatorio = forms.BooleanField(required=False)
     # Si es Práctica, necesitamos el número de práctica
-    numero_practica = forms.IntegerField(initial=1)
+    numero_practica = forms.IntegerField(initial=1, required=False)
     # Si es final, necesitamos la fecha
-    fecha = forms.DateField()
+    fecha = forms.DateField(required=False)
 
     def __init__(self, materia, data=None):
         self.materia = materia
