@@ -2,6 +2,7 @@ from django.urls import path
 
 from enunciados.views import index, materias, conjuntos_de_enunciados
 from enunciados.views.enunciados import enunciados
+from enunciados.views.enunciados import crear
 from enunciados.views.enunciados import soluciones
 
 
@@ -67,7 +68,7 @@ urlpatterns = [
 
     path(
         '<materia>/nuevoEnunciado/',
-        enunciados.nuevo_enunciado,
+        crear.nuevo_enunciado,
         name='agregar_enunciado'
     ),
 ]
