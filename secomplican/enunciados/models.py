@@ -23,10 +23,15 @@ class ConjuntoDeEnunciadosConCuatrimestre(ConjuntoDeEnunciados):
     PRIMERO = 1
     SEGUNDO = 2
     VERANO = 3
+    TEXTOS_CUATRIMESTRE = {
+        PRIMERO: _('Primer Cuatrimestre'),
+        SEGUNDO: _('Segundo Cuatrimestre'),
+        VERANO: _('Verano'),
+    }
     NUMERO_CHOICES = (
-        (VERANO, 'Verano'),
-        (PRIMERO, 'Primer Cuatrimestre'),
-        (SEGUNDO, 'Segundo Cuatrimestre'),
+        (VERANO, TEXTOS_CUATRIMESTRE[VERANO]),
+        (PRIMERO, TEXTOS_CUATRIMESTRE[PRIMERO]),
+        (SEGUNDO, TEXTOS_CUATRIMESTRE[SEGUNDO]),
     )
 
     cuatrimestre = models.IntegerField(choices=NUMERO_CHOICES)
@@ -40,7 +45,7 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
     titulo = models.CharField(max_length=1023, default='', blank=True)
 
     def __str__(self):
-        return '{} - Practica {} del {} del {}'.format(self.materia, self.numero, self.cuatrimestre, self.anio)
+        return 'Práctica {} del {} del {}'.format(self.numero, self.cuatrimestre, self.anio)
 
     def get_absolute_url(self):
         from enunciados import cuatrimestres_url_parser
@@ -62,8 +67,7 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
         nombre = 'Parcial'
         if self.recuperatorio:
             nombre = 'Recuperatorio'
-        return '{} - {} {} del {} del {}'.format(
-            self.materia, self.ordinal()['singular'], nombre, self.cuatrimestre, self.anio)
+        return '{} {} del {} del {}'.format(self.ordinal()['singular'], nombre, self.cuatrimestre, self.anio)
 
     def ordinal(self):
         """
@@ -100,7 +104,7 @@ class Final(ConjuntoDeEnunciados):
     fecha = models.DateField()
 
     def __str__(self):
-        return '{} - Final del {}'.format(self.materia, self.fecha)
+        return 'Final del {}'.format(self.fecha)
 
     def get_absolute_url(self):
         kwargs = {

@@ -2,7 +2,7 @@
 {% block content %}
 
 
-<h1> {{ conjunto }} </h1>
+<h1> {{ conjunto.materia }} - {{ conjunto }} </h1>
 {% for enunciado in conjunto.enunciado_set.all %}
     <h2><a href="{{ enunciado.get_absolute_url }}">Ejercicio {{ enunciado.numero }}</a></h2>
     <p>{{ enunciado.versiones.ultima }}</p>

@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% load cuatrimestres %}
+
 <h1> {{ materia.nombre }} </h1>
-<h2>Prácticas{% if practicas %} del {{ practicas.0.cuatrimestre }}{% endif %}</h2>
+<h2>Prácticas{% if practicas %} del {{ practicas.0.cuatrimestre|texto_cuatrimestre }} del {{ practicas.0.anio }} {% endif %}</h2>
 {% for practica in practicas %}
     <a href="{{ practica.get_absolute_url }}">
         Práctica {{ practica.numero }}</a><br>
@@ -14,8 +16,7 @@
     <h2>{{ parciales_actuales.0.ordinal.plural }} Parciales</h2>
     {% for parcial in parciales_actuales %}
         <a href="{{ parcial.get_absolute_url }}">
-            {{ parcial.ordinal.singular }}
-            {% if parcial.recuperatorio %}Recuperatorio{% else %}Parcial{% endif %} del {{ parcial.cuatrimestre }}
+            {{ parcial }}
         </a><br>
     {% endfor %}
 {% empty %}
@@ -25,9 +26,9 @@
 
 <h2>Finales</h2>
 {% for final in finales %}
-    <a href="{{ final.get_absolute_url }}">Final del {{ final.fecha|date:'d/m/Y' }}</a><br>
+    <a href="{{ final.get_absolute_url }}">{{ final }}</a><br>
 {% empty %}
     Todavía no hay finales.
-    {% endfor %}
+{% endfor %}
 
 {% endblock %}
