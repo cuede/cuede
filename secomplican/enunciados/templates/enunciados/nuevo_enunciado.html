@@ -6,9 +6,15 @@
     {% csrf_token %}
     <table>
         {# Para poder referenciar las entradas de la tabla en el javascript. #}
+        {{ conjunto_form.non_field_errors }}
         {% for field in conjunto_form %}
+            <tr>
+                <th></th>
+                <td>
+                    {{ field.errors }}
+                </td>
+            </tr>
             <tr id="{{ field.name }}">
-                {{ field.errors }}
                 <th>
                     {{ field.label_tag }}
                 </th>
