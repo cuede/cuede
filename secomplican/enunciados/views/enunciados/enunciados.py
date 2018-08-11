@@ -31,9 +31,14 @@ def enunciado_parcial(request, materia, anio, cuatrimestre, numero_parcial, nume
     numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
     encontrado = enunciados_utils.enunciado_de_parcial(
         materia, anio, numero_cuatrimestre, numero_parcial, numero, es_recuperatorio)
-    url_solucion = reverse('solucion_parcial', kwargs={
+    if es_recuperatorio:
+        nombre_url_solucion = 'solucion_recuperatorio'
+    else:
+        nombre_url_solucion = 'solucion_parcial'
+
+    url_solucion = reverse(nombre_url_solucion, kwargs={
         'materia': materia, 'anio': anio, 'cuatrimestre': cuatrimestre,
-        'numero_parcial': numero_parcial, 'numero': numero, 'es_recuperatorio': es_recuperatorio})
+        'numero_parcial': numero_parcial, 'numero': numero})
     return render_enunciado(request, encontrado, url_solucion)
 
 
