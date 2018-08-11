@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from enunciados import cuatrimestres_url_parser
 from enunciados.models import Materia, Enunciado, VersionTextoEnunciado, Practica, Parcial, Final, \
@@ -17,7 +18,8 @@ def render_enunciado(request, enunciado_elegido, url_solucion):
 
 def enunciado_practica(request, materia, anio, cuatrimestre, numero_practica, numero):
     numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
-    encontrado = enunciados_utils.enunciado_de_practica(materia, anio, numero_cuatrimestre, numero_practica, numero)
+    encontrado = enunciados_utils.enunciado_de_practica(
+        materia, anio, numero_cuatrimestre, numero_practica, numero)
     url_solucion = reverse('solucion_practica', kwargs={
         'materia': materia, 'anio': anio, 'cuatrimestre': cuatrimestre,
         'numero_practica': numero_practica,
@@ -36,7 +38,8 @@ def enunciado_parcial(request, materia, anio, cuatrimestre, numero_parcial, nume
 
 
 def enunciado_final(request, materia, anio, mes, dia, numero):
-    encontrado = enunciados_utils.enunciado_de_final(materia, anio, mes, dia, numero)
+    encontrado = enunciados_utils.enunciado_de_final(
+        materia, anio, mes, dia, numero)
     url_solucion = reverse('solucion_final', kwargs={
         'materia': materia, 'anio': anio, 'mes': mes, 'dia': dia, 'numero': numero})
     return render_enunciado(request, encontrado, url_solucion)
@@ -62,7 +65,8 @@ class ConjuntoDeEnunciadosForm(forms.Form):
         (2, 'Segundo parcial'),
         (3, 'Tercer parcial'),
     ]
-    numero_parcial = forms.ChoiceField(choices=NUMERO_PARCIAL_CHOICES, widget=forms.RadioSelect)
+    numero_parcial = forms.ChoiceField(
+        choices=NUMERO_PARCIAL_CHOICES, widget=forms.RadioSelect)
     es_recuperatorio = forms.BooleanField(required=False)
     # Si es Práctica, necesitamos el número de práctica
     numero_practica = forms.IntegerField(initial=1)
@@ -115,7 +119,7 @@ class ConjuntoDeEnunciadosForm(forms.Form):
                     creado = True
             else:
                 # No deberíamos llegar nunca a esta parte, porque la verificación del tipo se hizo en el clean()
-                raise VerificationError(_('El tipo no es válido.'))
+                raise ValidationError(_('El tipo no es válido.'))
 
         return conjunto, creado
 
