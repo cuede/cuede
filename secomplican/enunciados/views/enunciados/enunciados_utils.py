@@ -6,7 +6,7 @@ from enunciados.models import Enunciado
 def enunciado_de_practica(materia, anio, numero_cuatrimestre, numero_practica, numero):
     return get_object_or_404(
         Enunciado,
-        conjunto__materia__nombre=materia,
+        conjunto__materia__slug=materia,
         numero=numero,
         conjunto__practica__isnull=False,
         conjunto__practica__anio=anio,
@@ -18,7 +18,7 @@ def enunciado_de_practica(materia, anio, numero_cuatrimestre, numero_practica, n
 def enunciado_de_parcial(materia, anio, numero_cuatrimestre, numero_parcial, numero, es_recuperatorio):
     return get_object_or_404(
         Enunciado,
-        conjunto__materia__nombre=materia,
+        conjunto__materia__slug=materia,
         numero=numero,
         conjunto__parcial__isnull=False,
         conjunto__parcial__anio=anio,
@@ -31,7 +31,7 @@ def enunciado_de_parcial(materia, anio, numero_cuatrimestre, numero_parcial, num
 def enunciado_de_final(materia, anio, mes, dia, numero):
     return get_object_or_404(
         Enunciado,
-        conjunto__materia__nombre=materia,
+        conjunto__materia__slug=materia,
         numero=numero,
         conjunto__final__isnull=False,
         conjunto__final__fecha__year=anio,

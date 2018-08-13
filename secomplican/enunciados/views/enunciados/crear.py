@@ -157,13 +157,12 @@ class VersionTextoForm(forms.ModelForm):
 
 
 def nuevo_enunciado(request, materia):
-    objeto_materia = get_object_or_404(Materia, nombre=materia)
+    objeto_materia = get_object_or_404(Materia, slug=materia)
     if request.method == 'POST':
         conjunto_form = ConjuntoDeEnunciadosForm(objeto_materia, request.POST)
         enunciado_form = EnunciadoForm(request.POST)
         version_texto_form = VersionTextoForm(request.POST)
         if conjunto_form.is_valid() and enunciado_form.is_valid() and version_texto_form.is_valid():
-            # TODO Chequear que el texto no sea vacío
             conjunto, creado = conjunto_form.save()
             enunciado = enunciado_form.save(commit=False)
             enunciado.conjunto = conjunto

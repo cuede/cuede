@@ -20,15 +20,15 @@ def conjunto_de_enunciados_con_cuatrimestre(request, queryset, anio, cuatrimestr
 
 
 def practica(request, materia, anio, cuatrimestre, numero):
-    practicas = Practica.objects.filter(materia__nombre=materia, numero=numero)
+    practicas = Practica.objects.filter(materia__slug=materia, numero=numero)
     return conjunto_de_enunciados_con_cuatrimestre(request, practicas, anio, cuatrimestre)
 
 
 def parcial(request, materia, anio, cuatrimestre, numero, recuperatorio=False):
-    parciales = Parcial.objects.filter(materia__nombre=materia, numero=numero, recuperatorio=recuperatorio)
+    parciales = Parcial.objects.filter(materia__slug=materia, numero=numero, recuperatorio=recuperatorio)
     return conjunto_de_enunciados_con_cuatrimestre(request, parciales, anio, cuatrimestre)
 
 
 def final(request, materia, anio, mes, dia):
-    finales = get_object_or_404(Final, materia__nombre=materia, fecha__year=anio, fecha__month=mes, fecha__day=dia)
+    finales = get_object_or_404(Final, materia__slug=materia, fecha__year=anio, fecha__month=mes, fecha__day=dia)
     return render_conjunto_de_enunciados(request, finales)

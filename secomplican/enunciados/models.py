@@ -64,7 +64,7 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
     def get_absolute_url(self):
         from enunciados import cuatrimestres_url_parser
         kwargs = {
-            'materia': self.materia.nombre,
+            'materia': self.materia.slug,
             'anio': self.anio,
             'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.cuatrimestre),
             'numero': self.numero
@@ -105,7 +105,7 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
     def get_absolute_url(self):
         from enunciados import cuatrimestres_url_parser
         kwargs = {
-            'materia': self.materia.nombre,
+            'materia': self.materia.slug,
             'anio': self.anio,
             'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.cuatrimestre),
             'numero': self.numero
@@ -124,7 +124,7 @@ class Final(ConjuntoDeEnunciados):
 
     def get_absolute_url(self):
         kwargs = {
-            'materia': self.materia.nombre,
+            'materia': self.materia.slug,
             'anio': self.fecha.year,
             'mes': self.fecha.month,
             'dia': self.fecha.day,
@@ -148,7 +148,7 @@ class Enunciado(models.Model):
     def get_absolute_url(self):
         from . import cuatrimestres_url_parser
         kwargs = {
-            'materia': self.conjunto.materia.nombre,
+            'materia': self.conjunto.materia.slug,
             'numero': self.numero,
         }
 
