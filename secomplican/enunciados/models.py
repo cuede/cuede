@@ -2,15 +2,24 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
+
 
 from enunciados.modelmanagers.versiones_manager import VersionesManager
 
 
 class Materia(models.Model):
-    nombre = models.CharField(max_length=1023)
+    NOMBRE_MAX_LENGTH = 1023
+    nombre = models.CharField(max_length=NOMBRE_MAX_LENGTH)
+    slug = models.SlugField(max_length=NOMBRE_MAX_LENGTH, unique=True)
 
     def __str__(self):
         return self.nombre
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.nombre)
+        # TODO Fijarse que no haya dos materias con slug iguales.
+        super().save(*args, **kwargs)
 
 
 class ConjuntoDeEnunciados(models.Model):
