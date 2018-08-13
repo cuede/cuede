@@ -9,7 +9,7 @@ from enunciados.views.enunciados import soluciones
 urlpatterns = [
     path('', index.index, name='index'),
     path('materias/', materias.MateriasView.as_view(), name='materias'),
-    path('<nombre>/', materias.materia, name='materia'),
+    path('<slug:nombre>/', materias.materia, name='materia'),
     path('<materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero>/',
          conjuntos_de_enunciados.practica, name='practica'),
     path('<materia>/parciales/<int:anio>/<cuatrimestre>/<int:numero>/', conjuntos_de_enunciados.parcial, name='parcial'),

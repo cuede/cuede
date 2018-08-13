@@ -10,8 +10,9 @@ class MateriasView(generic.ListView):
 
 
 def materia(request, nombre):
+    # El nombre es un slug.
     contexto = {
-        'materia': get_object_or_404(Materia, nombre=nombre),
+        'materia': get_object_or_404(Materia, slug=nombre),
     }
     contexto['practicas'] = models_utils.ultimas_practicas_ordenadas(contexto['materia'])
     contexto['parciales'] = models_utils.parciales_de_materia_ordenados(contexto['materia'])
