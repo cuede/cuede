@@ -177,7 +177,7 @@ class Enunciado(models.Model):
 
 class VersionTexto(models.Model):
     tiempo = models.DateTimeField(auto_now_add=True)
-    texto = models.TextField()
+    texto = models.TextField(blank=False)
     versiones = VersionesManager()
 
     def __str__(self):
