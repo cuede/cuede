@@ -45,7 +45,9 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
     titulo = models.CharField(max_length=1023, default='', blank=True)
 
     def __str__(self):
-        return 'Práctica {} del {} del {}'.format(self.numero, self.cuatrimestre, self.anio)
+        from enunciados import cuatrimestres_parser
+        texto_cuatrimestre = cuatrimestres_parser.numero_a_texto(self.cuatrimestre)
+        return 'Práctica {} del {} del {}'.format(self.numero, texto_cuatrimestre, self.anio)
 
     def get_absolute_url(self):
         from enunciados import cuatrimestres_url_parser
@@ -64,10 +66,12 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
     recuperatorio = models.BooleanField(default=False)
 
     def __str__(self):
+        from enunciados import cuatrimestres_parser
+        texto_cuatrimestre = cuatrimestres_parser.numero_a_texto(self.cuatrimestre)
         nombre = 'Parcial'
         if self.recuperatorio:
             nombre = 'Recuperatorio'
-        return '{} {} del {} del {}'.format(self.ordinal()['singular'], nombre, self.cuatrimestre, self.anio)
+        return '{} {} del {} del {}'.format(self.ordinal()['singular'], nombre, texto_cuatrimestre, self.anio)
 
     def ordinal(self):
         """
