@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 from enunciados.models import (ConjuntoDeEnunciadosConCuatrimestre, Enunciado,
                                Final, Materia, Parcial, Practica,
@@ -33,10 +34,17 @@ class ConjuntoDeEnunciadosForm(forms.Form):
     numero_parcial = forms.TypedChoiceField(
         choices=NUMERO_PARCIAL_CHOICES, coerce=int, widget=forms.RadioSelect, required=False)
     es_recuperatorio = forms.BooleanField(required=False)
-    # Si es Práctica, necesitamos el número de práctica
+    # Si es Práctica, necesitamos el número de práctica.
     numero_practica = forms.IntegerField(initial=1, required=False)
-    # Si es final, necesitamos la fecha
-    fecha = forms.DateField(required=False)
+    # Si es final, necesitamos la fecha.
+    # Mostramos los últimos 50 años.
+    ANIOS = 50
+    fecha = forms.DateField(
+        widget=forms.SelectDateWidget(
+            years=range(timezone.now().year, timezone.now().year - ANIOS, -1),
+        ),
+        initial=timezone.now(),
+        required=False)
 
     def __init__(self, materia, data=None):
         self.materia = materia
@@ -92,7 +100,8 @@ class ConjuntoDeEnunciadosForm(forms.Form):
         presente = True
         valor = self.cleaned_data.get(field)
         if not valor:
-            self.add_error(field, ValidationError(_('Se necesita ' + field + '.')))
+            self.add_error(field, ValidationError(
+                _('Se necesita ' + field + '.')))
             presente = False
         return presente
 
