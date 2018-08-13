@@ -19,10 +19,12 @@ class Materia(models.Model):
     def get_absolute_url(self):
         return reverse('materia', kwargs={'nombre': self.slug})
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.nombre)
-        # TODO Fijarse que no haya dos materias con slug iguales.
-        super().save(*args, **kwargs)
+    def clean(self):
+        if not self.slug:
+            self.slug = slugify(self.nombre)
+        if Materia.objects.filter(slug=self.slug).exists():
+            raise ValidationError(
+                _('El slug de esta Materia es el mismo que el de otra.'))
 
 
 class ConjuntoDeEnunciados(models.Model):
@@ -58,7 +60,8 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
 
     def __str__(self):
         from enunciados import cuatrimestres_parser
-        texto_cuatrimestre = cuatrimestres_parser.numero_a_texto(self.cuatrimestre)
+        texto_cuatrimestre = cuatrimestres_parser.numero_a_texto(
+            self.cuatrimestre)
         return 'Práctica {} del {} del {}'.format(self.numero, texto_cuatrimestre, self.anio)
 
     def get_absolute_url(self):
@@ -79,7 +82,8 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
 
     def __str__(self):
         from enunciados import cuatrimestres_parser
-        texto_cuatrimestre = cuatrimestres_parser.numero_a_texto(self.cuatrimestre)
+        texto_cuatrimestre = cuatrimestres_parser.numero_a_texto(
+            self.cuatrimestre)
         nombre = 'Parcial'
         if self.recuperatorio:
             nombre = 'Recuperatorio'
@@ -134,11 +138,13 @@ class Final(ConjuntoDeEnunciados):
     def clean(self):
         # Ver que no haya ya un final con igual fecha y materia
         if Final.objects.filter(materia=self.materia, fecha=self.fecha).exists():
-            raise ValidationError(_('Ya hay un Final con esta materia y fecha.'))
+            raise ValidationError(
+                _('Ya hay un Final con esta materia y fecha.'))
 
 
 class Enunciado(models.Model):
-    conjunto = models.ForeignKey(ConjuntoDeEnunciados, on_delete=models.CASCADE)
+    conjunto = models.ForeignKey(
+        ConjuntoDeEnunciados, on_delete=models.CASCADE)
     # El numero de enunciado en el conjunto de enunciados.
     numero = models.IntegerField()
 
@@ -157,7 +163,8 @@ class Enunciado(models.Model):
             parcial = self.conjunto.parcial
             kwargs['numero_parcial'] = parcial.numero
             kwargs['anio'] = parcial.anio
-            kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(parcial.cuatrimestre)
+            kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(
+                parcial.cuatrimestre)
             if parcial.recuperatorio:
                 url = 'enunciado_recuperatorio'
             else:
@@ -167,7 +174,8 @@ class Enunciado(models.Model):
                 practica = self.conjunto.practica
                 kwargs['numero_practica'] = practica.numero
                 kwargs['anio'] = practica.anio
-                kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(practica.cuatrimestre)
+                kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(
+                    practica.cuatrimestre)
                 url = 'enunciado_practica'
             except Practica.DoesNotExist:
                 try:
@@ -177,7 +185,8 @@ class Enunciado(models.Model):
                     kwargs['dia'] = final.fecha.day
                     url = 'enunciado_final'
                 except Final.DoesNotExist:
-                    raise Exception('El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
+                    raise Exception(
+                        'El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
 
         return reverse(url, kwargs=kwargs)
 
@@ -202,15 +211,18 @@ class VersionTexto(models.Model):
 
 
 class VersionTextoEnunciado(VersionTexto):
-    enunciado = models.ForeignKey(Enunciado, on_delete=models.CASCADE, related_name='versiones')
+    enunciado = models.ForeignKey(
+        Enunciado, on_delete=models.CASCADE, related_name='versiones')
 
 
 class Solucion(models.Model):
-    enunciado = models.ForeignKey(Enunciado, on_delete=models.CASCADE, related_name='soluciones')
+    enunciado = models.ForeignKey(
+        Enunciado, on_delete=models.CASCADE, related_name='soluciones')
 
     def __str__(self):
         return str(self.versiones.ultima())
 
 
 class VersionTextoSolucion(VersionTexto):
-    solucion = models.ForeignKey(Solucion, on_delete=models.CASCADE, related_name='versiones')
+    solucion = models.ForeignKey(
+        Solucion, on_delete=models.CASCADE, related_name='versiones')
