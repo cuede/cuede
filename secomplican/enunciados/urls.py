@@ -69,7 +69,7 @@ urlpatterns = [
     ),
 
     path(
-        '<slug:materia>/nuevoEnunciado/',
+        '<slug:materia>/nuevo-enunciado/',
         crear.nuevo_enunciado,
         name='agregar_enunciado'
     ),
