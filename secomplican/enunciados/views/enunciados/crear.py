@@ -36,19 +36,20 @@ class ConjuntoDeEnunciadosForm(forms.Form):
     es_recuperatorio = forms.BooleanField(required=False)
     # Si es Práctica, necesitamos el número de práctica.
     numero_practica = forms.IntegerField(initial=1, required=False)
-    # Si es final, necesitamos la fecha.
-    # Mostramos los últimos 50 años.
+    # Mostramos los últimos 50 años en el field de fecha, que vamos a
+    # inicializar en el __init__.
     ANIOS = 50
-    fecha = forms.DateField(
-        widget=forms.SelectDateWidget(
-            years=range(timezone.now().year, timezone.now().year - ANIOS, -1),
-        ),
-        initial=timezone.now(),
-        required=False)
 
-    def __init__(self, materia, data=None):
+    def __init__(self, materia, *args, **kwargs):
         self.materia = materia
-        super().__init__(data)
+        super().__init__(*args, **kwargs)
+        # Si es final, necesitamos la fecha.
+        # Tenemos que poner los años del field fecha dinámicamente.
+        ahora = timezone.now()
+        self.fields['fecha'] = forms.DateField(
+            widget=forms.SelectDateWidget(
+                years=range(ahora.year, ahora.year - self.ANIOS, -1),
+            ), initial=ahora, required=False)
 
     def _get_conjunto(self):
         """
