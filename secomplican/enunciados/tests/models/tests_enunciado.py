@@ -14,6 +14,7 @@ def agregar_enunciado(conjunto, numero):
 class EnunciadoTests(TestCase):
     def setUp(self):
         self.materia = Materia(nombre='Materia')
+        self.materia.slug = 'materia'
         self.materia.save()
         self.cuatrimestre = 1
 
@@ -52,7 +53,7 @@ class EnunciadoTests(TestCase):
         enunciado.save()
 
         url_esperada = reverse('enunciado_practica', kwargs={
-            'materia': practica.materia.nombre,
+            'materia': practica.materia.slug,
             'anio': practica.anio,
             'cuatrimestre': cuatrimestres_url_parser.numero_a_url(practica.cuatrimestre),
             'numero_practica': practica.numero,
@@ -68,7 +69,7 @@ class EnunciadoTests(TestCase):
         enunciado.save()
 
         url_esperada = reverse('enunciado_parcial', kwargs={
-            'materia': parcial.materia.nombre,
+            'materia': parcial.materia.slug,
             'anio': parcial.anio,
             'cuatrimestre': cuatrimestres_url_parser.numero_a_url(parcial.cuatrimestre),
             'numero_parcial': parcial.numero,
@@ -84,7 +85,7 @@ class EnunciadoTests(TestCase):
         enunciado.save()
 
         url_esperada = reverse('enunciado_recuperatorio', kwargs={
-            'materia': recuperatorio.materia.nombre,
+            'materia': recuperatorio.materia.slug,
             'anio': recuperatorio.anio,
             'cuatrimestre': cuatrimestres_url_parser.numero_a_url(recuperatorio.cuatrimestre),
             'numero_parcial': recuperatorio.numero,
@@ -100,7 +101,7 @@ class EnunciadoTests(TestCase):
         enunciado.save()
 
         url_esperada = reverse('enunciado_final', kwargs={
-            'materia': final.materia.nombre,
+            'materia': final.materia.slug,
             'anio': final.fecha.year,
             'mes': final.fecha.month,
             'dia': final.fecha.day,
