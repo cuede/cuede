@@ -7,10 +7,10 @@
     <h2><a href="{{ enunciado.get_absolute_url }}">Ejercicio {{ enunciado.numero }}</a></h2>
     <p>{{ enunciado.versiones.ultima }}</p>
 {% empty %}
-    Todavía no hay enunciados. <a href="{% url 'agregar_enunciado' materia=conjunto.materia.slug %}"> ¿Querés agregar uno? </a>
+    Todavía no hay enunciados. <a href="{{ url_nuevo_enunciado }}"> ¿Querés agregar uno? </a>
 {% endfor %}
 {% if conjunto.enunciado_set.all %}
-    <a href="{% url 'agregar_enunciado' materia=conjunto.materia.slug %}"> Agregar enunciado. </a>
+    <a href="{{ url_nuevo_enunciado }}"> Agregar enunciado. </a>
     {% endif %}
 
 {% endblock %}
