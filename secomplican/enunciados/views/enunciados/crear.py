@@ -184,7 +184,8 @@ def nuevo_enunciado(request, materia):
                 version_texto.save()
                 return redirect(enunciado.get_absolute_url())
     else:
-        conjunto_form = ConjuntoDeEnunciadosForm(objeto_materia)
+        conjunto_form = ConjuntoDeEnunciadosForm(
+            objeto_materia, initial=request.GET)
         enunciado_form = EnunciadoForm()
         version_texto_form = VersionTextoForm()
 
