@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 
-from enunciados import models_utils
+from enunciados.utils import models_utils
 from enunciados.models import Materia
 
 

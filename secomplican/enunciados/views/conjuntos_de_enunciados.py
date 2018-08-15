@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 
-from enunciados import cuatrimestres_url_parser
+from enunciados.utils import cuatrimestres_url_parser
 from enunciados.models import Practica, Parcial, Final
 
 

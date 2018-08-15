@@ -1,6 +1,6 @@
 from django import template
 
-from enunciados import cuatrimestres_parser
+from enunciados.utils import cuatrimestres_parser
 
 register = template.Library()
 

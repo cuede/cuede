@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse
 
-from enunciados import cuatrimestres_url_parser
+from enunciados.utils import cuatrimestres_url_parser
 
 from . import enunciados_utils
 

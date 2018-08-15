@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from enunciados.models import Materia, Parcial, Practica, Final, ConjuntoDeEnunciadosConCuatrimestre
-from enunciados.models_utils import *
+from enunciados.utils.models_utils import *
 
 
 def assert_lista_equals(testCase, primera, segunda):

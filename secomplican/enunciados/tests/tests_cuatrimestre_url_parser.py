@@ -1,5 +1,5 @@
 from unittest import TestCase
-from enunciados.cuatrimestres_url_parser import *
+from enunciados.utils.cuatrimestres_url_parser import *
 
 
 # Create your tests here.

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from enunciados.string_utils import *
+from enunciados.utils.string_utils import *
 
 
 def generar_texto(caracteres):

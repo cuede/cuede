@@ -59,13 +59,13 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
     titulo = models.CharField(max_length=1023, default='', blank=True)
 
     def __str__(self):
-        from enunciados import cuatrimestres_parser
+        from enunciados.utils import cuatrimestres_parser
         texto_cuatrimestre = cuatrimestres_parser.numero_a_texto(
             self.cuatrimestre)
         return 'Práctica {} del {} del {}'.format(self.numero, texto_cuatrimestre, self.anio)
 
     def get_absolute_url(self):
-        from enunciados import cuatrimestres_url_parser
+        from enunciados.utils import cuatrimestres_url_parser
         kwargs = {
             'materia': self.materia.slug,
             'anio': self.anio,
@@ -81,7 +81,7 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
     recuperatorio = models.BooleanField(default=False)
 
     def __str__(self):
-        from enunciados import cuatrimestres_parser
+        from enunciados.utils import cuatrimestres_parser
         texto_cuatrimestre = cuatrimestres_parser.numero_a_texto(
             self.cuatrimestre)
         nombre = 'Parcial'
@@ -107,7 +107,7 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
             return ordinales[self.numero - 1]
 
     def get_absolute_url(self):
-        from enunciados import cuatrimestres_url_parser
+        from enunciados.utils import cuatrimestres_url_parser
         kwargs = {
             'materia': self.materia.slug,
             'anio': self.anio,
@@ -152,7 +152,7 @@ class Enunciado(models.Model):
         return 'Enunciado {}'.format(self.numero)
 
     def get_absolute_url(self):
-        from . import cuatrimestres_url_parser
+        from enunciados.utils import cuatrimestres_url_parser
         kwargs = {
             'materia': self.conjunto.materia.slug,
             'numero': self.numero,

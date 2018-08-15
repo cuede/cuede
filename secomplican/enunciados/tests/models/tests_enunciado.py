@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from enunciados import cuatrimestres_url_parser
+from enunciados.utils import cuatrimestres_url_parser
 from enunciados.models import Materia, Practica, Parcial, Enunciado, Final
 
 
