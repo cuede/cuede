@@ -4,7 +4,11 @@ def add_query_params(url, **kwargs):
 
     La url tiene que no tener params todavía.
     """
-    url += '?'
-    for key, value in kwargs.items():
-        url += '{key}={value}&'.format(key=key, value=value)
+    def parametrizar(tupla):
+        return '{key}={value}'.format(key=tupla[0], value=tupla[1])
+
+    parametros = map(parametrizar, kwargs)
+    parametros_unidos = '&'.join(parametros)
+    if parametros_unidos:
+        url += '?' + parametros_unidos
     return url
