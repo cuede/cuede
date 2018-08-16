@@ -5,11 +5,27 @@
   <script type="text/javascript"
 	      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
-
+  <style>
+    .logo {
+      background-color:black;
+      width: 40px;
+      height: 40px;
+    }
+  </style>
 </head>
 <body>
 
-  <img src="{% static "/img/cubo.png" %}" alt="Logo">
+  <table>
+    <tr>
+      <td>
+        <div class="logo"></div>
+      </td>
+      <td>
+        <h1>qed</h1>
+      </td>
+    </tr>
+  </table>
+  <!-- <img src="{% static "/img/cubo.png" %}" alt="Logo"> -->
 
 
   {% if user.is_authenticated %}
