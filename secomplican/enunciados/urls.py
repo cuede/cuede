@@ -77,7 +77,7 @@ urlpatterns = [
 
     path(
         'soluciones/<int:pk>/editar/',
-        editar_solucion.EditarSolucion.as_view(),
+        editar_solucion.editar_solucion,
         name='editar_solucion'
     ),
 ]

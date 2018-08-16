@@ -1,25 +1,25 @@
-from django.http import HttpResponse
-from django.views.generic.edit import CreateView
-from django.shortcuts import get_object_or_404, redirect
+from django.forms import ModelForm
+from django.shortcuts import get_object_or_404, redirect, render
 
 from enunciados.models import Solucion, VersionTextoSolucion
 
 
-class EditarSolucion(CreateView):
-    model = VersionTextoSolucion
-    fields = ['texto']
-    template_name = 'enunciados/editar_solucion.html'
+class VersionTextoSolucionForm(ModelForm):
+    class Meta:
+        model = VersionTextoSolucion
+        fields = ['texto']
 
-    def dispatch(self, request, *args, **kwargs):
-        pk = kwargs.get('pk')
-        self.solucion = get_object_or_404(Solucion, pk=pk)
-        return super().dispatch(request, *args, **kwargs)
 
-    def get_success_url(self):
-        return self.solucion.enunciado.get_absolute_url()
+def editar_solucion(request, pk):
+    solucion = get_object_or_404(Solucion, pk=pk)
+    if request.method == 'POST':
+        form = VersionTextoSolucionForm(request.POST)
+        version_texto = form.save(commit=False)
+        version_texto.solucion = solucion
+        version_texto.save()
+        return redirect(solucion.enunciado)
+    else:
+        form = VersionTextoSolucionForm(
+            initial={'texto': solucion.versiones.ultima().texto})
 
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.solucion = self.solucion
-        self.object.save()
-        return redirect(self.get_success_url())
+    return render(request, 'enunciados/editar_solucion.html', {'form': form})
