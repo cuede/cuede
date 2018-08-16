@@ -149,7 +149,7 @@ class Enunciado(models.Model):
     numero = models.IntegerField()
 
     def __str__(self):
-        return 'Enunciado {}'.format(self.numero)
+        return 'Ejercicio {}'.format(self.numero)
 
     def get_absolute_url(self):
         from enunciados.utils import cuatrimestres_url_parser
