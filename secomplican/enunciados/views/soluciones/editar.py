@@ -15,6 +15,7 @@ class VersionTextoSolucionForm(ModelForm):
         texto_nuevo = self.cleaned_data['texto']
         if texto_nuevo == texto_anterior:
             raise ValidationError(_('No se cambió el texto.'))
+        return texto_nuevo
 
     class Meta:
         model = VersionTextoSolucion
