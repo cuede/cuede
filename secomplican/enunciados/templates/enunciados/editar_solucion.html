@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 
+<h1> {{ solucion.enunciado }} </h1>
+{{ solucion.enunciado.versiones.ultima }}
+
+<h2>Solución</h2>
+
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    <table>
+        {{ form.as_table }}
+    </table>
     <input type="submit" value="Guardar">
 </form>
 

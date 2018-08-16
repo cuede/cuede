@@ -23,4 +23,8 @@ def editar_solucion(request, pk):
         form = VersionTextoSolucionForm(
             initial={'texto': solucion.versiones.ultima().texto})
 
-    return render(request, 'enunciados/editar_solucion.html', {'form': form})
+    contexto = {
+        'form': form,
+        'solucion': solucion,
+    }
+    return render(request, 'enunciados/editar_solucion.html', contexto)
