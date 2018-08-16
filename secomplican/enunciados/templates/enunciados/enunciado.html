@@ -6,7 +6,10 @@
 
 <h2> Soluciones </h2>
 {% for solucion in enunciado.soluciones.all %}
-    <p> {{ solucion }} </p>
+    <p>
+        {{ solucion }}
+        <a href="{% url 'editar_solucion' pk=solucion.pk %}">editar</a>
+    </p>
 {% empty %}
     Todavía no hay soluciones <a href="{{ url_solucion }}">
       ¿Querés agregar una? </a>
