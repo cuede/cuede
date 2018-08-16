@@ -14,10 +14,11 @@ def editar_solucion(request, pk):
     solucion = get_object_or_404(Solucion, pk=pk)
     if request.method == 'POST':
         form = VersionTextoSolucionForm(request.POST)
-        version_texto = form.save(commit=False)
-        version_texto.solucion = solucion
-        version_texto.save()
-        return redirect(solucion.enunciado)
+        if form.is_valid():
+            version_texto = form.save(commit=False)
+            version_texto.solucion = solucion
+            version_texto.save()
+            return redirect(solucion.enunciado)
     else:
         form = VersionTextoSolucionForm(
             initial={'texto': solucion.versiones.ultima().texto})
