@@ -44,33 +44,33 @@ urlpatterns = [
         name='enunciado_final'
     ),
 
+    path(
+        '<slug:materia>/nuevo-enunciado/',
+        crear_enunciado.nuevo_enunciado,
+        name='agregar_enunciado'
+    ),
+
     # Soluciones
     path(
-        '<slug:materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero_practica>/<int:numero>/nuevaSolucion/',
+        '<slug:materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero_practica>/<int:numero>/nueva-solucion/',
         crear_solucion.CrearSolucion.as_view(),
         name='solucion_practica'
     ),
     path(
-        '<slug:materia>/parciales/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/nuevaSolucion/',
+        '<slug:materia>/parciales/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/nueva-solucion/',
         crear_solucion.CrearSolucion.as_view(),
         {'es_recuperatorio': False},
         name='solucion_parcial'
     ),
     path(
-        '<slug:materia>/recuperatorios/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/nuevaSolucion/',
+        '<slug:materia>/recuperatorios/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/nueva-solucion/',
         crear_solucion.CrearSolucion.as_view(),
         {'es_recuperatorio': True},
         name='solucion_recuperatorio'
     ),
     path(
-        '<slug:materia>/finales/<int:anio>/<int:mes>/<int:dia>/<int:numero>/nuevaSolucion/',
+        '<slug:materia>/finales/<int:anio>/<int:mes>/<int:dia>/<int:numero>/nueva-solucion/',
         crear_solucion.CrearSolucion.as_view(),
         name='solucion_final'
-    ),
-
-    path(
-        '<slug:materia>/nuevo-enunciado/',
-        crear_enunciado.nuevo_enunciado,
-        name='agregar_enunciado'
     ),
 ]
