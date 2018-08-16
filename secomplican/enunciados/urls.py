@@ -1,9 +1,9 @@
 from django.urls import path
 
 from enunciados.views import index, materias, conjuntos_de_enunciados
-from enunciados.views.enunciados import enunciados
-from enunciados.views.enunciados import crear
-from enunciados.views.enunciados import soluciones
+from enunciados.views.enunciados import ver as ver_enunciados
+from enunciados.views.enunciados import crear as crear_enunciado
+from enunciados.views.soluciones import crear as crear_solucion
 
 
 urlpatterns = [
@@ -23,54 +23,54 @@ urlpatterns = [
     # Enunciados
     path(
         '<slug:materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero_practica>/<int:numero>/',
-        enunciados.enunciado_practica,
+        ver_enunciados.enunciado_practica,
         name='enunciado_practica'
     ),
     path(
         '<slug:materia>/parciales/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/',
-        enunciados.enunciado_parcial,
+        ver_enunciados.enunciado_parcial,
         {'es_recuperatorio': False},
         name='enunciado_parcial'
     ),
     path(
         '<slug:materia>/recuperatorios/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/',
-        enunciados.enunciado_parcial,
+        ver_enunciados.enunciado_parcial,
         {'es_recuperatorio': True},
         name='enunciado_recuperatorio'
     ),
     path(
         '<slug:materia>/finales/<int:anio>/<int:mes>/<int:dia>/<int:numero>/',
-        enunciados.enunciado_final,
+        ver_enunciados.enunciado_final,
         name='enunciado_final'
     ),
 
     # Soluciones
     path(
         '<slug:materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero_practica>/<int:numero>/nuevaSolucion/',
-        soluciones.CrearSolucion.as_view(),
+        crear_solucion.CrearSolucion.as_view(),
         name='solucion_practica'
     ),
     path(
         '<slug:materia>/parciales/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/nuevaSolucion/',
-        soluciones.CrearSolucion.as_view(),
+        crear_solucion.CrearSolucion.as_view(),
         {'es_recuperatorio': False},
         name='solucion_parcial'
     ),
     path(
         '<slug:materia>/recuperatorios/<int:anio>/<cuatrimestre>/<int:numero_parcial>/<int:numero>/nuevaSolucion/',
-        soluciones.CrearSolucion.as_view(),
+        crear_solucion.CrearSolucion.as_view(),
         {'es_recuperatorio': True},
         name='solucion_recuperatorio'
     ),
     path(
         '<slug:materia>/finales/<int:anio>/<int:mes>/<int:dia>/<int:numero>/nuevaSolucion/',
-        soluciones.CrearSolucion.as_view(),
+        crear_solucion.CrearSolucion.as_view(),
         name='solucion_final'
     ),
 
     path(
         '<slug:materia>/nuevo-enunciado/',
-        crear.nuevo_enunciado,
+        crear_enunciado.nuevo_enunciado,
         name='agregar_enunciado'
     ),
 ]

@@ -3,7 +3,7 @@ from django.views.generic.edit import CreateView
 
 from enunciados.utils import cuatrimestres_url_parser
 from enunciados.models import Solucion, VersionTextoSolucion
-from . import enunciados_utils
+from enunciados.views.enunciados import enunciados_utils
 
 
 def enunciado_con_kwargs(kwargs):
