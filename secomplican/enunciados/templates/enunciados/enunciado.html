@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+<a href="{{ conjunto.get_absolute_url }}"><-- Volver a {{ conjunto }}</a>
 <h1> {{ enunciado }} </h1>
 {{ enunciado.versiones.ultima }}
 
