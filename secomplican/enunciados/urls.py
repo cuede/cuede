@@ -4,6 +4,7 @@ from enunciados.views import index, materias, conjuntos_de_enunciados
 from enunciados.views.enunciados import ver as ver_enunciados
 from enunciados.views.enunciados import crear as crear_enunciado
 from enunciados.views.soluciones import crear as crear_solucion
+from enunciados.views.soluciones import editar as editar_solucion
 
 
 urlpatterns = [
@@ -72,5 +73,11 @@ urlpatterns = [
         '<slug:materia>/finales/<int:anio>/<int:mes>/<int:dia>/<int:numero>/nueva-solucion/',
         crear_solucion.CrearSolucion.as_view(),
         name='solucion_final'
+    ),
+
+    path(
+        'soluciones/<int:pk>/editar/',
+        editar_solucion.editar_solucion,
+        name='editar_solucion'
     ),
 ]
