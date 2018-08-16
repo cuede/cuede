@@ -11,6 +11,7 @@
         {{ solucion }}
         <a href="{% url 'editar_solucion' pk=solucion.pk %}">editar</a>
     </p>
+    <hr>
 {% empty %}
     Todavía no hay soluciones <a href="{{ url_solucion }}">
       ¿Querés agregar una? </a>
