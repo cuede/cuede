@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1>Nuevo enunciado</h1>
+<h1>Nuevo ejercicio</h1>
 
 <form method="post">
     {% csrf_token %}
-    <h2>Conjunto de enunciados</h2>
+    <h2>Conjunto de ejercicios</h2>
     <table>
         {# Para poder referenciar las entradas de la tabla en el javascript. #}
         {{ conjunto_form.non_field_errors }}
@@ -24,7 +24,7 @@
             </tr>
         {% endfor %}
     </table>
-    <h2>Enunciado</h2>
+    <h2>Ejercicio</h2>
     <table>
         {{ enunciado_form.as_table }}
         {{ version_texto_form.as_table }}
