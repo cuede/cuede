@@ -5,7 +5,7 @@
 <h1> {{ enunciado }} </h1>
 <p>
     {{ enunciado.versiones.ultima }}
-    <a href="{{ url_editar }}">editar</a>
+    <a href="{{ enunciado.get_edit_url }}">editar</a>
 </p>
 
 <h2> Soluciones </h2>
