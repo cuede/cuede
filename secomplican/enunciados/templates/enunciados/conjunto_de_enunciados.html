@@ -7,8 +7,15 @@
     </a> - {{ conjunto }}
 </h1>
 {% for enunciado in conjunto.enunciado_set.all %}
-    <h2><a href="{{ enunciado.get_absolute_url }}">Ejercicio {{ enunciado.numero }}</a></h2>
-    <p>{{ enunciado.versiones.ultima }}</p>
+    <h2>
+        <a href="{{ enunciado.get_absolute_url }}">
+            Ejercicio {{ enunciado.numero }}
+        </a>
+    </h2>
+    <p>
+        {{ enunciado.versiones.ultima }}
+        <a href="{{ enunciado.get_edit_url }}">editar</a>
+    </p>
 {% empty %}
     Todavía no hay enunciados. <a href="{{ url_nuevo_enunciado }}"> ¿Querés agregar uno? </a>
 {% endfor %}
