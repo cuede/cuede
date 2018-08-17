@@ -3,7 +3,10 @@
 
 <a href="{{ conjunto.get_absolute_url }}"><-- Volver a {{ conjunto }}</a>
 <h1> {{ enunciado }} </h1>
-{{ enunciado.versiones.ultima }}
+<p>
+    {{ enunciado.versiones.ultima }}
+    <a href="{{ url_editar }}">editar</a>
+</p>
 
 <h2> Soluciones </h2>
 {% for solucion in enunciado.soluciones.all %}
