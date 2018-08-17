@@ -27,7 +27,7 @@ class VersionTextoForm(forms.ModelForm):
         fields = ['texto']
 
 
-def enunciado(request, enunciado, conjunto):
+def enunciado(request, enunciado):
     if request.method == 'POST':
         enunciado_form = EnunciadoForm(request.POST)
         version_texto_form = VersionTextoForm(enunciado, request.POST)
@@ -58,7 +58,6 @@ def enunciado(request, enunciado, conjunto):
     context = {
         'enunciado_form': enunciado_form,
         'version_texto_form': version_texto_form,
-        'conjunto': conjunto,
     }
     return render(request, 'enunciados/editar_enunciado.html', context)
 
@@ -68,7 +67,7 @@ def enunciado_practica(
     numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
     encontrado = enunciados_utils.enunciado_de_practica(
         materia, anio, numero_cuatrimestre, numero_practica, numero)
-    return enunciado(request, encontrado, encontrado.conjunto.practica)
+    return enunciado(request, encontrado)
 
 
 def enunciado_parcial(
@@ -78,10 +77,10 @@ def enunciado_parcial(
     encontrado = enunciados_utils.enunciado_de_parcial(
         materia, anio, numero_cuatrimestre, numero_parcial,
         numero, es_recuperatorio)
-    return enunciado(request, encontrado, encontrado.conjunto.parcial)
+    return enunciado(request, encontrado)
 
 
 def enunciado_final(request,  materia, anio, mes, dia, numero):
     encontrado = enunciados_utils.enunciado_de_final(
         materia, anio, mes, dia, numero)
-    return enunciado(request, encontrado, encontrado.conjunto.final)
+    return enunciado(request, encontrado)
