@@ -47,7 +47,7 @@ urlpatterns = [
     ),
 
     path(
-        '<slug:materia>/nuevo-enunciado/',
+        '<slug:materia>/nuevo-ejercicio/',
         crear_enunciado.nuevo_enunciado,
         name='agregar_enunciado'
     ),
