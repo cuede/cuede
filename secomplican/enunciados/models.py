@@ -151,44 +151,77 @@ class Enunciado(models.Model):
     def __str__(self):
         return 'Ejercicio {}'.format(self.numero)
 
-    def get_absolute_url(self):
+    def tipo_conjunto(self):
+        """Devuelve el tipo del conjunto al que pertenece este enunciado"""
+        # Esto es horrible, pero no sé si hay otra forma de
+        # chequear de qué subtipo es el conjunto.
+        try:
+            practica = self.conjunto.practica
+            return 'practica'
+        except Practica.DoesNotExist:
+            try:
+                parcial = self.conjunto.parcial
+                return 'parcial'
+            except Parcial.DoesNotExist:
+                try:
+                    final = self.conjunto.final
+                    return 'final'
+                except Final.DoesNotExist:
+                    # No debería pasar nunca.
+                    return None
+
+    def _kwargs_para_url(self, tipo_conjunto):
         from enunciados.utils import cuatrimestres_url_parser
         kwargs = {
             'materia': self.conjunto.materia.slug,
             'numero': self.numero,
         }
 
-        # Esto es horrible, pero no sé si hay otra forma de chequear de qué subtipo es el conjunto.
-        try:
+        if tipo_conjunto == 'parcial':
             parcial = self.conjunto.parcial
             kwargs['numero_parcial'] = parcial.numero
             kwargs['anio'] = parcial.anio
             kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(
                 parcial.cuatrimestre)
+        elif tipo_conjunto == 'practica':
+            practica = self.conjunto.practica
+            kwargs['numero_practica'] = practica.numero
+            kwargs['anio'] = practica.anio
+            kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(
+                practica.cuatrimestre)
+        elif tipo_conjunto == 'final':
+            final = self.conjunto.final
+            kwargs['anio'] = final.fecha.year
+            kwargs['mes'] = final.fecha.month
+            kwargs['dia'] = final.fecha.day
+        else:
+            raise Exception(
+                'El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
+
+        return kwargs
+
+    def get_absolute_url(self):
+        tipo_conjunto = self.tipo_conjunto()
+        if tipo_conjunto == 'parcial':
             if parcial.recuperatorio:
                 url = 'enunciado_recuperatorio'
             else:
                 url = 'enunciado_parcial'
-        except Parcial.DoesNotExist:
-            try:
-                practica = self.conjunto.practica
-                kwargs['numero_practica'] = practica.numero
-                kwargs['anio'] = practica.anio
-                kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(
-                    practica.cuatrimestre)
-                url = 'enunciado_practica'
-            except Practica.DoesNotExist:
-                try:
-                    final = self.conjunto.final
-                    kwargs['anio'] = final.fecha.year
-                    kwargs['mes'] = final.fecha.month
-                    kwargs['dia'] = final.fecha.day
-                    url = 'enunciado_final'
-                except Final.DoesNotExist:
-                    raise Exception(
-                        'El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
+        elif tipo_conjunto == 'practica':
+            url = 'enunciado_practica'
+        elif tipo_conjunto == 'final':
+            url = 'enunciado_final'
+        else:
+            raise Exception(
+                'El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
 
-        return reverse(url, kwargs=kwargs)
+        return reverse(url, kwargs=self._kwargs_para_url(tipo_conjunto))
+
+    def get_edit_url(self):
+        """Devuelve la url para editar este enunciado"""
+        tipo_conjunto = self.tipo_conjunto()
+        nombre_url = 'editar_enunciado_' + tipo_conjunto
+        return reverse(nombre_url, kwargs=self._kwargs_para_url(tipo_conjunto))
 
     class Meta:
         ordering = ['numero']
