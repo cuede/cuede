@@ -26,6 +26,9 @@ class Materia(models.Model):
             raise ValidationError(
                 _('El slug de esta Materia es el mismo que el de otra.'))
 
+    class Meta:
+        ordering = ['nombre']
+
 
 class ConjuntoDeEnunciados(models.Model):
     materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
