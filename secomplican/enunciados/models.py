@@ -207,7 +207,7 @@ class Enunciado(models.Model):
     def get_absolute_url(self):
         tipo_conjunto = self.tipo_conjunto()
         if tipo_conjunto == 'parcial':
-            if parcial.recuperatorio:
+            if self.conjunto.parcial.recuperatorio:
                 url = 'enunciado_recuperatorio'
             else:
                 url = 'enunciado_parcial'
