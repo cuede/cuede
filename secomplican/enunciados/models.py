@@ -224,7 +224,11 @@ class Enunciado(models.Model):
     def get_edit_url(self):
         """Devuelve la url para editar este enunciado"""
         tipo_conjunto = self.tipo_conjunto()
-        nombre_url = 'editar_enunciado_' + tipo_conjunto
+        prefijo = 'editar_enunciado_'
+        if tipo_conjunto == 'parcial' and self.conjunto.parcial.recuperatorio:
+            nombre_url = prefijo + 'recuperatorio'
+        else:
+            nombre_url = prefijo + tipo_conjunto
         return reverse(nombre_url, kwargs=self._kwargs_para_url(tipo_conjunto))
 
     class Meta:
