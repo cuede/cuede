@@ -7,31 +7,20 @@ from enunciados.models import VersionTextoEnunciado
 from enunciados.utils import cuatrimestres_url_parser
 
 from . import enunciados_utils
-from .forms import EnunciadoForm
+from .forms import EnunciadoForm, VersionTextoForm
 
 
-class VersionTextoForm(forms.ModelForm):
-    def __init__(self, enunciado, *args, **kwargs):
-        self.enunciado = enunciado
-        super().__init__(*args, **kwargs)
-
-    def clean_texto(self):
-        texto_anterior = self.enunciado.versiones.ultima().texto
-        texto_nuevo = self.cleaned_data['texto']
-        if texto_nuevo == texto_anterior:
-            raise ValidationError(_('No se cambió el texto.'))
-        return texto_nuevo
-
-    class Meta:
-        model = VersionTextoEnunciado
-        fields = ['texto']
+def se_cambio_texto(enunciado, texto_nuevo):
+    texto_anterior = self.enunciado.versiones.ultima().texto
+    return texto_anterior != texto_nuevo
 
 
 def enunciado(request, enunciado):
     if request.method == 'POST':
         enunciado_form = EnunciadoForm(request.POST)
-        version_texto_form = VersionTextoForm(enunciado, request.POST)
+        version_texto_form = VersionTextoForm(request.POST)
         if enunciado_form.is_valid() and version_texto_form.is_valid():
+            numero_anterior = enunciado.numero
             enunciado.numero = enunciado_form.cleaned_data['numero']
             hubo_error = False
             try:
@@ -39,6 +28,14 @@ def enunciado(request, enunciado):
             except ValidationError as error:
                 enunciado_form.add_error(None, error)
                 hubo_error = True
+
+            if enunciado.numero == numero_anterior:
+                texto_nuevo = version_texto_form.cleaned_data['texto']
+                if not se_cambio_texto(enunciado, texto_nuevo):
+                    version_texto_form.add_error(
+                        'texto', ValidationError(_('No se cambió el texto.'))
+                    )
+                    hubo_error = True
 
             if not hubo_error:
                 enunciado.save()
@@ -51,7 +48,6 @@ def enunciado(request, enunciado):
             initial={'numero': enunciado.numero}
         )
         version_texto_form = VersionTextoForm(
-            enunciado,
             initial={'texto': enunciado.versiones.ultima().texto}
         )
 
