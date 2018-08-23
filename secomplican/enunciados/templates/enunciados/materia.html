@@ -11,6 +11,7 @@
 {% empty %}
     Todavía no hay prácticas.
 {% endfor %}
+<p><a href="{{ url_agregar_practica }}">Agregar práctica</a></p>
 
 {% for numero, parciales_actuales in parciales.items %}
     <h2>{{ parciales_actuales.0.ordinal.plural }} Parciales</h2>
@@ -23,6 +24,7 @@
     <h2> Parciales </h2>
     Todavía no hay parciales.
 {% endfor %}
+<p><a href="{{ url_agregar_parcial }}">Agregar parcial</a></p>
 
 <h2>Finales</h2>
 {% for final in finales %}
@@ -30,5 +32,7 @@
 {% empty %}
     Todavía no hay finales.
 {% endfor %}
+<p><a href="{{ url_agregar_final }}">Agregar final</a></p>
+
 
 {% endblock %}
