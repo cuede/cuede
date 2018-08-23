@@ -11,7 +11,7 @@ from .forms import EnunciadoForm, VersionTextoForm
 
 
 def se_cambio_texto(enunciado, texto_nuevo):
-    texto_anterior = self.enunciado.versiones.ultima().texto
+    texto_anterior = enunciado.versiones.ultima().texto
     return texto_anterior != texto_nuevo
 
 
