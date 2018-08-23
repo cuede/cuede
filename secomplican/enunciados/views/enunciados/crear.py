@@ -7,12 +7,13 @@ from .forms import ConjuntoDeEnunciadosForm, EnunciadoForm, VersionTextoForm
 
 
 def nuevo_enunciado(request, materia):
-    objeto_materia = get_object_or_404(Materia, slug=materia)
+    # objeto_materia = get_object_or_404(Materia, slug=materia)
     if request.method == 'POST':
-        conjunto_form = ConjuntoDeEnunciadosForm(objeto_materia, request.POST)
+        conjunto_form = ConjuntoDeEnunciadosForm(request.POST)
         enunciado_form = EnunciadoForm(request.POST)
         version_texto_form = VersionTextoForm(request.POST)
-        if conjunto_form.is_valid() and enunciado_form.is_valid() and version_texto_form.is_valid():
+        if conjunto_form.is_valid() and \
+                enunciado_form.is_valid() and version_texto_form.is_valid():
             conjunto, creado = conjunto_form.save()
             enunciado = enunciado_form.save(commit=False)
             enunciado.conjunto = conjunto
@@ -33,8 +34,7 @@ def nuevo_enunciado(request, materia):
                 version_texto.save()
                 return redirect(enunciado.get_absolute_url())
     else:
-        conjunto_form = ConjuntoDeEnunciadosForm(
-            objeto_materia, initial=request.GET)
+        conjunto_form = ConjuntoDeEnunciadosForm(initial=request.GET)
         enunciado_form = EnunciadoForm()
         version_texto_form = VersionTextoForm()
 

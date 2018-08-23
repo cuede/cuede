@@ -3,11 +3,16 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from enunciados.models import (ConjuntoDeEnunciadosConCuatrimestre, Enunciado,
-                               Final, Parcial, Practica, VersionTextoEnunciado)
+from enunciados.models import (Materia, ConjuntoDeEnunciadosConCuatrimestre,
+                               Enunciado, Final, Parcial, Practica,
+                               VersionTextoEnunciado)
 
 
 class ConjuntoDeEnunciadosForm(forms.Form):
+    materia = forms.ModelChoiceField(
+        queryset=Materia.objects.all(),
+        empty_label=None)
+
     PRACTICA = 0
     PARCIAL = 1
     FINAL = 2
@@ -36,8 +41,7 @@ class ConjuntoDeEnunciadosForm(forms.Form):
     # inicializar en el __init__.
     ANIOS = 50
 
-    def __init__(self, materia, *args, **kwargs):
-        self.materia = materia
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Si es final, necesitamos la fecha.
         # Tenemos que poner los años del field fecha dinámicamente.
@@ -56,13 +60,14 @@ class ConjuntoDeEnunciadosForm(forms.Form):
         super().clean() para esto primero.
         """
         creado = False
+        materia = self.cleaned_data.get('materia')
         tipo = self.cleaned_data.get('tipo')
         if tipo == self.FINAL:
             fecha = self.cleaned_data.get('fecha')
             try:
-                conjunto = Final.objects.get(materia=self.materia, fecha=fecha)
+                conjunto = Final.objects.get(materia=materia, fecha=fecha)
             except Final.DoesNotExist:
-                conjunto = Final(materia=self.materia, fecha=fecha)
+                conjunto = Final(materia=materia, fecha=fecha)
                 creado = True
         else:
             anio = self.cleaned_data.get('anio')
@@ -70,10 +75,10 @@ class ConjuntoDeEnunciadosForm(forms.Form):
             if tipo == self.PRACTICA:
                 numero_practica = self.cleaned_data.get('numero_practica')
                 try:
-                    conjunto = Practica.objects.get(materia=self.materia, cuatrimestre=cuatrimestre,
+                    conjunto = Practica.objects.get(materia=materia, cuatrimestre=cuatrimestre,
                                                     anio=anio, numero=numero_practica)
                 except Practica.DoesNotExist:
-                    conjunto = Practica(materia=self.materia, anio=anio, cuatrimestre=cuatrimestre,
+                    conjunto = Practica(materia=materia, anio=anio, cuatrimestre=cuatrimestre,
                                         numero=numero_practica)
                     creado = True
 
@@ -81,10 +86,10 @@ class ConjuntoDeEnunciadosForm(forms.Form):
                 numero_parcial = self.cleaned_data.get('numero_parcial')
                 es_recuperatorio = self.cleaned_data.get('es_recuperatorio')
                 try:
-                    conjunto = Parcial.objects.get(materia=self.materia, anio=anio, cuatrimestre=cuatrimestre,
+                    conjunto = Parcial.objects.get(materia=materia, anio=anio, cuatrimestre=cuatrimestre,
                                                    numero=numero_parcial, recuperatorio=es_recuperatorio)
                 except Parcial.DoesNotExist:
-                    conjunto = Parcial(materia=self.materia, anio=anio, cuatrimestre=cuatrimestre,
+                    conjunto = Parcial(materia=materia, anio=anio, cuatrimestre=cuatrimestre,
                                        numero=numero_parcial, recuperatorio=es_recuperatorio)
                     creado = True
             else:
