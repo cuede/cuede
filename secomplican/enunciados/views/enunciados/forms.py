@@ -11,7 +11,8 @@ from enunciados.models import (Materia, ConjuntoDeEnunciadosConCuatrimestre,
 class ConjuntoDeEnunciadosForm(forms.Form):
     materia = forms.ModelChoiceField(
         queryset=Materia.objects.all(),
-        empty_label=None)
+        empty_label=None,
+        to_field_name='slug')
 
     PRACTICA = 0
     PARCIAL = 1

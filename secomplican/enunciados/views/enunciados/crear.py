@@ -7,7 +7,6 @@ from .forms import ConjuntoDeEnunciadosForm, EnunciadoForm, VersionTextoForm
 
 
 def nuevo_enunciado(request, materia):
-    # objeto_materia = get_object_or_404(Materia, slug=materia)
     if request.method == 'POST':
         conjunto_form = ConjuntoDeEnunciadosForm(request.POST)
         enunciado_form = EnunciadoForm(request.POST)
