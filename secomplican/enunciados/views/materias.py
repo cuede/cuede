@@ -12,8 +12,12 @@ class MateriasView(generic.ListView):
 
 
 def url_agregar_conjunto(slug_materia, tipo):
-    url = reverse('agregar_enunciado', kwargs={'materia': slug_materia})
-    return url_utils.add_query_params(url, tipo=tipo)
+    queryparams = {
+        'materia': slug_materia,
+        'tipo': tipo,
+    }
+    return url_utils.reverse_con_queryparams(
+        'agregar_enunciado', queryparams=queryparams)
 
 
 def materia(request, nombre):

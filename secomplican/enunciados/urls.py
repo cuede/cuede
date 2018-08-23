@@ -11,6 +11,13 @@ from enunciados.views.soluciones import editar as editar_solucion
 urlpatterns = [
     path('', index.index, name='index'),
     path('materias/', materias.MateriasView.as_view(), name='materias'),
+
+    path(
+        'nuevo-ejercicio/',
+        crear_enunciado.nuevo_enunciado,
+        name='agregar_enunciado'
+    ),
+
     path('<slug:nombre>/', materias.materia, name='materia'),
     path('<slug:materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero>/',
          conjuntos_de_enunciados.practica, name='practica'),
@@ -44,12 +51,6 @@ urlpatterns = [
         '<slug:materia>/finales/<int:anio>/<int:mes>/<int:dia>/<int:numero>/',
         ver_enunciados.enunciado_final,
         name='enunciado_final'
-    ),
-
-    path(
-        '<slug:materia>/nuevo-ejercicio/',
-        crear_enunciado.nuevo_enunciado,
-        name='agregar_enunciado'
     ),
 
     path(

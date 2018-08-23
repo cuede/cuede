@@ -1,8 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
 
-from enunciados.utils import cuatrimestres_url_parser
+from enunciados.utils import cuatrimestres_url_parser, url_utils
 from enunciados.models import Practica, Parcial, Final
 from enunciados.utils.url_utils import add_query_params
 from enunciados.views.enunciados.crear import ConjuntoDeEnunciadosForm
@@ -11,12 +10,13 @@ import datetime
 
 def render_conjunto_de_enunciados(
         request, conjunto, nuevo_enunciado_query_params):
-    url_nuevo_enunciado = reverse(
-        'agregar_enunciado', kwargs={'materia': conjunto.materia.slug})
-    url_nuevo_enunciado_con_params = add_query_params(
-        url_nuevo_enunciado, **nuevo_enunciado_query_params)
-    contexto = {'conjunto': conjunto,
-                'url_nuevo_enunciado': url_nuevo_enunciado_con_params}
+    nuevo_enunciado_query_params['materia'] = conjunto.materia.slug
+    url_nuevo_enunciado = url_utils.reverse_con_queryparams(
+        'agregar_enunciado', queryparams=nuevo_enunciado_query_params)
+    contexto = {
+        'conjunto': conjunto,
+        'url_nuevo_enunciado': url_nuevo_enunciado,
+    }
     return render(request, 'enunciados/conjunto_de_enunciados.html', contexto)
 
 
