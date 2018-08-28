@@ -1,0 +1,56 @@
+<style>
+    .logo {
+        background-color:black;
+        width: 40px;
+        height: 40px;
+    }
+
+    .logo-text {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .navbar {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        border-bottom: 1px solid black;
+    }
+
+    .navbar li {
+        display: block;
+        float: left;
+    }
+
+    .navbar a {
+        text-align: center;
+    }
+</style>
+<ul class="navbar">
+    <li>
+        <a href="/">
+            <table>
+                <tr>
+                    <td>
+                        <div class="logo"></div>
+                    </td>
+                    <td>
+                        <h1 class="logo-text">qed</h1>
+                    </td>
+                </tr>
+            </table>
+        </a>
+    </li>
+    <li style="float: right;">
+        {% if user.is_authenticated %}
+            Hola {{ user.username }}, estás logueado.
+            <a href="{% url 'logout' %}">logout</a>
+        {% else %}
+            No estás logueado che.
+            <a href="{% url 'login' %}">login</a>
+        {% endif %}
+    </li>
+</ul>

@@ -1,51 +1,29 @@
 {% load static %}
 <html>
+
 <head>
   <title>qed</title>
-  <script type="text/javascript"
-	      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
+      margin-left: 0%;
     }
-    .logo {
-      background-color:black;
-      width: 40px;
-      height: 40px;
+
+    .content {
+      margin-top: 60px;
+      margin-left: 5px
     }
   </style>
 </head>
+
 <body>
-  <a href="/">
-    <table>
-      <tr>
-        <td>
-          <div class="logo"></div>
-        </td>
-        <td>
-          <h1>qed</h1>
-        </td>
-      </tr>
-    </table>
-  </a>
-  <!-- <img src="{% static "/img/cubo.png" %}" alt="Logo"> -->
+  {% include "navbar.html" %}
 
-
-  {% if user.is_authenticated %}
-    <p>
-      Hola {{ user.username }}, estás logueado.
-      <a href="{% url 'logout' %}">logout</a>
-    </p>
-  {% else %}
-    <p>
-      No estás logueado che.
-      <a href="{% url 'login' %}">login</a>
-    </p>
-  {% endif %}
-
-
-  {% block content %}{% endblock %}
-
+  <div class="content">
+    {% block content %}{% endblock %}
+  </div>
 </body>
+
 </html>
