@@ -1,6 +1,5 @@
 <style>
     #logo {
-        background-color: white;
         padding: 0;
         margin-right: 5px;
     }
@@ -24,9 +23,10 @@
         position: fixed;
         top: 0;
         width: 90%;
-        border-bottom: 1px solid black;
-        background-color:white;
+        border-bottom: 1px solid #222;
+        background-color: #FcFcFc;
         text-align: center;
+        box-shadow: 5px 0px 5px grey;
     }
 
     .navbar li {
@@ -106,7 +106,7 @@
         <li class="derecha">
             <a href="{% url 'logout' %}">Logout</a>
         </li>
-        <li class="derecha">
+        <li class="derecha texto">
             Hola {{ user.username }}, estás logueado.
         </li>
         {% else %}
