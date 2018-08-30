@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-<a href="{{ conjunto.get_absolute_url }}"><-- Volver a {{ conjunto }}</a>
-<h1> {{ enunciado }} </h1>
+<a href="{{ conjunto.materia.get_absolute_url }}">{{ conjunto.materia }}</a> /
+<a href="{{ conjunto.get_absolute_url }}">{{ conjunto }}</a>
+<h1 style="display: inline">&nbsp;/ {{ enunciado }} </h1>
 <p>
     {{ enunciado.versiones.ultima }}
     <a href="{{ enunciado.get_edit_url }}">editar</a>

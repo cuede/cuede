@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1>
-    <a href="{{ conjunto.materia.get_absolute_url }}">
+<a href="{{ conjunto.materia.get_absolute_url }}">
         {{ conjunto.materia }}
-    </a> - {{ conjunto }}
-</h1>
+</a>
+<h1 style="display: inline">&nbsp;/ {{ conjunto }}</h1>
 {% for enunciado in conjunto.enunciado_set.all %}
     <h2>
         <a href="{{ enunciado.get_absolute_url }}">
