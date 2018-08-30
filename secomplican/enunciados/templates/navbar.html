@@ -30,9 +30,16 @@
     }
 
     .navbar li {
-        float: left;
         line-height: 40px;
         font-weight: bold;
+    }
+
+    .navbar li.izquierda {
+        float: left;
+    }
+
+    .navbar li.derecha {
+        float: right;
     }
 
     .navbar a {
@@ -45,7 +52,6 @@
 
     .navbar li.logueo {
         margin-left: 5px;
-        float: right;
     }
 
     .boton-logueo {
@@ -57,7 +63,7 @@
     }
 </style>
 <ul class="navbar">
-    <li>
+    <li class="izquierda">
         <a href="/" id="logo">
             <table>
                 <tr>
@@ -71,29 +77,29 @@
             </table>
         </a>
     </li>
-    <li>
+    <li class="izquierda">
         <a href="{% url 'agregar_enunciado' %}">
             Agregar ejercicio
         </a>
     </li>
-    <li>
+    <li class="izquierda">
         <a href="{% url 'materias' %}">
             Materias
         </a>
     </li>
 
     {% if user.is_authenticated %}
-        <li class="logueo boton-logueo">
+        <li class="derecha logueo boton-logueo">
             <a href="{% url 'logout' %}">logout</a>
         </li>
-        <li class="logueo">
+        <li class="derecha logueo">
             Hola {{ user.username }}, estás logueado.
         </li>
         {% else %}
-        <li class="logueo boton-logueo">
+        <li class="derecha logueo boton-logueo">
             <a href="{% url 'login' %}">login</a>
         </li>
-        <li class="logueo">
+        <li class="derecha logueo">
             No estás logueado che.
         </li>
 
