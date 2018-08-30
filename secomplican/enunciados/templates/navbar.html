@@ -64,12 +64,8 @@
         background-color: rgb(22, 22, 22);
     }
 
-    .boton-oscuro:hover {
-        background-color: #EEE;
-    }
-
     .boton-oscuro a:hover {
-        color: #222;
+        color: #DDD;
     }
 
     .boton-oscuro a {
@@ -104,20 +100,17 @@
 
     {% if user.is_authenticated %}
         <li class="derecha">
-            <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'logout' %}">Salir</a>
         </li>
         <li class="derecha texto">
-            Hola {{ user.username }}, estás logueado.
+            Hola {{ user.username|title }}.
         </li>
         {% else %}
         <li class="derecha boton-oscuro">
             <a href="{% url 'signup' %}">Registrarse</a>
         </li>
         <li class="derecha">
-            <a href="{% url 'login' %}">Login</a>
-        </li>
-        <li class="derecha texto">
-            No estás logueado che.
+            <a href="{% url 'login' %}">Entrar</a>
         </li>
 
         {% endif %}
