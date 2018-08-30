@@ -13,11 +13,12 @@
     .navbar {
         list-style-type: none;
         margin: 0;
-        padding: 0;
+        padding: 5px 12%;
         position: fixed;
         top: 0;
-        width: 100%;
+        width: 76%;
         border-bottom: 1px solid black;
+        background-color:white;
     }
 
     .navbar li {
@@ -27,6 +28,10 @@
 
     .navbar a {
         text-align: center;
+    }
+
+    .navbar li.logueo {
+        float: right;
     }
 </style>
 <ul class="navbar">
@@ -44,7 +49,7 @@
             </table>
         </a>
     </li>
-    <li style="float: right;">
+    <li class="logueo">
         {% if user.is_authenticated %}
             Hola {{ user.username }}, estás logueado.
             <a href="{% url 'logout' %}">logout</a>
