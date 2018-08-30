@@ -1,8 +1,13 @@
 <style>
-    .logo {
-        background-color:black;
-        width: 40px;
-        height: 40px;
+    #logo {
+        background-color: white;
+        padding: 0;
+    }
+
+    .logo-square {
+        background-color:rgb(22, 22, 22);;
+        width: 30px;
+        height: 30px;
     }
 
     .logo-text {
@@ -11,51 +16,79 @@
     }
 
     .navbar {
+        height: 40px;
+        display: table-row;
         list-style-type: none;
         margin: 0;
-        padding: 5px 12%;
+        padding: 0 12%;
         position: fixed;
         top: 0;
         width: 76%;
         border-bottom: 1px solid black;
         background-color:white;
+        text-align: center;
     }
 
     .navbar li {
-        display: block;
         float: left;
+        line-height: 40px;
+        margin-right: 5px;
+        font-weight: bold;
     }
 
     .navbar a {
+        display: block;
+        background: rgb(22, 22, 22);;
         text-align: center;
+        color: white;
+        text-decoration: none;
+        padding: 0 10px;
     }
 
     .navbar li.logueo {
         float: right;
     }
+
+    .boton-logueo {
+        margin-right: 0;
+    }
 </style>
 <ul class="navbar">
     <li>
-        <a href="/">
+        <a href="/" id="logo">
             <table>
                 <tr>
                     <td>
-                        <div class="logo"></div>
+                        <div class="logo-square"></div>
                     </td>
                     <td>
-                        <h1 class="logo-text">qed</h1>
+                        <h2 class="logo-text">qed</h2>
                     </td>
                 </tr>
             </table>
         </a>
     </li>
-    <li class="logueo">
-        {% if user.is_authenticated %}
-            Hola {{ user.username }}, estás logueado.
+    <li>
+        <a href="{% url 'agregar_enunciado' %}">
+            Agregar ejercicio
+        </a>
+    </li>
+
+    {% if user.is_authenticated %}
+        <li class="logueo boton-logueo">
             <a href="{% url 'logout' %}">logout</a>
+        </li>
+        <li class="logueo">
+            Hola {{ user.username }}, estás logueado.
+        </li>
         {% else %}
-            No estás logueado che.
+        <li class="logueo boton-logueo">
             <a href="{% url 'login' %}">login</a>
+        </li>
+        <li class="logueo">
+            No estás logueado che.
+        </li>
+
         {% endif %}
     </li>
 </ul>
