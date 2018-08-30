@@ -6,7 +6,7 @@
 <h1> {{ materia.nombre }} </h1>
 <h2>Prácticas{% if practicas %} del {{ practicas.0.cuatrimestre|texto_cuatrimestre }} del {{ practicas.0.anio }} {% endif %}</h2>
 {% for practica in practicas %}
-    <a href="{{ practica.get_absolute_url }}">
+    <a href="{{ practica.get_absolute_url }}" class="important">
         Práctica {{ practica.numero }}</a><br>
 {% empty %}
     Todavía no hay prácticas.
@@ -16,7 +16,7 @@
 {% for numero, parciales_actuales in parciales.items %}
     <h2>{{ parciales_actuales.0.ordinal.plural }} Parciales</h2>
     {% for parcial in parciales_actuales %}
-        <a href="{{ parcial.get_absolute_url }}">
+        <a href="{{ parcial.get_absolute_url }}" class="important">
             {{ parcial }}
         </a><br>
     {% endfor %}
@@ -28,7 +28,7 @@
 
 <h2>Finales</h2>
 {% for final in finales %}
-    <a href="{{ final.get_absolute_url }}">{{ final }}</a><br>
+    <a href="{{ final.get_absolute_url }}" class="important">{{ final }}</a><br>
 {% empty %}
     Todavía no hay finales.
 {% endfor %}
