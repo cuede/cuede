@@ -4,6 +4,7 @@ from enunciados.views import index, materias, conjuntos_de_enunciados
 from enunciados.views.enunciados import ver as ver_enunciados
 from enunciados.views.enunciados import crear as crear_enunciado
 from enunciados.views.enunciados import editar as editar_enunciado
+from enunciados.views.enunciados import versiones as versiones_enunciado
 from enunciados.views.soluciones import crear as crear_solucion
 from enunciados.views.soluciones import editar as editar_solucion
 
@@ -53,6 +54,7 @@ urlpatterns = [
         name='enunciado_final'
     ),
 
+    ## Editar
     path(
         '<slug:materia>/practicas/<int:anio>/<cuatrimestre>/'
         '<int:numero_practica>/<int:numero>/editar/',
@@ -78,6 +80,34 @@ urlpatterns = [
         '<int:numero>/editar',
         editar_enunciado.enunciado_final,
         name='editar_enunciado_final'
+    ),
+
+    ## Versiones
+    path(
+        '<slug:materia>/practicas/<int:anio>/<cuatrimestre>/'
+        '<int:numero_practica>/<int:numero>/versiones/',
+        versiones_enunciado.enunciado_practica,
+        name='versiones_enunciado_practica'
+    ),
+    path(
+        '<slug:materia>/parciales/<int:anio>/<cuatrimestre>/'
+        '<int:numero_parcial>/<int:numero>/versiones/',
+        versiones_enunciado.enunciado_parcial,
+        {'es_recuperatorio': False},
+        name='versiones_enunciado_parcial'
+    ),
+    path(
+        '<slug:materia>/recuperatorios/<int:anio>/<cuatrimestre>/'
+        '<int:numero_parcial>/<int:numero>/versiones/',
+        versiones_enunciado.enunciado_parcial,
+        {'es_recuperatorio': True},
+        name='versiones_enunciado_recuperatorio'
+    ),
+    path(
+        '<slug:materia>/finales/<int:anio>/<int:mes>/<int:dia>/'
+        '<int:numero>/versiones',
+        versiones_enunciado.enunciado_final,
+        name='versiones_enunciado_final'
     ),
 
     # Soluciones
