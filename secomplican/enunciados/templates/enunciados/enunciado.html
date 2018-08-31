@@ -9,8 +9,7 @@
 <p>
     {{ enunciado.versiones.ultima }}
 </p>
-<a href="{{ enunciado.get_edit_url }}">editar</a> |
-<a href="{{ enunciado.get_versiones_url }}">versiones anteriores</a>
+{% include 'enunciados/acciones_enunciado.html' %}
 
 <h2> Soluciones </h2>
 {% for solucion in enunciado.soluciones.all %}
