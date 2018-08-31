@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, register_converter
 
 from enunciados.views import index, materias, conjuntos_de_enunciados
 from enunciados.views.enunciados import ver as ver_enunciados
@@ -6,6 +6,10 @@ from enunciados.views.enunciados import crear as crear_enunciado
 from enunciados.views.enunciados import editar as editar_enunciado
 from enunciados.views.soluciones import crear as crear_solucion
 from enunciados.views.soluciones import editar as editar_solucion
+from enunciados import url_converters
+
+
+register_converter(url_converters.ConjuntoConverter, 'conjunto')
 
 
 urlpatterns = [
@@ -19,15 +23,8 @@ urlpatterns = [
     ),
 
     path('<slug:nombre>/', materias.materia, name='materia'),
-    path('<slug:materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero>/',
-         conjuntos_de_enunciados.practica, name='practica'),
-    path('<slug:materia>/parciales/<int:anio>/<cuatrimestre>/<int:numero>/',
-         conjuntos_de_enunciados.parcial, name='parcial'),
-    path('<slug:materia>/recuperatorios/<int:anio>/<cuatrimestre>/<int:numero>/',
-         conjuntos_de_enunciados.parcial, {'recuperatorio': True},
-         name='recuperatorio'),
-    path('<slug:materia>/finales/<int:anio>/<int:mes>/<int:dia>/',
-         conjuntos_de_enunciados.final, name='final'),
+    path('<conjunto:conjunto>/', conjuntos_de_enunciados.conjunto_de_enunciados,
+        name='conjunto_de_enunciados'),
 
     # Enunciados
     path(

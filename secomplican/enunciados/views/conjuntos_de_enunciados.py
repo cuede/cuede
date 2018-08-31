@@ -8,6 +8,46 @@ from enunciados.views.enunciados.crear import ConjuntoDeEnunciadosForm
 import datetime
 
 
+def query_params_nuevo_enunciado(conjunto):
+    query_params = {
+        'materia': conjunto.materia.slug,
+    }
+    if isinstance(conjunto, Final):
+        query_params.update({
+            'tipo': ConjuntoDeEnunciadosForm.FINAL,
+            'fecha': conjunto.fecha,
+        })
+    else:
+        query_params.update({
+            'cuatrimestre': conjunto.cuatrimestre,
+            'anio': conjunto.anio,
+        })
+        if isinstance(conjunto, Practica):
+            query_params.update({
+                'tipo': ConjuntoDeEnunciadosForm.PRACTICA,
+                'numero_practica': conjunto.numero,
+            })
+        elif isinstance(conjunto, Parcial):
+            query_params.update({
+                'tipo': ConjuntoDeEnunciadosForm.PARCIAL,
+                'numero_parcial': conjunto.numero,
+                'es_recuperatorio': conjunto.recuperatorio,
+            })
+
+    return query_params
+
+
+def conjunto_de_enunciados(request, conjunto):
+    nuevo_enunciado_query_params = query_params_nuevo_enunciado(conjunto)
+    url_nuevo_enunciado = url_utils.reverse_con_queryparams(
+        'agregar_enunciado', queryparams=nuevo_enunciado_query_params)
+    contexto = {
+        'conjunto': conjunto,
+        'url_nuevo_enunciado': url_nuevo_enunciado,
+    }
+    return render(request, 'enunciados/conjunto_de_enunciados.html', contexto)
+
+
 def render_conjunto_de_enunciados(
         request, conjunto, nuevo_enunciado_query_params):
     nuevo_enunciado_query_params['materia'] = conjunto.materia.slug

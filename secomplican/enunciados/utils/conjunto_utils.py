@@ -3,14 +3,14 @@ from enunciados.models import Practica, Parcial, Final
 
 def tipo_conjunto_a_url(conjunto):
     if isinstance(conjunto, Practica):
-        return 'practica'
+        return 'practicas'
     elif isinstance(conjunto, Parcial):
         if conjunto.recuperatorio:
-            return 'recuperatorio'
+            return 'recuperatorios'
         else:
-            return 'parcial'
+            return 'parciales'
     elif isinstance(conjunto, Final):
-        return 'final'
+        return 'finales'
     else:
         # No debería pasar nunca.
         return None
@@ -22,15 +22,15 @@ def tipo_de_conjunto(conjunto):
     # chequear de qué subtipo es el conjunto.
     try:
         conjunto = conjunto.practica
+        return 'practica'
     except Practica.DoesNotExist:
         try:
             conjunto = conjunto.parcial
+            return 'parcial'
         except Parcial.DoesNotExist:
             try:
                 conjunto = conjunto.final
+                return 'final'
             except Final.DoesNotExist:
                 # No debería pasar nunca.
                 return None
-
-    return tipo_conjunto_a_url(conjunto)
-

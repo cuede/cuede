@@ -69,14 +69,7 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
         return 'Práctica {} del {} del {}'.format(self.numero, texto_cuatrimestre, self.anio)
 
     def get_absolute_url(self):
-        from enunciados.utils import cuatrimestres_url_parser
-        kwargs = {
-            'materia': self.materia.slug,
-            'anio': self.anio,
-            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.cuatrimestre),
-            'numero': self.numero
-        }
-        return reverse('practica', kwargs=kwargs)
+        return reverse('conjunto_de_enunciados', kwargs={'conjunto': self})
 
 
 class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
@@ -111,17 +104,7 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
             return ordinales[self.numero - 1]
 
     def get_absolute_url(self):
-        from enunciados.utils import cuatrimestres_url_parser
-        kwargs = {
-            'materia': self.materia.slug,
-            'anio': self.anio,
-            'cuatrimestre': cuatrimestres_url_parser.numero_a_url(self.cuatrimestre),
-            'numero': self.numero
-        }
-        if self.recuperatorio:
-            return reverse('recuperatorio', kwargs=kwargs)
-        else:
-            return reverse('parcial', kwargs=kwargs)
+        return reverse('conjunto_de_enunciados', kwargs={'conjunto': self})
 
 
 class Final(ConjuntoDeEnunciados):
@@ -131,13 +114,7 @@ class Final(ConjuntoDeEnunciados):
         return 'Final del {}'.format(self.fecha)
 
     def get_absolute_url(self):
-        kwargs = {
-            'materia': self.materia.slug,
-            'anio': self.fecha.year,
-            'mes': self.fecha.month,
-            'dia': self.fecha.day,
-        }
-        return reverse('final', kwargs=kwargs)
+        return reverse('conjunto_de_enunciados', kwargs={'conjunto': self})
 
     def clean(self):
         # Ver que no haya ya un final con igual fecha y materia
