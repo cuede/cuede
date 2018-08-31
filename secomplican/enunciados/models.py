@@ -157,22 +157,8 @@ class Enunciado(models.Model):
 
     def tipo_conjunto(self):
         """Devuelve el tipo del conjunto al que pertenece este enunciado"""
-        # Esto es horrible, pero no sé si hay otra forma de
-        # chequear de qué subtipo es el conjunto.
-        try:
-            practica = self.conjunto.practica
-            return 'practica'
-        except Practica.DoesNotExist:
-            try:
-                parcial = self.conjunto.parcial
-                return 'parcial'
-            except Parcial.DoesNotExist:
-                try:
-                    final = self.conjunto.final
-                    return 'final'
-                except Final.DoesNotExist:
-                    # No debería pasar nunca.
-                    return None
+        from enunciados.utils import conjunto_utils
+        return conjunto_utils.tipo_de_conjunto(self.conjunto)
 
     def _kwargs_para_url(self, tipo_conjunto):
         from enunciados.utils import cuatrimestres_url_parser
