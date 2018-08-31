@@ -8,8 +8,9 @@
 <h1 style="display: inline">&nbsp;/ {{ enunciado }} </h1>
 <p>
     {{ enunciado.versiones.ultima }}
-    <a href="{{ enunciado.get_edit_url }}">editar</a>
 </p>
+<a href="{{ enunciado.get_edit_url }}">editar</a> |
+<a href="{{ enunciado.get_versiones_url }}">versiones anteriores</a>
 
 <h2> Soluciones </h2>
 {% for solucion in enunciado.soluciones.all %}
