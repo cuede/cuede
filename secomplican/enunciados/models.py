@@ -231,6 +231,24 @@ class Enunciado(models.Model):
             nombre_url = prefijo + tipo_conjunto
         return reverse(nombre_url, kwargs=self._kwargs_para_url(tipo_conjunto))
 
+    def get_versiones_url(self):
+        """Devuelve la url para las versiones de este enunciado"""
+        tipo_conjunto = self.tipo_conjunto()
+        if tipo_conjunto == 'parcial':
+            if self.conjunto.parcial.recuperatorio:
+                url = 'versiones_enunciado_recuperatorio'
+            else:
+                url = 'versiones_enunciado_parcial'
+        elif tipo_conjunto == 'practica':
+            url = 'versiones_enunciado_practica'
+        elif tipo_conjunto == 'final':
+            url = 'versiones_enunciado_final'
+        else:
+            raise Exception(
+                'El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
+
+        return reverse(url, kwargs=self._kwargs_para_url(tipo_conjunto))
+
     class Meta:
         ordering = ['numero']
         # No puede haber dos ejercicios con el mismo número en el mismo conjunto.

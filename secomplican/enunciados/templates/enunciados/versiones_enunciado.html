@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="{{ conjunto.materia.get_absolute_url }}" class="important">
+        {{ conjunto.materia }}
+</a> /
+<a href="{{ conjunto.get_absolute_url }}" class="important">{{ conjunto }}</a>
+<h1 style="display: inline">&nbsp;/
+    <a href="{{ enunciado.get_absolute_url }}">{{ enunciado }}</a>
+</h1>
+
+<h2>Versiones</h2>
+{% for version in enunciado.versiones.all %}
+    <h3>{{ version.tiempo }}</h3>
+    <p>{{ version }}</p>
+{% endfor %}
+{% endblock %}
