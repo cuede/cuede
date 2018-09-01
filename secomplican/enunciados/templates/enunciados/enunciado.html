@@ -15,7 +15,8 @@
 {% for solucion in enunciado.soluciones.all %}
     <p>
         {{ solucion }}
-        <a href="{% url 'editar_solucion' pk=solucion.pk %}">editar</a>
+
+        {% include 'enunciados/acciones_solucion.html' %}
     </p>
     <hr>
 {% empty %}

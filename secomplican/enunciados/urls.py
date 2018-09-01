@@ -7,6 +7,7 @@ from enunciados.views.enunciados import editar as editar_enunciado
 from enunciados.views.enunciados import versiones as versiones_enunciado
 from enunciados.views.soluciones import crear as crear_solucion
 from enunciados.views.soluciones import editar as editar_solucion
+from enunciados.views.soluciones import versiones as versiones_solucion
 
 
 urlpatterns = [
@@ -138,5 +139,11 @@ urlpatterns = [
         'soluciones/<int:pk>/editar/',
         editar_solucion.editar_solucion,
         name='editar_solucion'
+    ),
+
+    path(
+        'soluciones/<int:pk>/versiones/',
+        versiones_solucion.versiones_solucion,
+        name='versiones_solucion'
     ),
 ]

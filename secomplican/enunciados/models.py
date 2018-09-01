@@ -281,6 +281,14 @@ class Solucion(models.Model):
     def __str__(self):
         return str(self.versiones.ultima())
 
+    def get_edit_url(self):
+        """Devuelve la url para editar esta solucion"""
+        return reverse('editar_solucion', kwargs={'pk': self.pk})
+
+    def get_versiones_url(self):
+        """Devuelve la url para las versiones de esta solucion"""
+        return reverse('versiones_solucion', kwargs={'pk': self.pk})
+
 
 class VersionTextoSolucion(VersionTexto):
     solucion = models.ForeignKey(
