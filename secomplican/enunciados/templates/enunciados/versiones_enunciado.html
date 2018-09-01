@@ -9,9 +9,5 @@
     <a href="{{ enunciado.get_absolute_url }}">{{ enunciado }}</a>
 </h1>
 
-<h2>Versiones</h2>
-{% for version in enunciado.versiones.all %}
-    <h3>{{ version.tiempo }}</h3>
-    <p>{{ version }}</p>
-{% endfor %}
+{% include 'enunciados/lista_versiones.html' with versiones=enunciado.versiones %}
 {% endblock %}
