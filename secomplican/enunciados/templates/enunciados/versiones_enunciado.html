@@ -1,13 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<a href="{{ conjunto.materia.get_absolute_url }}" class="important">
-        {{ conjunto.materia }}
-</a> /
-<a href="{{ conjunto.get_absolute_url }}" class="important">{{ conjunto }}</a>
-<h1 style="display: inline">&nbsp;/
-    <a href="{{ enunciado.get_absolute_url }}">{{ enunciado }}</a>
-</h1>
+<h3><a href="{{ enunciado.get_absolute_url }}">Volver a enunciado</a></h3>
 
 {% include 'enunciados/lista_versiones.html' with versiones=enunciado.versiones %}
 {% endblock %}
