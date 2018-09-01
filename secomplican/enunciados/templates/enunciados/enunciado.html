@@ -15,9 +15,8 @@
 {% for solucion in enunciado.soluciones.all %}
     <p>
         {{ solucion }}
-
-        {% include 'enunciados/acciones_solucion.html' %}
     </p>
+    {% include 'enunciados/acciones_solucion.html' %}
     <hr>
 {% empty %}
     Todavía no hay soluciones <a href="{{ url_solucion }}">
