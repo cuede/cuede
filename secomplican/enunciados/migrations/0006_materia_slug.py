@@ -21,13 +21,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='materia',
             name='slug',
-            field=models.SlugField(default='hola', max_length=1023),
+            field=models.SlugField(default='hola', max_length=1023, unique=True),
             preserve_default=False,
         ),
         migrations.RunPython(poner_slug),
-        migrations.AlterField(
-            model_name='materia',
-            name='slug',
-            field=models.SlugField(max_length=1023, unique=True),
-        )
     ]
