@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from enunciados.models import Enunciado
 from enunciados.utils import cuatrimestres_url_parser
@@ -6,7 +6,7 @@ from . import enunciados_utils
 
 
 def volver_a_version(enunciado, pk):
-    version = enunciado.versiones.get(pk=pk)
+    version = get_object_or_404(enunciado.versiones, pk=pk)
     version.pk = None
     version.save()
 
