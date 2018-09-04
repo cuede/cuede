@@ -1,5 +1,10 @@
 <h2>Versiones</h2>
 {% for version in versiones.all %}
     <h4>{{ version.tiempo }}</h4>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="version_pk" value="{{ version.pk }}" hidden />
+        <input type="submit" value="Volver a esta versión" />
+    </form>
     <p>{{ version }}</p>
 {% endfor %}

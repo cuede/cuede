@@ -1,11 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from enunciados.models import Enunciado
 from enunciados.utils import cuatrimestres_url_parser
 from . import enunciados_utils
 
 
+def volver_a_version(enunciado, pk):
+    version = enunciado.versiones.get(pk=pk)
+    version.pk = None
+    version.save()
+
+
 def render_enunciado(request, enunciado, conjunto):
+    if request.method == 'POST':
+        # Nos postearon una versión a la que volver.
+        # La versión está en version_pk.
+        pk = request.POST.get('version_pk')
+        if pk:
+            volver_a_version(enunciado, pk)
+            return redirect(enunciado)
+
     contexto = {
         'enunciado': enunciado,
         'conjunto': conjunto,
