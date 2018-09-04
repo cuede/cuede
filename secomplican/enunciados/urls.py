@@ -143,7 +143,7 @@ urlpatterns = [
 
     path(
         'soluciones/<int:pk>/versiones/',
-        versiones_solucion.versiones_solucion,
+        versiones_solucion.VersionesSolucionView.as_view(),
         name='versiones_solucion'
     ),
 ]

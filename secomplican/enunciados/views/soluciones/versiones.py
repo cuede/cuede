@@ -1,23 +1,20 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 
 from enunciados.models import Solucion
+from enunciados.views.versiones_view import VersionesView
 
 
-def volver_a_version(objeto, pk):
-    version = get_object_or_404(objeto.versiones, pk=pk)
-    version.pk = None
-    version.save()
+class VersionesSolucionView(VersionesView):
+    template_name = 'enunciados/versiones_solucion.html'
 
+    def get_object(self):
+        pk = self.kwargs['pk']
+        return get_object_or_404(Solucion, pk=pk)
 
-def versiones_solucion(request, pk):
-    solucion = get_object_or_404(Solucion, pk=pk)
-    if request.method == 'POST':
-        # Nos postearon una versión a la que volver.
-        # La versión está en version_pk.
-        pk = request.POST.get('version_pk')
-        if pk:
-            volver_a_version(solucion, pk)
-            return redirect(solucion.enunciado)
+    def get_success_url(self):
+        return self.get_object().enunciado.get_absolute_url()
 
-    return render(
-        request, 'enunciados/versiones_solucion.html', {'solucion': solucion})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['solucion'] = self.get_object()
+        return context
