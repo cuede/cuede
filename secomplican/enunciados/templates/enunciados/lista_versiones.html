@@ -5,7 +5,7 @@
         <form method="post">
             {% csrf_token %}
             <input type="text" name="version_pk" value="{{ version.pk }}" hidden />
-            <input type="submit" value="Volver a esta versión" />
+            <input class="submit-link" type="submit" value="Volver a esta versión" />
         </form>
     {% endif %}
     <p>{{ version }}</p>
