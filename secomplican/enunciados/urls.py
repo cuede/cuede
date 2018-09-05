@@ -87,27 +87,35 @@ urlpatterns = [
     path(
         '<slug:materia>/practicas/<int:anio>/<cuatrimestre>/'
         '<int:numero_practica>/<int:numero>/versiones/',
-        versiones_enunciado.enunciado_practica,
+        versiones_enunciado.VersionesEnunciadoView.as_view(),
+        {'conjunto': 'practica'},
         name='versiones_enunciado_practica'
     ),
     path(
         '<slug:materia>/parciales/<int:anio>/<cuatrimestre>/'
         '<int:numero_parcial>/<int:numero>/versiones/',
-        versiones_enunciado.enunciado_parcial,
-        {'es_recuperatorio': False},
+        versiones_enunciado.VersionesEnunciadoView.as_view(),
+        {
+            'conjunto': 'parcial',
+            'es_recuperatorio': False,
+        },
         name='versiones_enunciado_parcial'
     ),
     path(
         '<slug:materia>/recuperatorios/<int:anio>/<cuatrimestre>/'
         '<int:numero_parcial>/<int:numero>/versiones/',
-        versiones_enunciado.enunciado_parcial,
-        {'es_recuperatorio': True},
+        versiones_enunciado.VersionesEnunciadoView.as_view(),
+        {
+            'conjunto': 'parcial',
+            'es_recuperatorio': True,
+        },
         name='versiones_enunciado_recuperatorio'
     ),
     path(
         '<slug:materia>/finales/<int:anio>/<int:mes>/<int:dia>/'
         '<int:numero>/versiones',
-        versiones_enunciado.enunciado_final,
+        versiones_enunciado.VersionesEnunciadoView.as_view(),
+        {'conjunto': 'final'},
         name='versiones_enunciado_final'
     ),
 

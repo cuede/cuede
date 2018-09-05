@@ -3,47 +3,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from enunciados.models import Enunciado
 from enunciados.utils import cuatrimestres_url_parser
 from . import enunciados_utils
+from enunciados.views.versiones_view import VersionesView
 
 
-def volver_a_version(enunciado, pk):
-    version = get_object_or_404(enunciado.versiones, pk=pk)
-    version.pk = None
-    version.save()
+class VersionesEnunciadoView(VersionesView):
+    template_name = 'enunciados/versiones_enunciado.html'
 
+    def get_object(self):
+        return enunciados_utils.enunciado_con_kwargs(self.kwargs)
 
-def render_enunciado(request, enunciado):
-    if request.method == 'POST':
-        # Nos postearon una versión a la que volver.
-        # La versión está en version_pk.
-        pk = request.POST.get('version_pk')
-        if pk:
-            volver_a_version(enunciado, pk)
-            return redirect(enunciado)
+    def get_success_url(self):
+        return self.get_object().get_absolute_url()
 
-    contexto = {
-        'enunciado': enunciado,
-    }
-    return render(request, 'enunciados/versiones_enunciado.html', contexto)
-
-
-def enunciado_practica(
-    request, materia, anio, cuatrimestre, numero_practica, numero):
-    numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
-    encontrado = enunciados_utils.enunciado_de_practica(
-        materia, anio, numero_cuatrimestre, numero_practica, numero)
-    return render_enunciado(request, encontrado)
-
-
-def enunciado_parcial(request, materia, anio, cuatrimestre,
-    numero_parcial, numero, es_recuperatorio=False):
-    numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
-    encontrado = enunciados_utils.enunciado_de_parcial(
-        materia, anio, numero_cuatrimestre, numero_parcial,
-        numero, es_recuperatorio)
-    return render_enunciado(request, encontrado)
-
-
-def enunciado_final(request, materia, anio, mes, dia):
-    encontrado = enunciados_utils.enunciado_de_final(
-        materia, anio, mes, dia, numero)
-    return render_enunciado(request, encontrado)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['enunciado'] = self.get_object()
+        return context
