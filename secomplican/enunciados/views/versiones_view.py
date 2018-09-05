@@ -7,8 +7,9 @@ class VersionesView(ListView):
 
     def _volver_a_version(self, objeto, pk):
         version = get_object_or_404(objeto.versiones, pk=pk)
-        version.pk = None
-        version.save()
+        if objeto.versiones.ultima().texto != version.texto:
+            version.pk = None
+            version.save()
 
     def get_object(self):
         """
