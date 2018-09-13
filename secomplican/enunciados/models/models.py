@@ -9,11 +9,6 @@ from enunciados.modelmanagers.versiones_manager import VersionesManager
 
 
 class Materia(models.Model):
-    NOMBRE_MAX_LENGTH = 1023
-    nombre = models.CharField(max_length=NOMBRE_MAX_LENGTH)
-    slug = models.SlugField(max_length=NOMBRE_MAX_LENGTH, unique=True)
-    optativa = models.BooleanField(default=False)
-
     def __str__(self):
         return self.nombre
 
