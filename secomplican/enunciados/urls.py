@@ -1,6 +1,6 @@
 from django.urls import path
 
-from enunciados.views import index, materias, conjuntos_de_enunciados
+from enunciados.views import index, materias, conjuntos_de_enunciados, practicas
 from enunciados.views.enunciados import ver as ver_enunciados
 from enunciados.views.enunciados import crear as crear_enunciado
 from enunciados.views.enunciados import editar as editar_enunciado
@@ -21,6 +21,7 @@ urlpatterns = [
     ),
 
     path('<slug:nombre>/', materias.materia, name='materia'),
+    path('<slug:materia>/practicas/', practicas.practicas, name='practicas'),
     path('<slug:materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero>/',
          conjuntos_de_enunciados.practica, name='practica'),
     path('<slug:materia>/parciales/<int:anio>/<cuatrimestre>/<int:numero>/',
