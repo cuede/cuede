@@ -102,7 +102,7 @@ class ConjuntoDeEnunciadosForm(forms.Form):
     def _revisar_presente(self, field):
         presente = True
         valor = self.cleaned_data.get(field)
-        if not valor:
+        if valor == None:
             self.add_error(field, ValidationError(
                 _('Se necesita ' + field + '.')))
             presente = False
