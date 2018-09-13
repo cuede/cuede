@@ -38,9 +38,9 @@ class ConjuntoDeEnunciados(models.Model):
 class ConjuntoDeEnunciadosConCuatrimestre(ConjuntoDeEnunciados):
     anio = models.IntegerField()
 
+    VERANO = 0
     PRIMERO = 1
     SEGUNDO = 2
-    VERANO = 3
     TEXTOS_CUATRIMESTRE = {
         PRIMERO: _('Primer Cuatrimestre'),
         SEGUNDO: _('Segundo Cuatrimestre'),
