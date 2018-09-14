@@ -12,7 +12,7 @@ def assert_lista_equals(testCase, primera, segunda):
 
 class ParcialesDeMateriaOrdenadosTests(TestCase):
     def setUp(self):
-        self.materia = Materia(nombre='materia')
+        self.materia = Materia()
         self.materia.save()
 
     def test_parciales_de_materia_ordenados_sin_materia(self):
@@ -34,9 +34,12 @@ class ParcialesDeMateriaOrdenadosTests(TestCase):
         cuatri2 = ConjuntoDeEnunciadosConCuatrimestre.PRIMERO
         cuatri3 = ConjuntoDeEnunciadosConCuatrimestre.SEGUNDO
 
-        parcial1 = Parcial(materia=self.materia, anio=anio, cuatrimestre=cuatri1, numero=1)
-        parcial2 = Parcial(materia=self.materia, anio=anio, cuatrimestre=cuatri2, numero=1)
-        parcial3 = Parcial(materia=self.materia, anio=anio, cuatrimestre=cuatri3, numero=1)
+        parcial1 = Parcial(materia=self.materia, anio=anio,
+                           cuatrimestre=cuatri1, numero=1)
+        parcial2 = Parcial(materia=self.materia, anio=anio,
+                           cuatrimestre=cuatri2, numero=1)
+        parcial3 = Parcial(materia=self.materia, anio=anio,
+                           cuatrimestre=cuatri3, numero=1)
 
         # Los guardamos en desorden
         parcial2.save()
@@ -62,10 +65,14 @@ class ParcialesDeMateriaOrdenadosTests(TestCase):
         cuatri3 = ConjuntoDeEnunciadosConCuatrimestre.SEGUNDO
         cuatri4 = ConjuntoDeEnunciadosConCuatrimestre.PRIMERO
 
-        parcial1 = Parcial(materia=self.materia, anio=anio1, cuatrimestre=cuatri1, numero=1)
-        parcial2 = Parcial(materia=self.materia, anio=anio1, cuatrimestre=cuatri2, numero=1)
-        parcial3 = Parcial(materia=self.materia, anio=anio2, cuatrimestre=cuatri3, numero=1)
-        parcial4 = Parcial(materia=self.materia, anio=anio2, cuatrimestre=cuatri4, numero=1)
+        parcial1 = Parcial(materia=self.materia, anio=anio1,
+                           cuatrimestre=cuatri1, numero=1)
+        parcial2 = Parcial(materia=self.materia, anio=anio1,
+                           cuatrimestre=cuatri2, numero=1)
+        parcial3 = Parcial(materia=self.materia, anio=anio2,
+                           cuatrimestre=cuatri3, numero=1)
+        parcial4 = Parcial(materia=self.materia, anio=anio2,
+                           cuatrimestre=cuatri4, numero=1)
 
         # Los guardamos en desorden
         parcial2.save()
@@ -91,14 +98,19 @@ class ParcialesDeMateriaOrdenadosTests(TestCase):
         cuatri4 = ConjuntoDeEnunciadosConCuatrimestre.PRIMERO
 
         primeros = [
-            Parcial(materia=self.materia, anio=anio1, cuatrimestre=cuatri1, numero=1),
-            Parcial(materia=self.materia, anio=anio1, cuatrimestre=cuatri2, numero=1),
+            Parcial(materia=self.materia, anio=anio1,
+                    cuatrimestre=cuatri1, numero=1),
+            Parcial(materia=self.materia, anio=anio1,
+                    cuatrimestre=cuatri2, numero=1),
         ]
 
         segundos = [
-            Parcial(materia=self.materia, anio=anio1, cuatrimestre=cuatri1, numero=2),
-            Parcial(materia=self.materia, anio=anio2, cuatrimestre=cuatri3, numero=2),
-            Parcial(materia=self.materia, anio=anio2, cuatrimestre=cuatri4, numero=2),
+            Parcial(materia=self.materia, anio=anio1,
+                    cuatrimestre=cuatri1, numero=2),
+            Parcial(materia=self.materia, anio=anio2,
+                    cuatrimestre=cuatri3, numero=2),
+            Parcial(materia=self.materia, anio=anio2,
+                    cuatrimestre=cuatri4, numero=2),
         ]
 
         for parcial in primeros:
@@ -117,10 +129,12 @@ class ParcialesDeMateriaOrdenadosTests(TestCase):
         cuatri1 = ConjuntoDeEnunciadosConCuatrimestre.PRIMERO
         cuatri2 = ConjuntoDeEnunciadosConCuatrimestre.SEGUNDO
 
-        parcial1 = Parcial(materia=self.materia, anio=2018, cuatrimestre=cuatri1, numero=1)
+        parcial1 = Parcial(materia=self.materia, anio=2018,
+                           cuatrimestre=cuatri1, numero=1)
         recu = Parcial(
             materia=self.materia, anio=2018, cuatrimestre=cuatri1, numero=1, recuperatorio=True)
-        parcial2 = Parcial(materia=self.materia, anio=2018, cuatrimestre=cuatri2, numero=1)
+        parcial2 = Parcial(materia=self.materia, anio=2018,
+                           cuatrimestre=cuatri2, numero=1)
 
         parcial1.save()
         parcial2.save()
@@ -134,7 +148,7 @@ class ParcialesDeMateriaOrdenadosTests(TestCase):
 
 class UltimasPracticasOrdenadasTests(TestCase):
     def setUp(self):
-        self.materia = Materia(nombre='materia')
+        self.materia = Materia()
         self.materia.save()
 
     def test_ultimas_practicas_ordenadas_sin_materia(self):
@@ -153,7 +167,8 @@ class UltimasPracticasOrdenadasTests(TestCase):
         practicas = []
         # Creamos 10 prácticas
         for i in range(1, 11):
-            practicas.append(Practica(anio=2018, cuatrimestre=cuatri, materia=self.materia, numero=i))
+            practicas.append(
+                Practica(anio=2018, cuatrimestre=cuatri, materia=self.materia, numero=i))
 
         # Las guardamos en desorden
         for i in range(9, -1, -1):
@@ -172,10 +187,12 @@ class UltimasPracticasOrdenadasTests(TestCase):
         # Creamos 10 prácticas de cada cuatri
         for i in range(1, 11):
             practicas_viejas.append(
-                Practica(anio=2018, cuatrimestre=cuatri1, materia=self.materia, numero=i)
+                Practica(anio=2018, cuatrimestre=cuatri1,
+                         materia=self.materia, numero=i)
             )
             practicas_nuevas.append(
-                Practica(anio=2018, cuatrimestre=cuatri2, materia=self.materia, numero=i)
+                Practica(anio=2018, cuatrimestre=cuatri2,
+                         materia=self.materia, numero=i)
             )
 
         # Las guardamos en desorden
@@ -189,7 +206,7 @@ class UltimasPracticasOrdenadasTests(TestCase):
 
 class FinalesDeMateriaOrdenadosTests(TestCase):
     def setUp(self):
-        self.materia = Materia(nombre='materia')
+        self.materia = Materia()
         self.materia.save()
 
     def test_finales_de_materia_ordenados_sin_materia(self):
@@ -204,9 +221,11 @@ class FinalesDeMateriaOrdenadosTests(TestCase):
     def test_finales_de_materia_ordenados_con_finales(self):
         """Debería devolver los finales ordenados por fecha de último a primero."""
         import datetime
-        final1 = Final(materia=self.materia, fecha=datetime.date.today() + datetime.timedelta(days=1))
+        final1 = Final(materia=self.materia,
+                       fecha=datetime.date.today() + datetime.timedelta(days=1))
         final2 = Final(materia=self.materia, fecha=datetime.date.today())
-        final3 = Final(materia=self.materia, fecha=datetime.date.today() - datetime.timedelta(days=1))
+        final3 = Final(materia=self.materia,
+                       fecha=datetime.date.today() - datetime.timedelta(days=1))
 
         # Los guardamos en desorden
         final2.save()
