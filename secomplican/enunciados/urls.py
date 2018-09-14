@@ -18,7 +18,8 @@ register_converter(MateriaCarreraConverter, 'materiacarrera')
 
 urlpatterns = [
     path('', index.index, name='index'),
-    path('materias/', materias.MateriasView.as_view(), name='materias'),
+    path('<carrera:carrera>/materias/',
+         materias.MateriasView.as_view(), name='materias'),
 
     path(
         'nuevo-ejercicio/',

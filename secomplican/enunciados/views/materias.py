@@ -11,6 +11,15 @@ class MateriasView(generic.ListView):
     model = MateriaCarrera
     template_name = 'enunciados/materias.html'
 
+    def get_queryset(self):
+        carrera = self.kwargs.get('carrera')
+        return super().get_queryset().filter(carrera=carrera)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['carrera'] = self.kwargs.get('carrera')
+        return context
+
 
 def url_agregar_conjunto(slug_materia, tipo):
     queryparams = {
