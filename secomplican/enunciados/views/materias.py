@@ -2,13 +2,14 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from enunciados.models import Materia
+from enunciados.models import MateriaCarrera
 from enunciados.utils import models_utils, url_utils
 from enunciados.views.enunciados.forms import ConjuntoDeEnunciadosForm
 
 
 class MateriasView(generic.ListView):
-    model = Materia
+    model = MateriaCarrera
+    template_name = 'enunciados/materias.html'
 
 
 def url_agregar_conjunto(slug_materia, tipo):
