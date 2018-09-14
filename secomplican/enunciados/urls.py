@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, register_converter
 
 from enunciados.views import index, materias, conjuntos_de_enunciados, practicas
 from enunciados.views.enunciados import ver as ver_enunciados
@@ -8,6 +8,10 @@ from enunciados.views.enunciados import versiones as versiones_enunciado
 from enunciados.views.soluciones import crear as crear_solucion
 from enunciados.views.soluciones import editar as editar_solucion
 from enunciados.views.soluciones import versiones as versiones_solucion
+from enunciados.url_converters.materia_converter import MateriaConverter
+
+
+register_converter(MateriaConverter, 'materia')
 
 
 urlpatterns = [
@@ -20,7 +24,7 @@ urlpatterns = [
         name='agregar_enunciado'
     ),
 
-    path('<slug:nombre>/', materias.materia, name='materia'),
+    path('<materia:objeto_materia>/', materias.materia, name='materia'),
     path('<slug:materia>/practicas/', practicas.practicas, name='practicas'),
     path('<slug:materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero>/',
          conjuntos_de_enunciados.practica, name='practica'),
@@ -56,7 +60,7 @@ urlpatterns = [
         name='enunciado_final'
     ),
 
-    ## Editar
+    # Editar
     path(
         '<slug:materia>/practicas/<int:anio>/<cuatrimestre>/'
         '<int:numero_practica>/<int:numero>/editar/',
@@ -84,7 +88,7 @@ urlpatterns = [
         name='editar_enunciado_final'
     ),
 
-    ## Versiones
+    # Versiones
     path(
         '<slug:materia>/practicas/<int:anio>/<cuatrimestre>/'
         '<int:numero_practica>/<int:numero>/versiones/',

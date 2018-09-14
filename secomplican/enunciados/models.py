@@ -18,7 +18,7 @@ class Materia(models.Model):
         return self.nombre
 
     def get_absolute_url(self):
-        return reverse('materia', kwargs={'nombre': self.slug})
+        return reverse('materia', kwargs={'objeto_materia': self})
 
     def clean(self):
         if not self.slug:
