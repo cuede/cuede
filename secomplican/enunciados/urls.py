@@ -8,10 +8,10 @@ from enunciados.views.enunciados import versiones as versiones_enunciado
 from enunciados.views.soluciones import crear as crear_solucion
 from enunciados.views.soluciones import editar as editar_solucion
 from enunciados.views.soluciones import versiones as versiones_solucion
-from enunciados.url_converters.materia_converter import MateriaConverter
+from enunciados.url_converters.materiacarrera_converter import MateriaCarreraConverter
 
 
-register_converter(MateriaConverter, 'materia')
+register_converter(MateriaCarreraConverter, 'materiacarrera')
 
 
 urlpatterns = [
@@ -24,7 +24,7 @@ urlpatterns = [
         name='agregar_enunciado'
     ),
 
-    path('<materia:objeto_materia>/', materias.materia, name='materia'),
+    path('<materiacarrera:materia_carrera>/', materias.materia, name='materia'),
     path('<slug:materia>/practicas/', practicas.practicas, name='practicas'),
     path('<slug:materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero>/',
          conjuntos_de_enunciados.practica, name='practica'),

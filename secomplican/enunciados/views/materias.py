@@ -20,25 +20,24 @@ def url_agregar_conjunto(slug_materia, tipo):
         'agregar_enunciado', queryparams=queryparams)
 
 
-def materia(request, objeto_materia):
-    # El nombre es un slug.
+def materia(request, materia_carrera):
     tipo_practica = ConjuntoDeEnunciadosForm.PRACTICA
     tipo_parcial = ConjuntoDeEnunciadosForm.PARCIAL
     tipo_final = ConjuntoDeEnunciadosForm.FINAL
     contexto = {
-        'materia': objeto_materia,
+        'materia': materia_carrera,
         'practicas': models_utils.ultimas_practicas_ordenadas(
-            objeto_materia),
+            materia_carrera),
         'parciales': models_utils.parciales_de_materia_ordenados(
-            objeto_materia),
+            materia_carrera),
         'finales': models_utils.finales_de_materia_ordenados(
-            objeto_materia),
+            materia_carrera),
 
         'url_agregar_practica': url_agregar_conjunto(
-            objeto_materia.slug, tipo_practica),
+            materia_carrera.slug, tipo_practica),
         'url_agregar_parcial': url_agregar_conjunto(
-            objeto_materia.slug, tipo_parcial),
+            materia_carrera.slug, tipo_parcial),
         'url_agregar_final': url_agregar_conjunto(
-            objeto_materia.slug, tipo_final),
+            materia_carrera.slug, tipo_final),
     }
     return render(request, 'enunciados/materia.html', contexto)
