@@ -1,8 +1,10 @@
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
 
 from enunciados.models.models import Materia
-
 
 NOMBRE_MAX_LENGTH = 1023
 
@@ -42,6 +44,9 @@ class MateriaCarrera(models.Model):
             raise ValidationError(
                 _('El slug de esta Materia es el '
                   'mismo que el de otra de la misma carrera.'))
+
+    def get_absolute_url(self):
+        return reverse('materia', kwargs={'nombre': self.slug})
 
     class Meta:
         unique_together = (('carrera', 'materia'), ('carrera', 'slug'))

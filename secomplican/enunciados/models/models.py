@@ -8,9 +8,7 @@ from enunciados.modelmanagers.versiones_manager import VersionesManager
 
 
 class Materia(models.Model):
-    def get_absolute_url(self):
-        return reverse('materia', kwargs={'nombre': self.slug})
-
+    pass
 
 class ConjuntoDeEnunciados(models.Model):
     materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
