@@ -9,8 +9,10 @@ from enunciados.views.soluciones import crear as crear_solucion
 from enunciados.views.soluciones import editar as editar_solucion
 from enunciados.views.soluciones import versiones as versiones_solucion
 from enunciados.url_converters.materiacarrera_converter import MateriaCarreraConverter
+from enunciados.url_converters.carrera_converter import CarreraConverter
 
 
+register_converter(CarreraConverter, 'carrera')
 register_converter(MateriaCarreraConverter, 'materiacarrera')
 
 
