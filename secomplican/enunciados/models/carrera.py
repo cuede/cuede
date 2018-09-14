@@ -27,8 +27,11 @@ class MateriaCarrera(models.Model):
     carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE)
     materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=NOMBRE_MAX_LENGTH)
-    slug = models.SlugField(max_length=NOMBRE_MAX_LENGTH, unique=True)
+    slug = models.SlugField(max_length=NOMBRE_MAX_LENGTH)
     optativa = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nombre
+
+    class Meta:
+        unique_together = (('carrera', 'materia'), ('carrera', 'slug'))
