@@ -27,11 +27,11 @@ def materia(request, materia_carrera):
     contexto = {
         'materia': materia_carrera,
         'practicas': models_utils.ultimas_practicas_ordenadas(
-            materia_carrera),
+            materia_carrera.materia),
         'parciales': models_utils.parciales_de_materia_ordenados(
-            materia_carrera),
+            materia_carrera.materia),
         'finales': models_utils.finales_de_materia_ordenados(
-            materia_carrera),
+            materia_carrera.materia),
 
         'url_agregar_practica': url_agregar_conjunto(
             materia_carrera.slug, tipo_practica),
