@@ -2,7 +2,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify
 
 
 from enunciados.modelmanagers.versiones_manager import VersionesManager
@@ -11,16 +10,6 @@ from enunciados.modelmanagers.versiones_manager import VersionesManager
 class Materia(models.Model):
     def get_absolute_url(self):
         return reverse('materia', kwargs={'nombre': self.slug})
-
-    def clean(self):
-        if not self.slug:
-            self.slug = slugify(self.nombre)
-        if Materia.objects.filter(slug=self.slug).exists():
-            raise ValidationError(
-                _('El slug de esta Materia es el mismo que el de otra.'))
-
-    class Meta:
-        ordering = ['nombre']
 
 
 class ConjuntoDeEnunciados(models.Model):

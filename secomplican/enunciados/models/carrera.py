@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 from enunciados.models.models import Materia
 
@@ -33,5 +34,15 @@ class MateriaCarrera(models.Model):
     def __str__(self):
         return self.nombre
 
+    def clean(self):
+        if not self.slug:
+            self.slug = slugify(self.nombre)
+        if MateriaCarrera.objects.filter(
+                slug=self.slug, carrera=self.carrera).exists():
+            raise ValidationError(
+                _('El slug de esta Materia es el '
+                  'mismo que el de otra de la misma carrera.'))
+
     class Meta:
         unique_together = (('carrera', 'materia'), ('carrera', 'slug'))
+        ordering = ['nombre']
