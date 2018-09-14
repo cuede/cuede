@@ -18,12 +18,16 @@ class Universidad(models.Model):
 
 
 class Carrera(models.Model):
-    nombre = models.CharField()
+    nombre = models.CharField(max_length=NOMBRE_MAX_LENGTH)
+    slug = models.CharField(max_length=NOMBRE_MAX_LENGTH)
     universidad = models.ForeignKey(Universidad, on_delete=models.CASCADE)
     materias = models.ManyToManyField(Materia, through='MateriaCarrera')
 
     def __str__(self):
         return self.nombre
+
+    class Meta:
+        unique_together = ('universidad', 'slug')
 
 
 class MateriaCarrera(models.Model):
