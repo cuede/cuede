@@ -24,9 +24,8 @@ def practicas_de_materia(materia):
     return retornables
 
 
-def practicas(request, materia):
-    objeto_materia = get_object_or_404(Materia, slug=materia)
-    practicas_materia = practicas_de_materia(objeto_materia)
+def practicas(request, materia_carrera):
+    practicas_materia = practicas_de_materia(materia_carrera.materia)
     return render(
         request, 'enunciados/practicas.html', {'practicas': practicas_materia}
     )

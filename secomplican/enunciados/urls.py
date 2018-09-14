@@ -24,8 +24,10 @@ urlpatterns = [
         name='agregar_enunciado'
     ),
 
-    path('<materiacarrera:materia_carrera>/', materias.materia, name='materia'),
-    path('<slug:materia>/practicas/', practicas.practicas, name='practicas'),
+    path('<materiacarrera:materia_carrera>/',
+         materias.materia, name='materia'),
+    path('<materiacarrera:materia_carrera>/practicas/',
+         practicas.practicas, name='practicas'),
     path('<slug:materia>/practicas/<int:anio>/<cuatrimestre>/<int:numero>/',
          conjuntos_de_enunciados.practica, name='practica'),
     path('<slug:materia>/parciales/<int:anio>/<cuatrimestre>/<int:numero>/',
