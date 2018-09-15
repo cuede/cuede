@@ -35,6 +35,7 @@ def materia(request, materia_carrera):
     tipo_parcial = ConjuntoDeEnunciadosForm.PARCIAL
     tipo_final = ConjuntoDeEnunciadosForm.FINAL
     contexto = {
+        'carrera': materia_carrera.carrera,
         'materia': materia_carrera,
         'practicas': models_utils.ultimas_practicas_ordenadas(
             materia_carrera.materia),
