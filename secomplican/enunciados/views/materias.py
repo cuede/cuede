@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.views import generic
 
 from enunciados.models import MateriaCarrera
-from enunciados.utils import models_utils, url_utils
+from enunciados.utils import models_utils, url_utils, conjuntos_url_parser
 from enunciados.views.enunciados.forms import ConjuntoDeEnunciadosForm
 
 
@@ -30,15 +30,27 @@ def url_agregar_conjunto(slug_materia, tipo):
         'agregar_enunciado', queryparams=queryparams)
 
 
+def practicas_con_urls(materiacarrera):
+    practicas = models_utils.ultimas_practicas_ordenadas(
+        materiacarrera.materia)
+    return [
+        (practica, conjuntos_url_parser.url_practica(materiacarrera, practica))
+        for practica in practicas
+    ]
+
+
 def materia(request, materia_carrera):
     tipo_practica = ConjuntoDeEnunciadosForm.PRACTICA
     tipo_parcial = ConjuntoDeEnunciadosForm.PARCIAL
     tipo_final = ConjuntoDeEnunciadosForm.FINAL
+
+    # Pasar las URLs de practicas, parciales y finales.
+    # Hay que hacer tipo un zip para poder recorrer los parciales
+    # y sus URLs al mismo tiempo.
     contexto = {
         'carrera': materia_carrera.carrera,
         'materia': materia_carrera,
-        'practicas': models_utils.ultimas_practicas_ordenadas(
-            materia_carrera.materia),
+        'practicas_con_urls': practicas_con_urls(materia_carrera),
         'parciales': models_utils.parciales_de_materia_ordenados(
             materia_carrera.materia),
         'finales': models_utils.finales_de_materia_ordenados(
