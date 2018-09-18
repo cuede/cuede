@@ -3,8 +3,6 @@ from django.urls import path, include
 from enunciados.views import practicas, conjuntos_de_enunciados
 
 
-app_name = 'practicas'
-
 practica_urlpatterns = [
     path('', conjuntos_de_enunciados.practica, name='practica'),
     path('', include('enunciados.urls.enunciados_urls',
