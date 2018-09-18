@@ -13,7 +13,8 @@ def cuatrimestre_y_anio_a_texto(conjunto):
 
 
 def practicas_de_materia(materia):
-    practicas = (Practica.objects
+    practicas = (
+        Practica.objects
         .filter(materia=materia)
         .order_by('-anio', '-cuatrimestre', 'numero')
     )
@@ -26,6 +27,11 @@ def practicas_de_materia(materia):
 
 def practicas(request, materia_carrera):
     practicas_materia = practicas_de_materia(materia_carrera.materia)
+    contexto = {
+        'carrera': materia_carrera.carrera,
+        'materia': materia_carrera,
+        'practicas': practicas_materia,
+    }
     return render(
-        request, 'enunciados/practicas.html', {'practicas': practicas_materia}
+        request, 'enunciados/practicas.html', contexto
     )
