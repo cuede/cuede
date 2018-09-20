@@ -5,6 +5,7 @@ from enunciados.utils import cuatrimestres_url_parser
 
 def url_conjunto(materiacarrera, nombre, kwargs):
     kwargs['materia_carrera'] = materiacarrera
+    nombre = 'materia:{}'.format(nombre)
     return reverse(nombre, kwargs=kwargs)
 
 

@@ -12,7 +12,7 @@
     Todavía no hay prácticas.
 {% endfor %}
 <p><a href="{{ url_agregar_practica }}">Agregar práctica</a> |
-<a href="{% url 'practicas' materia_carrera=materia %}">Prácticas anteriores</a></p>
+<a href="{% url 'materia:practicas' materia_carrera=materia %}">Prácticas anteriores</a></p>
 
 {% for numero, parciales_actuales in parciales.items %}
     <h2>{{ parciales_actuales.0.ordinal.plural }} Parciales</h2>

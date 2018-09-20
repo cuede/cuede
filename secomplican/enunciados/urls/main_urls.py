@@ -33,5 +33,5 @@ urlpatterns = [
     ),
 
     path('<materiacarrera:materia_carrera>/',
-         include('enunciados.urls.materia_urls')),
+        include('enunciados.urls.materia_urls', namespace='materia')),
 ]

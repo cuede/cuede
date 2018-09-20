@@ -50,7 +50,7 @@ class MateriaCarrera(models.Model):
                   'mismo que el de otra de la misma carrera.'))
 
     def get_absolute_url(self):
-        return reverse('materia', kwargs={'materia_carrera': self})
+        return reverse('materia:materia', kwargs={'materia_carrera': self})
 
     class Meta:
         unique_together = (('carrera', 'materia'), ('carrera', 'slug'))
