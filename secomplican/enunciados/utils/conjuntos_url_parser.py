@@ -21,3 +21,13 @@ def url_practica(materiacarrera, practica):
     }
     return url_conjunto_con_cuatrimestre(
         materiacarrera, 'practica', kwargs, practica)
+
+
+def url_parcial(materiacarrera, parcial):
+    subdomain = 'recuperatorios' if parcial.recuperatorio else 'parciales'
+    nombre = '{}:parcial'.format(subdomain)
+    kwargs = {
+        'numero_parcial': parcial.numero,
+    }
+    return url_conjunto_con_cuatrimestre(
+        materiacarrera, nombre, kwargs, parcial)
