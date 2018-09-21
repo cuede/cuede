@@ -4,35 +4,35 @@
 {% load cuatrimestres %}
 
 <h1> {{ materia.nombre }} </h1>
-<h2>Prácticas{% if practicas_con_urls %} del {{ practicas_con_urls.0.0.cuatrimestre|texto_cuatrimestre }} del {{
-    practicas_con_urls.0.0.anio }} {% endif %}</h2>
+<h2>Prácticas{% if practicas_con_urls %} del {{ practicas_con_urls.0.0.cuatrimestre|texto_cuatrimestre }} del {{ practicas_con_urls.0.0.anio }}
+    {% endif %}</h2>
 {% for practica, url_practica in practicas_con_urls %}
-<a href="{{ url_practica }}" class="important">
-    Práctica {{ practica.numero }}</a><br>
+    <a href="{{ url_practica }}" class="important">
+        Práctica {{ practica.numero }}</a><br>
 {% empty %}
-Todavía no hay prácticas.
+    Todavía no hay prácticas.
 {% endfor %}
 <p><a href="{{ url_agregar_practica }}">Agregar práctica</a> |
     <a href="{% url 'materia:practicas' materia_carrera=materia %}">Prácticas anteriores</a></p>
 
 {% for numero, parciales_actuales in parciales_con_urls.items %}
-<h2>{{ parciales_actuales.0.0.ordinal.plural }} Parciales</h2>
-{% for parcial, url_parcial in parciales_actuales %}
-<a href="{{ url_parcial }}" class="important">
-    {{ parcial }}
-</a><br>
-{% endfor %}
+    <h2>{{ parciales_actuales.0.0.ordinal.plural }} Parciales</h2>
+    {% for parcial, url_parcial in parciales_actuales %}
+        <a href="{{ url_parcial }}" class="important">
+            {{ parcial }}
+        </a><br>
+    {% endfor %}
 {% empty %}
-<h2> Parciales </h2>
-Todavía no hay parciales.
+    <h2> Parciales </h2>
+    Todavía no hay parciales.
 {% endfor %}
 <p><a href="{{ url_agregar_parcial }}">Agregar parcial</a></p>
 
 <h2>Finales</h2>
 {% for final, url in finales %}
-<a href="{{ url }}" class="important">{{ final }}</a><br>
+    <a href="{{ url }}" class="important">{{ final }}</a><br>
 {% empty %}
-Todavía no hay finales.
+    Todavía no hay finales.
 {% endfor %}
 <p><a href="{{ url_agregar_final }}">Agregar final</a></p>
 
