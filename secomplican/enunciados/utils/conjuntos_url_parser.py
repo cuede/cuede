@@ -31,3 +31,7 @@ def url_parcial(materiacarrera, parcial):
     }
     return url_conjunto_con_cuatrimestre(
         materiacarrera, nombre, kwargs, parcial)
+
+
+def url_final(materiacarrera, final):
+    return url_conjunto(materiacarrera, 'final', {'fecha': final.fecha})
