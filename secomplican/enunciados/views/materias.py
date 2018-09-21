@@ -50,6 +50,15 @@ def parciales_con_urls(materiacarrera):
     return parciales_por_numero
 
 
+def finales_con_urls(materiacarrera):
+    finales = models_utils.finales_de_materia_ordenados(
+        materiacarrera.materia)
+    return [
+        (final, conjuntos_url_parser.url_final(materiacarrera, final))
+        for final in finales
+    ]
+
+
 def materia(request, materia_carrera):
     tipo_practica = ConjuntoDeEnunciadosForm.PRACTICA
     tipo_parcial = ConjuntoDeEnunciadosForm.PARCIAL
@@ -63,8 +72,7 @@ def materia(request, materia_carrera):
         'materia': materia_carrera,
         'practicas_con_urls': practicas_con_urls(materia_carrera),
         'parciales_con_urls': parciales_con_urls(materia_carrera),
-        'finales': models_utils.finales_de_materia_ordenados(
-            materia_carrera.materia),
+        'finales': finales_con_urls(materia_carrera),
 
         'url_agregar_practica': url_agregar_conjunto(
             materia_carrera.slug, tipo_practica),
