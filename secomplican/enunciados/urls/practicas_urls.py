@@ -8,8 +8,10 @@ register_converter(CuatrimestreConverter, 'cuatrimestre')
 
 practica_urlpatterns = [
     path('', conjuntos_de_enunciados.practica, name='practica'),
-    path('', include('enunciados.urls.enunciados_urls',
-                     namespace='enunciados_practica')),
+    path('',
+         include('enunciados.urls.enunciados_urls',
+                 namespace='enunciados_practica'),
+         kwargs={'conjunto': 'practica'}),
 ]
 
 urlpatterns = [

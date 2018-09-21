@@ -7,8 +7,10 @@ register_converter(FechaConverter, 'fecha')
 
 final_urlpatterns = [
     path('', conjuntos_de_enunciados.final, name='final'),
-    path('', include('enunciados.urls.enunciados_urls',
-                     namespace='enunciados_final')),
+    path('',
+         include('enunciados.urls.enunciados_urls',
+                 namespace='enunciados_final'),
+         kwargs={'conjunto': 'final'}),
 ]
 
 urlpatterns = [
