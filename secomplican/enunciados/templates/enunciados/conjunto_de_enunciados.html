@@ -15,9 +15,9 @@
         {% with cant_soluciones=enunciado.soluciones.count %}
         {{ cant_soluciones }}
         {% if cant_soluciones == 1 %}
-            solución
+        solución
         {% else %}
-            soluciones
+        soluciones
         {% endif %}
         {% endwith %}
     </a>
@@ -26,13 +26,15 @@
     </p>
     {% include 'enunciados/acciones_enunciado.html' %}
 </div>
-<hr/>
+<hr />
 {% empty %}
+<div style="display: block; margin-top: 20px;">
     Todavía no hay enunciados. <a href="{{ url_nuevo_enunciado }}"> ¿Querés agregar uno? </a>
+</div>
 {% endfor %}
 {% if conjunto.enunciado_set.all %}
-    <p>
-        <a href="{{ url_nuevo_enunciado }}"> Agregar ejercicio </a>
-    </p>
+<p>
+    <a href="{{ url_nuevo_enunciado }}"> Agregar ejercicio </a>
+</p>
 {% endif %}
 {% endblock %}
