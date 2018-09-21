@@ -15,6 +15,7 @@ def render_conjunto_de_enunciados(
         'agregar_enunciado', queryparams=nuevo_enunciado_query_params)
     contexto = {
         'carrera': materia_carrera.carrera,
+        'materia_carrera': materia_carrera,
         'conjunto': conjunto,
         'url_nuevo_enunciado': url_nuevo_enunciado,
     }
