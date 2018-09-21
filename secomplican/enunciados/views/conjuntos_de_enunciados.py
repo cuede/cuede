@@ -9,11 +9,12 @@ import datetime
 
 
 def render_conjunto_de_enunciados(
-        request, conjunto, nuevo_enunciado_query_params):
-    nuevo_enunciado_query_params['materia'] = conjunto.materia.slug
+        request, materia_carrera, conjunto, nuevo_enunciado_query_params):
+    nuevo_enunciado_query_params['materia'] = materia_carrera.slug
     url_nuevo_enunciado = url_utils.reverse_con_queryparams(
         'agregar_enunciado', queryparams=nuevo_enunciado_query_params)
     contexto = {
+        'carrera': materia_carrera.carrera,
         'conjunto': conjunto,
         'url_nuevo_enunciado': url_nuevo_enunciado,
     }
@@ -58,15 +59,14 @@ def parcial(request, materia, anio, cuatrimestre, numero, recuperatorio=False):
         request, parciales, anio, cuatrimestre, nuevo_enunciado_query_params)
 
 
-def final(request, materia, anio, mes, dia):
-    finales = get_object_or_404(
-        Final, materia__slug=materia,
-        fecha__year=anio, fecha__month=mes, fecha__day=dia)
+def final(request, materia_carrera, fecha):
+    final_encontrado = get_object_or_404(
+        Final, materia=materia_carrera.materia, fecha=fecha)
 
-    fecha = datetime.date(anio, mes, dia)
     nuevo_enunciado_query_params = {
         'tipo': ConjuntoDeEnunciadosForm.FINAL,
         'fecha': fecha,
     }
     return render_conjunto_de_enunciados(
-        request, finales, nuevo_enunciado_query_params)
+        request, materia_carrera,
+        final_encontrado, nuevo_enunciado_query_params)
