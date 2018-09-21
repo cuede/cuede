@@ -23,41 +23,46 @@ def render_conjunto_de_enunciados(
 
 
 def conjunto_de_enunciados_con_cuatrimestre(
-        request, queryset, anio, cuatrimestre, nuevo_enunciado_query_params):
-    numero_cuatri = cuatrimestres_url_parser.url_a_numero(cuatrimestre)
-    if not numero_cuatri:
-        raise Http404
+        request, materia_carrera, queryset,
+        anio, cuatrimestre, nuevo_enunciado_query_params):
 
     conjunto = get_object_or_404(
-        queryset, anio=anio, cuatrimestre=numero_cuatri)
+        queryset, anio=anio, cuatrimestre=cuatrimestre)
 
-    nuevo_enunciado_query_params['cuatrimestre'] = numero_cuatri
+    nuevo_enunciado_query_params['cuatrimestre'] = cuatrimestre
     nuevo_enunciado_query_params['anio'] = anio
 
     return render_conjunto_de_enunciados(
-        request, conjunto, nuevo_enunciado_query_params)
+        request, materia_carrera, conjunto, nuevo_enunciado_query_params)
 
 
-def practica(request, materia, anio, cuatrimestre, numero):
-    practicas = Practica.objects.filter(materia__slug=materia, numero=numero)
+def practica(request, materia_carrera, anio, cuatrimestre, numero_practica):
+    practicas = Practica.objects.filter(
+        materia=materia_carrera.materia, numero=numero_practica)
     nuevo_enunciado_query_params = {
         'tipo': ConjuntoDeEnunciadosForm.PRACTICA,
-        'numero_practica': numero,
+        'numero_practica': numero_practica,
     }
     return conjunto_de_enunciados_con_cuatrimestre(
-        request, practicas, anio, cuatrimestre, nuevo_enunciado_query_params)
+        request, materia_carrera, practicas,
+        anio, cuatrimestre, nuevo_enunciado_query_params)
 
 
-def parcial(request, materia, anio, cuatrimestre, numero, recuperatorio=False):
+def parcial(
+        request, materia_carrera, anio,
+        cuatrimestre, numero_parcial, recuperatorio=False):
     parciales = Parcial.objects.filter(
-        materia__slug=materia, numero=numero, recuperatorio=recuperatorio)
+        materia=materia_carrera.materia,
+        numero=numero_parcial,
+        recuperatorio=recuperatorio)
     nuevo_enunciado_query_params = {
         'tipo': ConjuntoDeEnunciadosForm.PARCIAL,
-        'numero_parcial': numero,
+        'numero_parcial': numero_parcial,
         'es_recuperatorio': recuperatorio,
     }
     return conjunto_de_enunciados_con_cuatrimestre(
-        request, parciales, anio, cuatrimestre, nuevo_enunciado_query_params)
+        request, materia_carrera, parciales,
+        anio, cuatrimestre, nuevo_enunciado_query_params)
 
 
 def final(request, materia_carrera, fecha):
