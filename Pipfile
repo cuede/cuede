@@ -13,6 +13,7 @@ django-heroku = "*"
 [dev-packages]
 pylint = "*"
 "autopep8" = "*"
+rope = "*"
 
 [requires]
 python_version = "3.7"
