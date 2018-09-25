@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-
+{% comment %}
 <a href="{{ conjunto.materia.get_absolute_url }}" class="important">
     {{ conjunto.materia }}
 </a> /
-<a href="{{ conjunto.get_absolute_url }}" class="important">{{ conjunto }}</a>
+<a href="{{ conjunto.get_absolute_url }}" class="important">{{ conjunto }}</a> {% endcomment %}
 <h1 style="display: inline">&nbsp;/ {{ enunciado }} </h1>
 <p>
     {{ enunciado.versiones.ultima }}
 </p>
-{% include 'enunciados/acciones_enunciado.html' %}
+{% comment %} {% include 'enunciados/acciones_enunciado.html' %} {% endcomment %}
 
 <h2> Soluciones </h2>
 {% for solucion in enunciado.soluciones.all %}
@@ -19,11 +19,11 @@
     {% include 'enunciados/acciones_solucion.html' %}
     <hr>
 {% empty %}
-    Todavía no hay soluciones <a href="{{ url_solucion }}">
+    Todavía no hay soluciones <a href="{{ url_agregar_solucion }}">
       ¿Querés agregar una? </a>
 {% endfor %}
 {% if enunciado.soluciones.all %}
-    <a href="{{ url_solucion }}"> Agregar solución </a>
+    <a href="{{ url_agregar_solucion }}"> Agregar solución </a>
 {% endif %}
 
 {% endblock %}

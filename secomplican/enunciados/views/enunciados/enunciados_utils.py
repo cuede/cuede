@@ -2,34 +2,12 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 from enunciados.models import Enunciado
-from enunciados.utils import cuatrimestres_url_parser
+from enunciados.utils import cuatrimestres_url_parser, conjuntos_url_parser
 
 
 def enunciado_con_kwargs(kwargs):
-    materia = kwargs.get('materia')
-    anio = kwargs.get('anio')
-    numero = kwargs.get('numero')
-    conjunto = kwargs.get('conjunto')
-    if conjunto == 'final':
-        mes = kwargs.get('mes')
-        dia = kwargs.get('dia')
-        return enunciado_de_final(materia, anio, mes, dia, numero)
-    else:
-        cuatrimestre = kwargs.get('cuatrimestre')
-        numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(
-            cuatrimestre)
-        if conjunto == 'practica':
-            numero_practica = kwargs.get('numero_practica')
-            return enunciado_de_practica(
-                materia, anio, numero_cuatrimestre, numero_practica, numero)
-        elif conjunto == 'parcial':
-            numero_parcial = kwargs.get('numero_parcial')
-            es_recuperatorio = kwargs.get('es_recuperatorio', False)
-            return enunciado_de_parcial(
-                materia, anio, numero_cuatrimestre,
-                numero_parcial, numero, es_recuperatorio)
-        else:
-            raise Http404('El enunciado no tiene un conjunto válido.')
+    conjunto = conjuntos_url_parser.kwargs_a_conjunto(kwargs)
+    return get_object_or_404(Enunciado, conjunto=conjunto)
 
 
 def enunciado_de_practica(materia, anio, numero_cuatrimestre, numero_practica, numero):
