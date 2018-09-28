@@ -29,7 +29,7 @@ def practicas(request, materia_carrera):
     practicas_materia = practicas_de_materia(materia_carrera.materia)
     contexto = {
         'carrera': materia_carrera.carrera,
-        'materia': materia_carrera,
+        'materia_carrera': materia_carrera,
         'practicas': practicas_materia,
     }
     return render(
