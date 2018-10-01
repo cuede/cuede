@@ -1,15 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
-{% comment %}
-<a href="{{ conjunto.materia.get_absolute_url }}" class="important">
-    {{ conjunto.materia }}
+
+{% load urls_conjuntos %}
+
+<a href="{{ materia_carrera.get_absolute_url }}" class="important">
+    {{ materia_carrera }}
 </a> /
-<a href="{{ conjunto.get_absolute_url }}" class="important">{{ conjunto }}</a> {% endcomment %}
+<a href="{% url_conjunto materia_carrera conjunto %}" class="important">
+    {{ conjunto }}
+</a>
 <h1 style="display: inline">&nbsp;/ {{ enunciado }} </h1>
 <p>
     {{ enunciado.versiones.ultima }}
 </p>
-{% comment %} {% include 'enunciados/acciones_enunciado.html' %} {% endcomment %}
+{% include 'enunciados/acciones_enunciado.html' %}
 
 <h2> Soluciones </h2>
 {% for solucion in enunciado.soluciones.all %}

@@ -11,6 +11,7 @@ def render_enunciado(request, materia_carrera,
                      enunciado_elegido, url_agregar_solucion, conjunto):
     contexto = {
         'carrera': materia_carrera.carrera,
+        'materia_carrera': materia_carrera,
         'enunciado': enunciado_elegido,
         'url_agregar_solucion': url_agregar_solucion,
         'conjunto': conjunto,
