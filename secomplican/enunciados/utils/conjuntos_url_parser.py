@@ -45,19 +45,28 @@ def kwargs_de_conjunto(materiacarrera, conjunto):
     return kwargs
 
 
-def nombre_url_conjunto(materiacarrera, conjunto):
+def namespace_de_conjunto(conjunto):
     tipo_conjunto = conjuntos_utils.tipo_conjunto(conjunto)
-    nombre = tipo_conjunto
-    if tipo_conjunto == 'parcial':
+    if tipo_conjunto == 'practica':
+        subdomain = 'practicas'
+    elif tipo_conjunto == 'parcial':
         subdomain = \
             'recuperatorios' if conjunto.parcial.recuperatorio else 'parciales'
-        nombre = '{}:{}'.format(subdomain, nombre)
-    return 'materia:{}'.format(nombre)
+    elif tipo_conjunto == 'final':
+        subdomain = 'finales'
+
+    return 'materia:{}'.format(subdomain)
+
+
+def nombre_url_conjunto(conjunto):
+    namespace = namespace_de_conjunto(conjunto)
+    tipo_conjunto = conjuntos_utils.tipo_conjunto(conjunto)
+    return '{}:{}'.format(namespace, tipo_conjunto)
 
 
 def url_conjunto(materiacarrera, conjunto):
     kwargs = kwargs_de_conjunto(materiacarrera, conjunto)
-    nombre = nombre_url_conjunto(materiacarrera, conjunto)
+    nombre = nombre_url_conjunto(conjunto)
     return reverse(nombre, kwargs=kwargs)
 
 

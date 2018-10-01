@@ -10,8 +10,7 @@ app_name = 'parciales'
 parcial_urlpatterns = [
     path('', conjuntos_de_enunciados.parcial, name='parcial'),
     path('',
-         include('enunciados.urls.enunciados_urls',
-                 namespace='enunciados_parcial'),
+         include('enunciados.urls.enunciados_urls', namespace='enunciados'),
          kwargs={'conjunto': 'parcial'}),
 ]
 

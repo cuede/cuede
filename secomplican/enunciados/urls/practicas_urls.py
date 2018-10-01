@@ -6,11 +6,12 @@ from enunciados.url_converters import CuatrimestreConverter
 
 register_converter(CuatrimestreConverter, 'cuatrimestre')
 
+app_name = 'practicas'
+
 practica_urlpatterns = [
     path('', conjuntos_de_enunciados.practica, name='practica'),
     path('',
-         include('enunciados.urls.enunciados_urls',
-                 namespace='enunciados_practica'),
+         include('enunciados.urls.enunciados_urls', namespace='enunciados'),
          kwargs={'conjunto': 'practica'}),
 ]
 
