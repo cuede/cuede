@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% load urls_enunciados %}
+
 <a href="{{ materia_carrera.get_absolute_url }}" class="important">
     {{ materia_carrera }}
 </a>
@@ -10,7 +12,7 @@
     <h2 style="display: inline">
         Ejercicio {{ enunciado.numero }}
     </h2>
-    <a href="{{ enunciado.get_absolute_url }}" class="important">
+    <a href="{% url_enunciado materia_carrera enunciado %}" class="important">
 
         {% with cant_soluciones=enunciado.soluciones.count %}
         {{ cant_soluciones }}
