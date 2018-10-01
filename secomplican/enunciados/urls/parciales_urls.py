@@ -16,5 +16,5 @@ parcial_urlpatterns = [
 
 urlpatterns = [
     path('<int:anio>/<cuatrimestre:cuatrimestre>/<int:numero_parcial>/',
-         include(parcial_urlpatterns)),
+         include((parcial_urlpatterns, 'parcial'))),
 ]

@@ -15,5 +15,5 @@ final_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('<fecha:fecha>/', include(final_urlpatterns)),
+    path('<fecha:fecha>/', include((final_urlpatterns, 'final'))),
 ]

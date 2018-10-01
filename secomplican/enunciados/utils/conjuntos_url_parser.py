@@ -55,7 +55,7 @@ def namespace_de_conjunto(conjunto):
     elif tipo_conjunto == 'final':
         subdomain = 'finales'
 
-    return 'materia:{}'.format(subdomain)
+    return 'materia:{}:{}'.format(subdomain, tipo_conjunto)
 
 
 def nombre_url_conjunto(conjunto):

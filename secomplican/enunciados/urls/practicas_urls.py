@@ -18,5 +18,5 @@ practica_urlpatterns = [
 urlpatterns = [
     path('', practicas.practicas, name='practicas'),
     path('<int:anio>/<cuatrimestre:cuatrimestre>/<int:numero_practica>/',
-         include(practica_urlpatterns)),
+         include((practica_urlpatterns, 'practica'))),
 ]
