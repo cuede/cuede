@@ -19,3 +19,8 @@ def kwargs_de_solucion(materia_carrera, solucion):
 def url_editar_solucion(materia_carrera, solucion):
     kwargs = kwargs_de_solucion(materia_carrera, solucion)
     return reverse('editar_solucion', kwargs=kwargs)
+
+
+def url_versiones_solucion(materia_carrera, solucion):
+    kwargs = kwargs_de_solucion(materia_carrera, solucion)
+    return reverse('versiones_solucion', kwargs=kwargs)

@@ -1,4 +1,6 @@
 {%load urls_soluciones %}
 
 <a href="{% url_editar_solucion materia_carrera solucion %}">editar</a> |
-<a href="{{ solucion.get_versiones_url }}">versiones anteriores</a>
+<a href="{% url_versiones_solucion materia_carrera solucion %}">
+    versiones anteriores
+</a>
