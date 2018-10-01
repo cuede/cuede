@@ -10,8 +10,6 @@ def url_nueva_solucion(materia_carrera, enunciado):
 
 def kwargs_de_solucion(materia_carrera, solucion):
     return {
-        'carrera': materia_carrera.carrera,
-        'materia_carrera': materia_carrera,
         'pk': solucion.pk,
     }
 
