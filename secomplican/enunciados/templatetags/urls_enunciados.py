@@ -6,3 +6,4 @@ register = template.Library()
 
 register.simple_tag(enunciados_url_parser.url_enunciado)
 register.simple_tag(enunciados_url_parser.url_editar_enunciado)
+register.simple_tag(enunciados_url_parser.url_versiones_enunciado)

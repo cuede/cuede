@@ -107,54 +107,6 @@ class Enunciado(models.Model):
         """Devuelve el tipo del conjunto al que pertenece este enunciado"""
         return conjuntos_utils.tipo_conjunto(self.conjunto)
 
-    def _kwargs_para_url(self, tipo_conjunto):
-        from enunciados.utils import cuatrimestres_url_parser
-        kwargs = {
-            'materia': self.conjunto.materia.slug,
-            'numero': self.numero,
-        }
-
-        if tipo_conjunto == 'parcial':
-            parcial = self.conjunto.parcial
-            kwargs['numero_parcial'] = parcial.numero
-            kwargs['anio'] = parcial.anio
-            kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(
-                parcial.cuatrimestre)
-        elif tipo_conjunto == 'practica':
-            practica = self.conjunto.practica
-            kwargs['numero_practica'] = practica.numero
-            kwargs['anio'] = practica.anio
-            kwargs['cuatrimestre'] = cuatrimestres_url_parser.numero_a_url(
-                practica.cuatrimestre)
-        elif tipo_conjunto == 'final':
-            final = self.conjunto.final
-            kwargs['anio'] = final.fecha.year
-            kwargs['mes'] = final.fecha.month
-            kwargs['dia'] = final.fecha.day
-        else:
-            raise Exception(
-                'El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
-
-        return kwargs
-
-    def get_versiones_url(self):
-        """Devuelve la url para las versiones de este enunciado"""
-        tipo_conjunto = self.tipo_conjunto()
-        if tipo_conjunto == 'parcial':
-            if self.conjunto.parcial.recuperatorio:
-                url = 'versiones_enunciado_recuperatorio'
-            else:
-                url = 'versiones_enunciado_parcial'
-        elif tipo_conjunto == 'practica':
-            url = 'versiones_enunciado_practica'
-        elif tipo_conjunto == 'final':
-            url = 'versiones_enunciado_final'
-        else:
-            raise Exception(
-                'El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
-
-        return reverse(url, kwargs=self._kwargs_para_url(tipo_conjunto))
-
     class Meta:
         ordering = ['numero']
         # No puede haber dos ejercicios con el mismo número en el mismo conjunto.

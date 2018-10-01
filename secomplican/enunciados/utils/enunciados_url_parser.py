@@ -31,3 +31,8 @@ def url_enunciado(materia_carrera, enunciado):
 def url_editar_enunciado(materia_carrera, enunciado):
     return url_enunciado_con_nombre(
         materia_carrera, enunciado, 'editar_enunciado')
+
+
+def url_versiones_enunciado(materia_carrera, enunciado):
+    return url_enunciado_con_nombre(
+        materia_carrera, enunciado, 'versiones_enunciado')
