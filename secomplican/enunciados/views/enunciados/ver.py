@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse
 
-from enunciados.utils import cuatrimestres_url_parser, soluciones_url_parser
+from enunciados.utils import (
+    cuatrimestres_url_parser, soluciones_url_parser, conjuntos_utils)
 
 from . import enunciados_utils
 
@@ -19,7 +20,8 @@ def render_enunciado(request, materia_carrera,
 
 def enunciado(request, **kwargs):
     enunciado_encontrado = enunciados_utils.enunciado_con_kwargs(kwargs)
-    tipo_conjunto = enunciado_encontrado.tipo_conjunto()
+    tipo_conjunto = conjuntos_utils.tipo_conjunto(
+        enunciado_encontrado.conjunto)
     conjunto = enunciado_encontrado.conjunto
     if tipo_conjunto == 'practica':
         conjunto = conjunto.practica
