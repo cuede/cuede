@@ -6,7 +6,7 @@
 {% for cuatri, practicas_de_cuatri in practicas.items %}
     <h2>{{ cuatri }}</h2>
     {% for practica in practicas_de_cuatri %}
-        <a href="{% url_practica materia_carrera practica %}" class="important">
+        <a href="{% url_conjunto materia_carrera practica %}" class="important">
             Práctica {{ practica.numero }}</a><br>
     {% endfor %}
 {% endfor %}

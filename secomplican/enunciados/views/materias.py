@@ -34,7 +34,7 @@ def practicas_con_urls(materiacarrera):
     practicas = models_utils.ultimas_practicas_ordenadas(
         materiacarrera.materia)
     return [
-        (practica, conjuntos_url_parser.url_practica(materiacarrera, practica))
+        (practica, conjuntos_url_parser.url_conjunto(materiacarrera, practica))
         for practica in practicas
     ]
 
@@ -44,7 +44,7 @@ def parciales_con_urls(materiacarrera):
         materiacarrera.materia)
     for numero, parciales in parciales_por_numero.items():
         parciales_por_numero[numero] = [
-            (parcial, conjuntos_url_parser.url_parcial(materiacarrera, parcial))
+            (parcial, conjuntos_url_parser.url_conjunto(materiacarrera, parcial))
             for parcial in parciales
         ]
     return parciales_por_numero
@@ -54,7 +54,7 @@ def finales_con_urls(materiacarrera):
     finales = models_utils.finales_de_materia_ordenados(
         materiacarrera.materia)
     return [
-        (final, conjuntos_url_parser.url_final(materiacarrera, final))
+        (final, conjuntos_url_parser.url_conjunto(materiacarrera, final))
         for final in finales
     ]
 

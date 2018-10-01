@@ -61,18 +61,6 @@ def url_conjunto(materiacarrera, conjunto):
     return reverse(nombre, kwargs=kwargs)
 
 
-def url_practica(materiacarrera, practica):
-    return url_conjunto(materiacarrera, practica)
-
-
-def url_parcial(materiacarrera, parcial):
-    return url_conjunto(materiacarrera, parcial)
-
-
-def url_final(materiacarrera, final):
-    return url_conjunto(materiacarrera, final)
-
-
 def kwargs_a_conjunto(kwargs):
     tipo_conjunto = kwargs.get('conjunto')
     kwargs_objeto = {
