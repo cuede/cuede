@@ -9,10 +9,25 @@ def namespace_enunciado(enunciado):
     return '{}:enunciados'.format(namespace_conjunto)
 
 
-def url_enunciado(materia_carrera, enunciado):
-    namespace = namespace_enunciado(enunciado)
-    nombre_url_enunciado = '{}:ver_enunciado'.format(namespace)
+def kwargs_de_enunciado(materia_carrera, enunciado):
     kwargs = conjuntos_url_parser.kwargs_de_conjunto(
         materia_carrera, enunciado.conjunto)
     kwargs['numero'] = enunciado.numero
+    return kwargs
+
+
+def url_enunciado_con_nombre(materia_carrera, enunciado, nombre):
+    namespace = namespace_enunciado(enunciado)
+    nombre_url_enunciado = '{}:{}'.format(namespace, nombre)
+    kwargs = kwargs_de_enunciado(materia_carrera, enunciado)
     return reverse(nombre_url_enunciado, kwargs=kwargs)
+
+
+def url_enunciado(materia_carrera, enunciado):
+    return url_enunciado_con_nombre(
+        materia_carrera, enunciado, 'ver_enunciado')
+
+
+def url_editar_enunciado(materia_carrera, enunciado):
+    return url_enunciado_con_nombre(
+        materia_carrera, enunciado, 'editar_enunciado')
