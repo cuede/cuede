@@ -1,6 +1,8 @@
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
 from enunciados.utils import conjuntos_url_parser
+from enunciados.models import Enunciado
 
 
 def namespace_enunciado(enunciado):
@@ -36,3 +38,9 @@ def url_editar_enunciado(materia_carrera, enunciado):
 def url_versiones_enunciado(materia_carrera, enunciado):
     return url_enunciado_con_nombre(
         materia_carrera, enunciado, 'versiones_enunciado')
+
+
+def kwargs_a_enunciado(kwargs):
+    conjunto = conjuntos_url_parser.kwargs_a_conjunto(kwargs)
+    numero = kwargs.get('numero')
+    return get_object_or_404(Enunciado, numero=numero, conjunto=conjunto)
