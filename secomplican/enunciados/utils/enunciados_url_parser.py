@@ -10,4 +10,4 @@ def url_enunciado(materia_carrera, enunciado):
     kwargs = conjuntos_url_parser.kwargs_de_conjunto(
         materia_carrera, enunciado.conjunto)
     kwargs['numero'] = enunciado.numero
-    return reverse('ver_enunciado', kwargs=kwargs)
+    return reverse(nombre_url_enunciado, kwargs=kwargs)
