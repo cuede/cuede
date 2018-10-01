@@ -87,11 +87,13 @@
             </table>
         </a>
     </li>
+    {% if carrera %}
     <li class="izquierda">
         <a href="{% url 'materias' carrera=carrera %}">
             Materias
         </a>
     </li>
+    {% endif %}
     <li class="izquierda">
         <a href="{% url 'agregar_enunciado' %}">
             Agregar ejercicio
