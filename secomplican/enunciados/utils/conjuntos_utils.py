@@ -1,19 +1,19 @@
-from enunciados.models import Practica, Parcial, Final
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def tipo_conjunto(conjunto):
     try:
         conjunto.practica
         tipo = 'practica'
-    except Practica.DoesNotExist:
+    except ObjectDoesNotExist:
         try:
             conjunto.parcial
             tipo = 'parcial'
-        except Parcial.DoesNotExist:
+        except ObjectDoesNotExist:
             try:
                 conjunto.final
                 tipo = 'final'
-            except Final.DoesNotExist:
+            except ObjectDoesNotExist:
                 raise ValueError('Tipo de conjunto no conocido')
 
     return tipo
