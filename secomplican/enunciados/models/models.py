@@ -3,7 +3,6 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from enunciados.utils import conjuntos_utils
 from enunciados.modelmanagers.versiones_manager import VersionesManager
 
 
@@ -102,10 +101,6 @@ class Enunciado(models.Model):
 
     def __str__(self):
         return 'Ejercicio {}'.format(self.numero)
-
-    def tipo_conjunto(self):
-        """Devuelve el tipo del conjunto al que pertenece este enunciado"""
-        return conjuntos_utils.tipo_conjunto(self.conjunto)
 
     class Meta:
         ordering = ['numero']
