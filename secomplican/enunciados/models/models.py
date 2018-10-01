@@ -137,33 +137,6 @@ class Enunciado(models.Model):
 
         return kwargs
 
-    def get_absolute_url(self):
-        tipo_conjunto = self.tipo_conjunto()
-        if tipo_conjunto == 'parcial':
-            if self.conjunto.parcial.recuperatorio:
-                url = 'enunciado_recuperatorio'
-            else:
-                url = 'enunciado_parcial'
-        elif tipo_conjunto == 'practica':
-            url = 'enunciado_practica'
-        elif tipo_conjunto == 'final':
-            url = 'enunciado_final'
-        else:
-            raise Exception(
-                'El Enunciado no tiene un tipo de ConjuntoDeEnunciados conocido.')
-
-        return reverse(url, kwargs=self._kwargs_para_url(tipo_conjunto))
-
-    def get_edit_url(self):
-        """Devuelve la url para editar este enunciado"""
-        tipo_conjunto = self.tipo_conjunto()
-        prefijo = 'editar_enunciado_'
-        if tipo_conjunto == 'parcial' and self.conjunto.parcial.recuperatorio:
-            nombre_url = prefijo + 'recuperatorio'
-        else:
-            nombre_url = prefijo + tipo_conjunto
-        return reverse(nombre_url, kwargs=self._kwargs_para_url(tipo_conjunto))
-
     def get_versiones_url(self):
         """Devuelve la url para las versiones de este enunciado"""
         tipo_conjunto = self.tipo_conjunto()
