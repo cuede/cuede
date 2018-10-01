@@ -1,25 +1,9 @@
 from django.shortcuts import redirect
 from django.views.generic.edit import CreateView
 
-from enunciados.utils import cuatrimestres_url_parser
+from enunciados.utils import cuatrimestres_url_parser, enunciados_url_parser
 from enunciados.models import Solucion, VersionTextoSolucion
 from enunciados.views.enunciados import enunciados_utils
-
-
-def enunciado_con_kwargs(kwargs):
-    if 'numero_parcial' in kwargs:
-        numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(kwargs['cuatrimestre'])
-        return enunciados_utils.enunciado_de_parcial(
-            kwargs['materia'], kwargs['anio'], numero_cuatrimestre,
-            kwargs['numero_parcial'], kwargs['numero'], kwargs['es_recuperatorio'])
-    elif 'numero_practica' in kwargs:
-        numero_cuatrimestre = cuatrimestres_url_parser.url_a_numero(kwargs['cuatrimestre'])
-        return enunciados_utils.enunciado_de_practica(
-            kwargs['materia'], kwargs['anio'], numero_cuatrimestre,
-            kwargs['numero_practica'], kwargs['numero'])
-    else:
-        return enunciados_utils.enunciado_de_final(
-            kwargs['materia'], kwargs['anio'], kwargs['mes'], kwargs['dia'], kwargs['numero'])
 
 
 class CrearSolucion(CreateView):
@@ -28,15 +12,19 @@ class CrearSolucion(CreateView):
     template_name = 'enunciados/nueva_solucion.html'
 
     def dispatch(self, request, *args, **kwargs):
-        self.enunciado = enunciado_con_kwargs(self.kwargs)
+        self.enunciado = enunciados_url_parser.kwargs_a_enunciado(self.kwargs)
+        self.materia_carrera = kwargs['materia_carrera']
         return super(CrearSolucion, self).dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        return self.enunciado.get_absolute_url()
+        return enunciados_url_parser.url_enunciado(
+            self.materia_carrera, self.enunciado)
 
     def get_context_data(self, **kwargs):
         context = super(CrearSolucion, self).get_context_data(**kwargs)
         context['enunciado'] = self.enunciado
+        context['materia_carrera'] = self.materia_carrera
+        context['carrera'] = self.materia_carrera.carrera
         return context
 
     def form_valid(self, form):
