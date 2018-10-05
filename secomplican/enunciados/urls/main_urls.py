@@ -23,18 +23,6 @@ urlpatterns = [
     #     name='agregar_enunciado'
     # ),
 
-    path(
-        'soluciones/<int:pk>/editar/',
-        editar_solucion.editar_solucion,
-        name='editar_solucion'
-    ),
-
-    path(
-        'soluciones/<int:pk>/versiones/',
-        versiones_solucion.VersionesSolucionView.as_view(),
-        name='versiones_solucion'
-    ),
-
     path('<materiacarrera:materia_carrera>/',
          include('enunciados.urls.materia_urls', namespace='materia')),
 ]
