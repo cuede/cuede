@@ -12,9 +12,14 @@ class VersionesEnunciadoView(VersionesView):
         return enunciados_url_parser.kwargs_a_enunciado(self.kwargs)
 
     def get_success_url(self):
-        return self.get_object().get_absolute_url()
+        materia_carrera = self.kwargs['materia_carrera']
+        return enunciados_url_parser.url_enunciado(
+            materia_carrera, self.get_object())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        materia_carrera = self.kwargs['materia_carrera']
+        context['materia_carrera'] = materia_carrera
+        context['carrera'] = materia_carrera.carrera
         context['enunciado'] = self.get_object()
         return context
