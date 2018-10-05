@@ -9,14 +9,18 @@ register_converter(CuatrimestreConverter, 'cuatrimestre')
 app_name = 'practicas'
 
 practica_urlpatterns = [
-    path('', conjuntos_de_enunciados.practica, name='practica'),
-    path('',
-         include('enunciados.urls.enunciados_urls', namespace='enunciados'),
-         kwargs={'conjunto': 'practica'}),
+    path('', conjuntos_de_enunciados.conjunto_de_enunciados, name='practica'),
+    path(
+        '',
+        include('enunciados.urls.enunciados_urls', namespace='enunciados'),
+    ),
 ]
 
 urlpatterns = [
     path('', practicas.practicas, name='practicas'),
-    path('<int:anio>/<cuatrimestre:cuatrimestre>/<int:numero_practica>/',
-         include((practica_urlpatterns, 'practica'))),
+    path(
+        '<int:anio>/<cuatrimestre:cuatrimestre>/<int:numero_practica>/',
+        include((practica_urlpatterns, 'practica')),
+        kwargs={'conjunto': 'practica'},
+    ),
 ]

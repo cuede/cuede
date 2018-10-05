@@ -8,12 +8,17 @@ register_converter(FechaConverter, 'fecha')
 app_name = 'finales'
 
 final_urlpatterns = [
-    path('', conjuntos_de_enunciados.final, name='final'),
-    path('',
-         include('enunciados.urls.enunciados_urls', namespace='enunciados'),
-         kwargs={'conjunto': 'final'}),
+    path('', conjuntos_de_enunciados.conjunto_de_enunciados, name='final'),
+    path(
+        '',
+        include('enunciados.urls.enunciados_urls', namespace='enunciados'),
+    ),
 ]
 
 urlpatterns = [
-    path('<fecha:fecha>/', include((final_urlpatterns, 'final'))),
+    path(
+        '<fecha:fecha>/',
+        include((final_urlpatterns, 'final')),
+        kwargs={'conjunto': 'final'}
+    ),
 ]

@@ -14,11 +14,14 @@ urlpatterns = [
     path('<carrera:carrera>/materias/',
          materias.MateriasView.as_view(), name='materias'),
 
-    path(
-        'nuevo-ejercicio/',
-        crear_enunciado.nuevo_enunciado,
-        name='agregar_enunciado'
-    ),
+    # Acá hay que agregar una view de crear conjunto de enunciados,
+    # quizá en realidad adentro de la URL de materia, ya que
+    # en realidad no podés crear materias.
+    # path(
+    #     'nuevo-ejercicio/',
+    #     crear_enunciado.nuevo_enunciado,
+    #     name='agregar_enunciado'
+    # ),
 
     path(
         'soluciones/<int:pk>/editar/',

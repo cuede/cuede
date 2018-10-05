@@ -4,7 +4,6 @@ from django.views import generic
 
 from enunciados.models import MateriaCarrera
 from enunciados.utils import models_utils, url_utils, conjuntos_url_parser
-from enunciados.views.enunciados.forms import ConjuntoDeEnunciadosForm
 
 
 class MateriasView(generic.ListView):
@@ -19,15 +18,6 @@ class MateriasView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['carrera'] = self.kwargs.get('carrera')
         return context
-
-
-def url_agregar_conjunto(slug_materia, tipo):
-    queryparams = {
-        'materia': slug_materia,
-        'tipo': tipo,
-    }
-    return url_utils.reverse_con_queryparams(
-        'agregar_enunciado', queryparams=queryparams)
 
 
 def practicas_con_urls(materiacarrera):
@@ -60,10 +50,6 @@ def finales_con_urls(materiacarrera):
 
 
 def materia(request, materia_carrera):
-    tipo_practica = ConjuntoDeEnunciadosForm.PRACTICA
-    tipo_parcial = ConjuntoDeEnunciadosForm.PARCIAL
-    tipo_final = ConjuntoDeEnunciadosForm.FINAL
-
     # Pasar las URLs de practicas, parciales y finales.
     # Hay que hacer tipo un zip para poder recorrer los parciales
     # y sus URLs al mismo tiempo.
@@ -73,12 +59,5 @@ def materia(request, materia_carrera):
         'practicas_con_urls': practicas_con_urls(materia_carrera),
         'parciales_con_urls': parciales_con_urls(materia_carrera),
         'finales': finales_con_urls(materia_carrera),
-
-        'url_agregar_practica': url_agregar_conjunto(
-            materia_carrera.slug, tipo_practica),
-        'url_agregar_parcial': url_agregar_conjunto(
-            materia_carrera.slug, tipo_parcial),
-        'url_agregar_final': url_agregar_conjunto(
-            materia_carrera.slug, tipo_final),
     }
     return render(request, 'enunciados/materia.html', contexto)

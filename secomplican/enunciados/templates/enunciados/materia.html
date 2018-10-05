@@ -12,7 +12,7 @@
 {% empty %}
     Todavía no hay prácticas.
 {% endfor %}
-<p><a href="{{ url_agregar_practica }}">Agregar práctica</a> |
+<p>
     <a href="{% url 'materia:practicas:practicas' materia_carrera=materia %}">
         Prácticas anteriores
     </a>
@@ -29,7 +29,6 @@
     <h2> Parciales </h2>
     Todavía no hay parciales.
 {% endfor %}
-<p><a href="{{ url_agregar_parcial }}">Agregar parcial</a></p>
 
 <h2>Finales</h2>
 {% for final, url in finales %}
@@ -37,7 +36,6 @@
 {% empty %}
     Todavía no hay finales.
 {% endfor %}
-<p><a href="{{ url_agregar_final }}">Agregar final</a></p>
 
 
 {% endblock %}

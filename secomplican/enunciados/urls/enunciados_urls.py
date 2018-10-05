@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from enunciados.views.enunciados import ver, editar, versiones
+from enunciados.views.enunciados import ver, editar, versiones, crear
 from enunciados.views.soluciones import crear as crear_solucion
 
 
@@ -17,4 +17,5 @@ enunciado_urlpatterns = [
 
 urlpatterns = [
     path('<int:numero>/', include(enunciado_urlpatterns)),
+    path('nuevo-ejercicio/', crear.nuevo_enunciado, name='nuevo_enunciado')
 ]
