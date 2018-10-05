@@ -5,11 +5,6 @@ from enunciados.models import Enunciado
 from enunciados.utils import cuatrimestres_url_parser, conjuntos_url_parser
 
 
-def enunciado_con_kwargs(kwargs):
-    conjunto = conjuntos_url_parser.kwargs_a_conjunto(kwargs)
-    return get_object_or_404(Enunciado, conjunto=conjunto)
-
-
 def enunciado_de_practica(materia, anio, numero_cuatrimestre, numero_practica, numero):
     return get_object_or_404(
         Enunciado,

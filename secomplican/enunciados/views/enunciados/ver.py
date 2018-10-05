@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from enunciados.utils import (
-    cuatrimestres_url_parser, soluciones_url_parser, conjuntos_utils)
+    enunciados_url_parser, cuatrimestres_url_parser,
+    soluciones_url_parser, conjuntos_utils)
 
 from . import enunciados_utils
 
@@ -20,7 +21,7 @@ def render_enunciado(request, materia_carrera,
 
 
 def enunciado(request, **kwargs):
-    enunciado_encontrado = enunciados_utils.enunciado_con_kwargs(kwargs)
+    enunciado_encontrado = enunciados_url_parser.kwargs_a_enunciado(kwargs)
     tipo_conjunto = conjuntos_utils.tipo_conjunto(
         enunciado_encontrado.conjunto)
     conjunto = enunciado_encontrado.conjunto
