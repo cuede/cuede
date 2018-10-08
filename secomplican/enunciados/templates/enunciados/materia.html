@@ -3,7 +3,7 @@
 
 {% load cuatrimestres %}
 
-<h1> {{ materia.nombre }} </h1>
+<h1> {{ materia_carrera.nombre }} </h1>
 <h2>Prácticas{% if practicas_con_urls %} del {{ practicas_con_urls.0.0.cuatrimestre|texto_cuatrimestre }} del {{ practicas_con_urls.0.0.anio }}
     {% endif %}</h2>
 {% for practica, url_practica in practicas_con_urls %}
@@ -13,7 +13,7 @@
     Todavía no hay prácticas.
 {% endfor %}
 <p>
-    <a href="{% url 'materia:practicas:practicas' materia_carrera=materia %}">
+    <a href="{% url 'materia:practicas:practicas' materia_carrera=materia_carrera %}">
         Prácticas anteriores
     </a>
 </p>

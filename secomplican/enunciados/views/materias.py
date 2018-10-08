@@ -55,7 +55,7 @@ def materia(request, materia_carrera):
     # y sus URLs al mismo tiempo.
     contexto = {
         'carrera': materia_carrera.carrera,
-        'materia': materia_carrera,
+        'materia_carrera': materia_carrera,
         'practicas_con_urls': practicas_con_urls(materia_carrera),
         'parciales_con_urls': parciales_con_urls(materia_carrera),
         'finales': finales_con_urls(materia_carrera),
