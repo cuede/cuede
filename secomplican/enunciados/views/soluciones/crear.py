@@ -3,7 +3,6 @@ from django.views.generic.edit import CreateView
 
 from enunciados.utils import cuatrimestres_url_parser, enunciados_url_parser
 from enunciados.models import Solucion, VersionTextoSolucion
-from enunciados.views.enunciados import enunciados_utils
 
 
 class CrearSolucion(CreateView):

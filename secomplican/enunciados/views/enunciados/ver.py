@@ -5,8 +5,6 @@ from enunciados.utils import (
     enunciados_url_parser, cuatrimestres_url_parser,
     soluciones_url_parser, conjuntos_utils)
 
-from . import enunciados_utils
-
 
 def render_enunciado(request, materia_carrera,
                      enunciado_elegido, url_agregar_solucion, conjunto):
