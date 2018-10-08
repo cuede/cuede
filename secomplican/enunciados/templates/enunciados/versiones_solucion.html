@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3><a href="{{ solucion.enunciado.get_absolute_url }}">Volver a solución</a></h3>
+{% load urls_enunciados %}
+
+<h3><a href="{% url_enunciado materia_carrera solucion.enunciado %}">Volver a solución</a></h3>
 
 {% include 'enunciados/lista_versiones.html' %}
 {% endblock %}
