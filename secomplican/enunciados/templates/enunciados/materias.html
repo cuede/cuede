@@ -3,9 +3,9 @@
 
 <h1>Materias</h1>
 <ul>
-{% for materia in object_list %}
-    <li><a href="{{ materia.get_absolute_url }}" class="important">
-        {{ materia.nombre }}</a></li>
+{% for materia_carrera in object_list %}
+    <li><a href="{{ materia_carrera.get_absolute_url }}" class="important">
+        {{ materia_carrera.nombre }}</a></li>
 {% empty %}
     <li>No hay materias.</li>
 {% endfor %}
