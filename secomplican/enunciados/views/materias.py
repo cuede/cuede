@@ -2,41 +2,62 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from enunciados.models import Materia
-from enunciados.utils import models_utils, url_utils
-from enunciados.views.enunciados.forms import ConjuntoDeEnunciadosForm
+from enunciados.models import MateriaCarrera
+from enunciados.utils import models_utils, url_utils, conjuntos_url_parser
 
 
 class MateriasView(generic.ListView):
-    model = Materia
+    model = MateriaCarrera
+    template_name = 'enunciados/materias.html'
+
+    def get_queryset(self):
+        carrera = self.kwargs.get('carrera')
+        return super().get_queryset().filter(carrera=carrera)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['carrera'] = self.kwargs.get('carrera')
+        return context
 
 
-def url_agregar_conjunto(slug_materia, tipo):
-    queryparams = {
-        'materia': slug_materia,
-        'tipo': tipo,
-    }
-    return url_utils.reverse_con_queryparams(
-        'agregar_enunciado', queryparams=queryparams)
+def practicas_con_urls(materiacarrera):
+    practicas = models_utils.ultimas_practicas_ordenadas(
+        materiacarrera.materia)
+    return [
+        (practica, conjuntos_url_parser.url_conjunto(materiacarrera, practica))
+        for practica in practicas
+    ]
 
 
-def materia(request, nombre):
-    # El nombre es un slug.
-    materia_encontrada = get_object_or_404(Materia, slug=nombre)
-    tipo_practica = ConjuntoDeEnunciadosForm.PRACTICA
-    tipo_parcial = ConjuntoDeEnunciadosForm.PARCIAL
-    tipo_final = ConjuntoDeEnunciadosForm.FINAL
+def parciales_con_urls(materiacarrera):
+    parciales_por_numero = models_utils.parciales_de_materia_ordenados(
+        materiacarrera.materia)
+    for numero, parciales in parciales_por_numero.items():
+        parciales_por_numero[numero] = [
+            (parcial, conjuntos_url_parser.url_conjunto(materiacarrera, parcial))
+            for parcial in parciales
+        ]
+    return parciales_por_numero
+
+
+def finales_con_urls(materiacarrera):
+    finales = models_utils.finales_de_materia_ordenados(
+        materiacarrera.materia)
+    return [
+        (final, conjuntos_url_parser.url_conjunto(materiacarrera, final))
+        for final in finales
+    ]
+
+
+def materia(request, materia_carrera):
+    # Pasar las URLs de practicas, parciales y finales.
+    # Hay que hacer tipo un zip para poder recorrer los parciales
+    # y sus URLs al mismo tiempo.
     contexto = {
-        'materia': materia_encontrada,
-        'practicas': models_utils.ultimas_practicas_ordenadas(
-            materia_encontrada),
-        'parciales': models_utils.parciales_de_materia_ordenados(
-            materia_encontrada),
-        'finales': models_utils.finales_de_materia_ordenados(
-            materia_encontrada),
-
-        'url_agregar_practica': url_agregar_conjunto(nombre, tipo_practica),
-        'url_agregar_parcial': url_agregar_conjunto(nombre, tipo_parcial),
-        'url_agregar_final': url_agregar_conjunto(nombre, tipo_final),
+        'carrera': materia_carrera.carrera,
+        'materia_carrera': materia_carrera,
+        'practicas_con_urls': practicas_con_urls(materia_carrera),
+        'parciales_con_urls': parciales_con_urls(materia_carrera),
+        'finales': finales_con_urls(materia_carrera),
     }
     return render(request, 'enunciados/materia.html', contexto)

@@ -1,0 +1,28 @@
+from django.urls import include, path, register_converter
+
+from enunciados.url_converters import CarreraConverter, MateriaCarreraConverter
+from enunciados.views import index, materias
+from enunciados.views.enunciados import crear as crear_enunciado
+from enunciados.views.soluciones import editar as editar_solucion
+from enunciados.views.soluciones import versiones as versiones_solucion
+
+register_converter(CarreraConverter, 'carrera')
+register_converter(MateriaCarreraConverter, 'materiacarrera')
+
+urlpatterns = [
+    path('', index.index, name='index'),
+    path('<carrera:carrera>/materias/',
+         materias.MateriasView.as_view(), name='materias'),
+
+    # Acá hay que agregar una view de crear conjunto de enunciados,
+    # quizá en realidad adentro de la URL de materia, ya que
+    # en realidad no podés crear materias.
+    # path(
+    #     'nuevo-ejercicio/',
+    #     crear_enunciado.nuevo_enunciado,
+    #     name='agregar_enunciado'
+    # ),
+
+    path('<materiacarrera:materia_carrera>/',
+         include('enunciados.urls.materia_urls', namespace='materia')),
+]

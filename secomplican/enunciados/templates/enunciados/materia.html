@@ -3,21 +3,25 @@
 
 {% load cuatrimestres %}
 
-<h1> {{ materia.nombre }} </h1>
-<h2>Prácticas{% if practicas %} del {{ practicas.0.cuatrimestre|texto_cuatrimestre }} del {{ practicas.0.anio }} {% endif %}</h2>
-{% for practica in practicas %}
-    <a href="{{ practica.get_absolute_url }}" class="important">
+<h1> {{ materia_carrera.nombre }} </h1>
+<h2>Prácticas{% if practicas_con_urls %} del {{ practicas_con_urls.0.0.cuatrimestre|texto_cuatrimestre }} del {{ practicas_con_urls.0.0.anio }}
+    {% endif %}</h2>
+{% for practica, url_practica in practicas_con_urls %}
+    <a href="{{ url_practica }}" class="important">
         Práctica {{ practica.numero }}</a><br>
 {% empty %}
     Todavía no hay prácticas.
 {% endfor %}
-<p><a href="{{ url_agregar_practica }}">Agregar práctica</a> |
-<a href="{% url 'practicas' materia=materia.slug %}">Prácticas anteriores</a></p>
+<p>
+    <a href="{% url 'materia:practicas:practicas' materia_carrera=materia_carrera %}">
+        Prácticas anteriores
+    </a>
+</p>
 
-{% for numero, parciales_actuales in parciales.items %}
-    <h2>{{ parciales_actuales.0.ordinal.plural }} Parciales</h2>
-    {% for parcial in parciales_actuales %}
-        <a href="{{ parcial.get_absolute_url }}" class="important">
+{% for numero, parciales_actuales in parciales_con_urls.items %}
+    <h2>{{ parciales_actuales.0.0.ordinal.plural }} Parciales</h2>
+    {% for parcial, url_parcial in parciales_actuales %}
+        <a href="{{ url_parcial }}" class="important">
             {{ parcial }}
         </a><br>
     {% endfor %}
@@ -25,15 +29,13 @@
     <h2> Parciales </h2>
     Todavía no hay parciales.
 {% endfor %}
-<p><a href="{{ url_agregar_parcial }}">Agregar parcial</a></p>
 
 <h2>Finales</h2>
-{% for final in finales %}
-    <a href="{{ final.get_absolute_url }}" class="important">{{ final }}</a><br>
+{% for final, url in finales %}
+    <a href="{{ url }}" class="important">{{ final }}</a><br>
 {% empty %}
     Todavía no hay finales.
 {% endfor %}
-<p><a href="{{ url_agregar_final }}">Agregar final</a></p>
 
 
 {% endblock %}

@@ -11,9 +11,10 @@ def agregar_enunciado(conjunto, numero):
 
 class VersionTextoEnunciadoTests(TestCase):
     def setUp(self):
-        materia = Materia(nombre='Materia')
+        materia = Materia()
         materia.save()
-        conjunto = Practica(materia=materia, anio=2018, cuatrimestre=1, numero=1)
+        conjunto = Practica(
+            materia=materia, anio=2018, cuatrimestre=1, numero=1)
         conjunto.save()
         self.enunciado = Enunciado(conjunto=conjunto, numero=1)
         self.enunciado.save()
@@ -28,4 +29,5 @@ class VersionTextoEnunciadoTests(TestCase):
         versiones = self.enunciado.versiones.all()
         for index, version in enumerate(versiones):
             if index < len(versiones) - 1:
-                self.assertGreaterEqual(version.tiempo, versiones[index + 1].tiempo)
+                self.assertGreaterEqual(
+                    version.tiempo, versiones[index + 1].tiempo)

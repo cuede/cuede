@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from enunciados.models import Carrera
 
 def index(request):
-    return render(request, 'index.html')
+    computacion = Carrera.objects.get(slug='computacion')
+    return render(request, 'index.html', {'carrera': computacion})
