@@ -11,18 +11,13 @@ register_converter(MateriaCarreraConverter, 'materiacarrera')
 
 urlpatterns = [
     path('', index.index, name='index'),
-    path('<carrera:carrera>/materias/',
-         materias.MateriasView.as_view(), name='materias'),
-
-    # Acá hay que agregar una view de crear conjunto de enunciados,
-    # quizá en realidad adentro de la URL de materia, ya que
-    # en realidad no podés crear materias.
-    # path(
-    #     'nuevo-ejercicio/',
-    #     crear_enunciado.nuevo_enunciado,
-    #     name='agregar_enunciado'
-    # ),
-
-    path('<materiacarrera:materia_carrera>/',
-         include('enunciados.urls.materia_urls', namespace='materia')),
+    path(
+        '<carrera:carrera>/materias/',
+        materias.MateriasView.as_view(),
+        name='materias'
+    ),
+    path(
+        '<materiacarrera:materia_carrera>/',
+        include('enunciados.urls.materia_urls', namespace='materia')
+    ),
 ]
