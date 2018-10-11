@@ -47,6 +47,14 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
             self.cuatrimestre)
         return 'Práctica {} del {} del {}'.format(self.numero, texto_cuatrimestre, self.anio)
 
+    def clean(self):
+        # Ver que no haya ya una Practica con iguales atributos
+        if Practica.objects.filter(
+                materia=self.materia, anio=self.anio,
+                cuatrimestre=self.cuatrimestre, numero=self.numero).exists():
+            raise ValidationError(
+                _('Ya hay una Práctica con estos atributos.'))
+
 
 class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
     numero = models.IntegerField()
