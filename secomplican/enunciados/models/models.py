@@ -53,7 +53,9 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
                 materia=self.materia, anio=self.anio,
                 cuatrimestre=self.cuatrimestre, numero=self.numero).exists():
             raise ValidationError(
-                _('Ya hay una Práctica con estos atributos.'))
+                _('Ya hay una Práctica con estos atributos.'),
+                code='exists'
+            )
 
 
 class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
@@ -77,7 +79,9 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
                 cuatrimestre=self.cuatrimestre, numero=self.numero,
                 recuperatorio=self.recuperatorio).exists():
             raise ValidationError(
-                _('Ya hay un Parcial con estos atributos.'))
+                _('Ya hay un Parcial con estos atributos.'),
+                code='exists'
+            )
 
     def ordinal(self):
         """
@@ -107,7 +111,9 @@ class Final(ConjuntoDeEnunciados):
         # Ver que no haya ya un final con igual fecha y materia
         if Final.objects.filter(materia=self.materia, fecha=self.fecha).exists():
             raise ValidationError(
-                _('Ya hay un Final con esta materia y fecha.'))
+                _('Ya hay un Final con esta materia y fecha.'),
+                code='exists'
+            )
 
 
 class Enunciado(models.Model):
