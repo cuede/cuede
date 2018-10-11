@@ -1,7 +1,7 @@
 from django.urls import path, include, register_converter
 
-from enunciados.views import practicas, conjuntos_de_enunciados
-
+from enunciados.views import practicas
+from enunciados.views.conjuntos_de_enunciados import conjuntos_de_enunciados
 from enunciados.url_converters import CuatrimestreConverter
 
 register_converter(CuatrimestreConverter, 'cuatrimestre')

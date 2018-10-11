@@ -1,6 +1,7 @@
 from django.urls import path, include
 
-from enunciados.views import materias, conjuntos_de_enunciados
+from enunciados.views import materias
+from enunciados.views.conjuntos_de_enunciados import conjuntos_de_enunciados
 
 app_name = 'materia'
 

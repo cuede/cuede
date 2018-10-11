@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView
 
 from enunciados.models import Final, Parcial, Practica
 from enunciados.utils import conjuntos_url_parser, enunciados_url_parser
-from enunciados.views import conjuntos_de_enunciados_forms
+from enunciados.views.conjuntos_de_enunciados import conjuntos_de_enunciados_forms
 
 
 def conjunto_de_enunciados(request, **kwargs):
