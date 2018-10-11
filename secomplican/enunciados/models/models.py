@@ -70,6 +70,15 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
             nombre = 'Recuperatorio'
         return '{} {} del {} del {}'.format(self.ordinal()['singular'], nombre, texto_cuatrimestre, self.anio)
 
+    def clean(self):
+        # Ver que no haya ya un Parcial con iguales atributos
+        if Parcial.objects.filter(
+                materia=self.materia, anio=self.anio,
+                cuatrimestre=self.cuatrimestre, numero=self.numero,
+                recuperatorio=self.recuperatorio).exists():
+            raise ValidationError(
+                _('Ya hay un Parcial con estos atributos.'))
+
     def ordinal(self):
         """
         Devuelve el adjetivo ordinal correspondiente al número de este parcial,
