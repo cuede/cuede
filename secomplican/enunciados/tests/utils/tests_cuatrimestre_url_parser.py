@@ -2,7 +2,6 @@ from unittest import TestCase
 from enunciados.utils.cuatrimestres_url_parser import *
 
 
-# Create your tests here.
 class CuatrimestresUrlParserTests(TestCase):
     def test_numero_a_url_con_numeros_validos(self):
         """
@@ -31,5 +30,3 @@ class CuatrimestresUrlParserTests(TestCase):
         Debería devolver None.
         """
         self.assertIsNone(url_a_numero('invalida'))
-
-
