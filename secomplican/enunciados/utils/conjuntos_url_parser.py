@@ -31,13 +31,13 @@ def kwargs_de_final(final):
 
 
 def kwargs_de_conjunto(materiacarrera, conjunto):
-    tipo_conjunto = conjuntos_utils.tipo_conjunto(conjunto)
-    if tipo_conjunto == 'practica':
-        kwargs = kwargs_de_practica(conjunto.practica)
-    elif tipo_conjunto == 'parcial':
-        kwargs = kwargs_de_parcial(conjunto.parcial)
-    elif tipo_conjunto == 'final':
-        kwargs = kwargs_de_final(conjunto.final)
+    conjunto_casteado = conjuntos_utils.castear_a_subclase(conjunto)
+    if isinstance(conjunto_casteado, Practica):
+        kwargs = kwargs_de_practica(conjunto_casteado)
+    elif isinstance(conjunto_casteado, Parcial):
+        kwargs = kwargs_de_parcial(conjunto_casteado)
+    elif isinstance(conjunto_casteado, Final):
+        kwargs = kwargs_de_final(conjunto_casteado)
     else:
         raise ValueError('Tipo de conjunto no conocido.')
 
@@ -45,32 +45,37 @@ def kwargs_de_conjunto(materiacarrera, conjunto):
     return kwargs
 
 
-def namespace_de_conjunto(conjunto):
-    tipo_conjunto = conjuntos_utils.tipo_conjunto(conjunto)
-    if tipo_conjunto == 'practica':
-        subdomain = 'practicas'
-    elif tipo_conjunto == 'parcial':
-        subdomain = \
-            'recuperatorios' if conjunto.parcial.recuperatorio else 'parciales'
-    elif tipo_conjunto == 'final':
-        subdomain = 'finales'
+def _subnamespace_url_conjunto(conjunto):
+    conjunto_casteado = conjuntos_utils.castear_a_subclase(conjunto)
+    if isinstance(conjunto_casteado, Practica):
+        return 'practica'
+    elif isinstance(conjunto_casteado, Parcial):
+        return 'parcial'
+    elif isinstance(conjunto_casteado, Final):
+        return 'final'
 
-    return 'materia:{}:{}'.format(subdomain, tipo_conjunto)
+
+def namespace_de_conjunto(conjunto):
+    conjunto_casteado = conjuntos_utils.castear_a_subclase(conjunto)
+    if isinstance(conjunto_casteado, Practica):
+        subdomain = 'practicas'
+    elif isinstance(conjunto_casteado, Parcial):
+        subdomain = \
+            'recuperatorios' if conjunto_casteado.recuperatorio else 'parciales'
+    elif isinstance(conjunto_casteado, Final):
+        subdomain = 'finales'
+    namespace = _subnamespace_url_conjunto(conjunto)
+    return 'materia:{}:{}'.format(subdomain, namespace)
 
 
 def nombre_url_conjunto(conjunto):
     namespace = namespace_de_conjunto(conjunto)
-    tipo_conjunto = conjuntos_utils.tipo_conjunto(conjunto)
-    return '{}:{}'.format(namespace, tipo_conjunto)
+    subnamespace = _subnamespace_url_conjunto(conjunto)
+    return '{}:{}'.format(namespace, subnamespace)
 
 
 def url_conjunto(materiacarrera, conjunto):
-    """
-    Devuelve la URL para poder ver el conjunto.
-
-    El conjunto debe estar guardado en la base de datos, para que tenga
-    una Practica, Parcial o Final asociado.
-    """
+    """Devuelve la URL para poder ver el conjunto."""
     kwargs = kwargs_de_conjunto(materiacarrera, conjunto)
     nombre = nombre_url_conjunto(conjunto)
     return reverse(nombre, kwargs=kwargs)

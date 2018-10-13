@@ -15,10 +15,18 @@ class UrlConjuntoTests(TestCase):
         )
 
     def test_con_practica_no_guardada(self):
-        """Debería fallar."""
+        """Debería devolver la URL correspondiente."""
         practica = Practica(
             materia=self.materia_carrera.materia,
             anio=2018, cuatrimestre=1, numero=1
         )
-        with self.assertRaises(ValueError):
-            conjuntos_url_parser.url_conjunto(self.materia_carrera, practica)
+        url = conjuntos_url_parser.url_conjunto(self.materia_carrera, practica)
+        url_esperada = reverse(
+            'materia:practicas:practica:practica', kwargs={
+                'materia_carrera': self.materia_carrera,
+                'anio': 2018,
+                'cuatrimestre': 1,
+                'numero_practica': 1,
+            }
+        )
+        self.assertEqual(url_esperada, url)
