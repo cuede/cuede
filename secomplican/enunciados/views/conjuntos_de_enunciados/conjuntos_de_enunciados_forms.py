@@ -1,14 +1,43 @@
 from django import forms
+from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 from django.utils import timezone
-
-from enunciados.models import (ConjuntoDeEnunciadosConCuatrimestre, Final,
-                               Parcial, Practica)
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
+from enunciados.models import ConjuntoDeEnunciadosConCuatrimestre, Final, \
+    Parcial, Practica
+from enunciados.utils import conjuntos_url_parser
 
 
 class ConjuntoDeEnunciadosForm(forms.ModelForm):
-    def __init__(self, materia, *args, **kwargs):
+    def __init__(self, materia_carrera, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.instance.materia = materia
+        self.materia_carrera = materia_carrera
+        self.instance.materia = materia_carrera.materia
+
+    def _agregar_link_a_conjunto(self, mensaje):
+        """Agrega el link al conjunto a un mensaje."""
+        url = conjuntos_url_parser.url_conjunto(
+            self.materia_carrera, self.instance)
+        link = format_html('<a href="{}">{}</a>', url, self.instance)
+        return mark_safe(mensaje + ' ' + link)
+
+    def _agregar_link_a_conjunto_a_error(self):
+        """
+        Agrega el link al conjunto de enunciados en el error de code='exists'.
+        """
+        if self.has_error(NON_FIELD_ERRORS, 'exists'):
+            errores = self.non_field_errors().as_data()
+            error_exists = [
+                error for error in errores if error.code == 'exists'
+            ][0]
+            viejo_mensaje = error_exists.message
+            nuevo_mensaje = self._agregar_link_a_conjunto(viejo_mensaje)
+            error_exists.message = nuevo_mensaje
+
+    def is_valid(self):
+        valid = super().is_valid()
+        self._agregar_link_a_conjunto_a_error()
+        return valid
 
 
 class ConjuntoDeEnunciadosConCuatrimestreForm(ConjuntoDeEnunciadosForm):

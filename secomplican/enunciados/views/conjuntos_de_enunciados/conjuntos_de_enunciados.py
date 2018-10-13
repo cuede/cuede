@@ -31,7 +31,7 @@ class CrearConjuntoDeEnunciadosView(CreateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['materia'] = self.kwargs['materia_carrera'].materia
+        kwargs['materia_carrera'] = self.kwargs['materia_carrera']
         return kwargs
 
     def get_success_url(self):
