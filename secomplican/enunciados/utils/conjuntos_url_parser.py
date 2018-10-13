@@ -65,6 +65,12 @@ def nombre_url_conjunto(conjunto):
 
 
 def url_conjunto(materiacarrera, conjunto):
+    """
+    Devuelve la URL para poder ver el conjunto.
+
+    El conjunto debe estar guardado en la base de datos, para que tenga
+    una Practica, Parcial o Final asociado.
+    """
     kwargs = kwargs_de_conjunto(materiacarrera, conjunto)
     nombre = nombre_url_conjunto(conjunto)
     return reverse(nombre, kwargs=kwargs)
