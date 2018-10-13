@@ -37,3 +37,34 @@ def tipo_a_clase(tipo):
     a la clase correspondiente.
     """
     return __tipo_a_clase[tipo]
+
+
+def _ya_casteado(conjunto):
+    """
+    Decide si el conjunto pasado ya es una subclase de ConjuntoDeEnunciados.
+    """
+    return isinstance(conjunto, Practica) or \
+        isinstance(conjunto, Parcial) or \
+        isinstance(conjunto, Final)
+
+
+def castear_a_subclase(conjunto):
+    """
+    'Castea' el conjunto a la subclase, porque en django los objetos conjunto
+    son objetos separados de sus subclases.
+
+    Por ejemplo, si un conjunto en realidad es una Practica, entonces
+    devuelve la Practica de este conjunto.
+    """
+    if _ya_casteado(conjunto):
+        casteado = conjunto
+    else:
+        tipo = tipo_conjunto(conjunto)
+        if tipo == 'practica':
+            casteado = conjunto.practica
+        elif tipo == 'parcial':
+            casteado = conjunto.parcial
+        elif tipo == 'final':
+            casteado = conjunto.final
+
+    return casteado
