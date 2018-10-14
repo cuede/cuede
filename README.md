@@ -56,3 +56,11 @@ $ python3 manage.py runserver # Iniciar el servidor
 
 Y listo! Ahora podés entrar a la URL http://127.0.0.1:8000/ y
 ver el servidor andando.
+
+## Contribuyendo
+
+Sentite libre de postear un Issue o hacer un Pull Request.
+La rama `master` es en donde está la versión actual en
+producción, `develop` es donde se hace el desarrollo. Cualquier
+Pull Request o cambio debe ser mergeado primero a `develop` y
+después a `master` cuando se suba a producción.
