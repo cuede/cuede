@@ -4,6 +4,10 @@
         width: 20px;
         height: 20px;
     }
+
+    .navbar-light .navbar-text {
+        color: rgba(0,0,0,.9);
+    }
 </style>
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <a class="navbar-brand" id="logo" href="/">
@@ -37,7 +41,7 @@
         <ul class="navbar-nav">
             {% if user.is_authenticated %}
                 <span class="navbar-text">
-                    Hola {{ user.username|title }}
+                    {{ user.username|title }}
                 </span>
                 <li class="nav-item ml-lg-2">
                     <a class="btn btn-secondary" href="{% url 'logout' %}">Salir</a>
