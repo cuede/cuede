@@ -4,51 +4,104 @@
 {% load cuatrimestres %}
 
 <h1> {{ materia_carrera.nombre }} </h1>
-<h2>Prácticas{% if practicas_con_urls %} del {{ practicas_con_urls.0.0.cuatrimestre|texto_cuatrimestre }} del {{ practicas_con_urls.0.0.anio }}
-    {% endif %}</h2>
-{% for practica, url_practica in practicas_con_urls %}
-    <a href="{{ url_practica }}" class="important">
-        Práctica {{ practica.numero }}</a><br>
-{% empty %}
-    Todavía no hay prácticas.
-{% endfor %}
-<p>
-    <a href="{% url 'materia:crear_practica' materia_carrera=materia_carrera %}">
-        Agregar Práctica
-    </a> |
-    <a href="{% url 'materia:practicas:practicas' materia_carrera=materia_carrera %}">
-        Prácticas anteriores
-    </a>
-</p>
+<div class="card mt-3">
+    <div class="card-body">
+        <h2 class="card-title">
+            Prácticas
+            {% if practicas_con_urls %} del
+            {{ practicas_con_urls.0.0.cuatrimestre|texto_cuatrimestre }} del
+            {{ practicas_con_urls.0.0.anio }}
+            {% endif %}
+        </h2>
+        {% if practicas_con_urls %}
+            <ul class="pl-3">
+            {% for practica, url_practica in practicas_con_urls %}
+                <li>
+                    <h5>
+                        <a href="{{ url_practica }}">
+                            Práctica {{ practica.numero }}</a>
+                    </h5>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            Todavía no hay prácticas.
+        {% endif %}
 
-{% for numero, parciales_actuales in parciales_con_urls.items %}
-    <h2>{{ parciales_actuales.0.0.ordinal.plural }} Parciales</h2>
-    {% for parcial, url_parcial in parciales_actuales %}
-        <a href="{{ url_parcial }}" class="important">
-            {{ parcial }}
-        </a><br>
+        <div class="mt-3">
+            <a href="{% url 'materia:crear_practica' materia_carrera=materia_carrera %}"
+                class="btn btn-primary btn-sm font-weight-bold">
+                + Agregar Práctica
+            </a>
+
+            {% if practicas_con_urls %}
+            <a href="{% url 'materia:practicas:practicas' materia_carrera=materia_carrera %}"
+                class="ml-1">
+                Prácticas anteriores
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<div class="card mt-3">
+    <div class="card-body">
+    {% for numero, parciales_actuales in parciales_con_urls.items %}
+        <h2 class="card-title">
+            {{ parciales_actuales.0.0.ordinal.plural }} Parciales
+        </h2>
+        <ul class="pl-3">
+        {% for parcial, url_parcial in parciales_actuales %}
+            <li>
+                <h5>
+                    <a href="{{ url_parcial }}">
+                        {{ parcial }}
+                    </a>
+                </h5>
+            </li>
+        {% endfor %}
+        </ul>
+    {% empty %}
+        <h2 class="card-title">Parciales</h2>
+        <p class="card-text">
+            Todavía no hay parciales.
+        </p>
     {% endfor %}
-{% empty %}
-    <h2> Parciales </h2>
-    Todavía no hay parciales.
-{% endfor %}
-<p>
-    <a href="{% url 'materia:crear_parcial' materia_carrera=materia_carrera %}">
-        Agregar Parcial
-    </a>
-</p>
+        <div class="mt-3">
+            <a href="{% url 'materia:crear_parcial' materia_carrera=materia_carrera %}"
+                class="btn btn-primary btn-sm font-weight-bold">
+                + Agregar Parcial
+            </a>
+        </div>
+    </div>
+</div>
 
-<h2>Finales</h2>
-{% for final, url in finales %}
-    <a href="{{ url }}" class="important">{{ final }}</a><br>
-{% empty %}
-    Todavía no hay finales.
-{% endfor %}
-<p>
-    <a href="{% url 'materia:crear_final' materia_carrera=materia_carrera %}">
-        Agregar Final
-    </a>
-</p>
+<div class="card my-3">
+    <div class="card-body">
 
+    <h2 class="card-title">Finales</h2>
+    {% if finales %}
+        <ul class="pl-3">
+            {% for final, url in finales %}
+            <li>
+                <h5>
+                    <a href="{{ url }}">{{ final }}</a>
+                </h5>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        Todavía no hay finales.
+    {% endif %}
+
+    <div class="mt-3">
+        <a href="{% url 'materia:crear_final' materia_carrera=materia_carrera %}"
+            class="btn btn-primary btn-sm font-weight-bold">
+            + Agregar Final
+        </a>
+    </div>
+    </div>
+</div>
 
 {% endblock %}
