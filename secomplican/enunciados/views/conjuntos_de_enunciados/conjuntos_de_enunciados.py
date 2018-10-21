@@ -5,12 +5,7 @@ from django.views.generic.edit import CreateView
 from enunciados.models import Final, Parcial, Practica
 from enunciados.utils import conjuntos_url_parser, enunciados_url_parser
 from enunciados.views.conjuntos_de_enunciados import conjuntos_de_enunciados_forms
-
-
-class BreadcrumbPage:
-    def __init__(self, title, url=None):
-        self.title = title
-        self.url = url
+from enunciados.views.breadcrumb import BreadcrumbPage
 
 
 def get_breadcrumb(materia_carrera, conjunto):
