@@ -4,6 +4,7 @@ from django.views import generic
 
 from enunciados.models import MateriaCarrera
 from enunciados.utils import models_utils, url_utils, conjuntos_url_parser
+from enunciados.views.breadcrumb import BreadcrumbPage
 
 
 class MateriasView(generic.ListView):
@@ -49,6 +50,17 @@ def finales_con_urls(materiacarrera):
     ]
 
 
+def get_materia_breadcrumb(materia_carrera):
+    return [
+        BreadcrumbPage(
+            materia_carrera.carrera,
+            reverse('materias', kwargs={
+                'carrera': materia_carrera.carrera})
+        ),
+        BreadcrumbPage(materia_carrera),
+    ]
+
+
 def materia(request, materia_carrera):
     # Pasar las URLs de practicas, parciales y finales.
     # Hay que hacer tipo un zip para poder recorrer los parciales
@@ -56,6 +68,7 @@ def materia(request, materia_carrera):
     contexto = {
         'carrera': materia_carrera.carrera,
         'materia_carrera': materia_carrera,
+        'breadcrumb': get_materia_breadcrumb(materia_carrera),
         'practicas_con_urls': practicas_con_urls(materia_carrera),
         'parciales_con_urls': parciales_con_urls(materia_carrera),
         'finales': finales_con_urls(materia_carrera),
