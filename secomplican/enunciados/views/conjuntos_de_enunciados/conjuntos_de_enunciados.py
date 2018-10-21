@@ -7,6 +7,21 @@ from enunciados.utils import conjuntos_url_parser, enunciados_url_parser
 from enunciados.views.conjuntos_de_enunciados import conjuntos_de_enunciados_forms
 
 
+class BreadcrumbPage:
+    def __init__(self, title, url=None):
+        self.title = title
+        self.url = url
+
+
+def get_breadcrumb(materia_carrera, conjunto):
+    return [
+        BreadcrumbPage(
+            materia_carrera, materia_carrera.get_absolute_url()
+        ),
+        BreadcrumbPage(conjunto),
+    ]
+
+
 def conjunto_de_enunciados(request, **kwargs):
     materia_carrera = kwargs['materia_carrera']
     conjunto = conjuntos_url_parser.kwargs_a_conjunto(kwargs)
@@ -17,6 +32,7 @@ def conjunto_de_enunciados(request, **kwargs):
         'materia_carrera': materia_carrera,
         'conjunto': conjunto,
         'url_nuevo_enunciado': url_nuevo_enunciado,
+        'breadcrumb': get_breadcrumb(materia_carrera, conjunto),
     }
     return render(request, 'enunciados/conjunto_de_enunciados.html', contexto)
 

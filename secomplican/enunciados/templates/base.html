@@ -8,12 +8,18 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   {# Para que la página sea responsive #}
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  {# MathJax#}
+  {# MathJax #}
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
+  {# Font Awesome, para los iconos #}
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
   <style>
     body {
       padding-top: 70px;
+    }
+
+    .important {
+      font-weight: bold;
     }
   </style>
 </head>
@@ -22,6 +28,8 @@
   {% include "navbar.html" %}
 
   <div class="container">
+    {% include "breadcrumb.html" %}
+
     {% block content %}{% endblock %}
   </div>
 

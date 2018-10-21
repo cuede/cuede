@@ -3,40 +3,45 @@
 
 {% load urls_enunciados %}
 
-<a href="{{ materia_carrera.get_absolute_url }}" class="important">
-    {{ materia_carrera }}
-</a>
-<h1 style="display: inline">&nbsp;/ {{ conjunto }}</h1>
-{% for enunciado in conjunto.enunciado_set.all %}
-<div style="display: block; margin-top: 20px;">
-    <h2 style="display: inline">
-        Ejercicio {{ enunciado.numero }}
-    </h2>
-    <a href="{% url_enunciado materia_carrera enunciado %}" class="important">
+<h1>{{ conjunto }}</h1>
 
-        {% with cant_soluciones=enunciado.soluciones.count %}
-        {{ cant_soluciones }}
-        {% if cant_soluciones == 1 %}
-        solución
-        {% else %}
-        soluciones
-        {% endif %}
-        {% endwith %}
-    </a>
-    <p>
-        {{ enunciado.versiones.ultima }}
-    </p>
-    {% include 'enunciados/acciones_enunciado.html' %}
+
+{% for enunciado in conjunto.enunciado_set.all %}
+<div class="card my-3">
+    <div class="card-body">
+        <h2 class="card-title">
+            Ejercicio {{ enunciado.numero }}
+            <small class="align-middle"><a class="badge badge-primary align-middle"
+                href="{% url_enunciado materia_carrera enunciado %}">
+                {% with cant_soluciones=enunciado.soluciones.count %}
+                    {{ cant_soluciones }}
+                    {% if cant_soluciones == 1 %}
+                        solución
+                    {% else %}
+                        soluciones
+                    {% endif %}
+                {% endwith %}
+            </a></small>
+        </h2>
+        <p class="card-text">
+            {{ enunciado.versiones.ultima }}
+        </p>
+        <a class="card-link"
+            href="{% url_editar_enunciado materia_carrera enunciado %}">
+            <span class="fas fa-pen"></span> Editar
+        </a>
+        <a class="card-link"
+            href="{% url_versiones_enunciado materia_carrera enunciado %}">
+            <span class="fas fa-undo"></span> Versiones anteriores
+        </a>
+    </div>
 </div>
-<hr />
 {% empty %}
-<div style="display: block; margin-top: 20px;">
-    Todavía no hay enunciados. <a href="{{ url_nuevo_enunciado }}"> ¿Querés agregar uno? </a>
+<div class="alert alert-secondary" role="alert">
+    Todavía no hay ejercicios.
 </div>
 {% endfor %}
-{% if conjunto.enunciado_set.all %}
-<p>
-    <a href="{{ url_nuevo_enunciado }}"> Agregar ejercicio </a>
-</p>
-{% endif %}
+<a class="btn btn-primary mb-3 font-weight-bold" href="{{ url_nuevo_enunciado }}">
+    + Agregar ejercicio
+</a>
 {% endblock %}

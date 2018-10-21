@@ -1,0 +1,18 @@
+{% if breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light">
+            {% for page in breadcrumb %}
+                {% if forloop.last %}
+                    <li class="breadcrumb-item active"
+                        aria-current="page">{{ page.title }}</li>
+                {% else %}
+                    <li class="breadcrumb-item">
+                        <a href="{{ page.url }}">
+                            {{ page.title }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </nav>
+{% endif %}
