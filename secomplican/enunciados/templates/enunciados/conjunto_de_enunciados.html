@@ -1,41 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% load urls_enunciados %}
-
 <h1>{{ conjunto }}</h1>
 
 
 {% for enunciado in conjunto.enunciado_set.all %}
-<div class="card my-3">
-    <div class="card-body">
-        <h2 class="card-title">
-            Ejercicio {{ enunciado.numero }}
-            <small class="align-middle"><a class="badge badge-primary align-middle"
-                href="{% url_enunciado materia_carrera enunciado %}">
-                {% with cant_soluciones=enunciado.soluciones.count %}
-                    {{ cant_soluciones }}
-                    {% if cant_soluciones == 1 %}
-                        solución
-                    {% else %}
-                        soluciones
-                    {% endif %}
-                {% endwith %}
-            </a></small>
-        </h2>
-        <p class="card-text">
-            {{ enunciado.versiones.ultima }}
-        </p>
-        <a class="card-link"
-            href="{% url_editar_enunciado materia_carrera enunciado %}">
-            <span class="fas fa-pen"></span> Editar
-        </a>
-        <a class="card-link"
-            href="{% url_versiones_enunciado materia_carrera enunciado %}">
-            <span class="fas fa-undo"></span> Versiones anteriores
-        </a>
-    </div>
-</div>
+{% include "enunciados/card_enunciado.html" %}
 {% empty %}
 <div class="alert alert-secondary" role="alert">
     Todavía no hay ejercicios.
