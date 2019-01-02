@@ -2,24 +2,39 @@
 {% block content %}
 
 {% load urls_conjuntos %}
+{% load urls_enunciados %}
+
 <h1>{{ enunciado }}</h1>
-<p>
+<hr>
+<p class="mt-3">
     {{ enunciado.versiones.ultima }}
 </p>
 
-<h2> Soluciones </h2>
+
+<a class="mr-3"
+    href="{% url_editar_enunciado materia_carrera enunciado %}">
+    <span class="fas fa-pen"></span> Editar
+</a>
+<a href="{% url_versiones_enunciado materia_carrera enunciado %}">
+    <span class="fas fa-undo"></span> Versiones anteriores
+</a>
+
+<h2 class="mt-5"> Soluciones </h2>
+<hr>
 {% for solucion in enunciado.soluciones.all %}
-    <p>
-        {{ solucion }}
-    </p>
-    {% include 'enunciados/acciones_solucion.html' %}
-    <hr>
+    <div class="mb-4">
+        <p>
+            {{ solucion }}
+        </p>
+        {% include 'enunciados/acciones_solucion.html' %}
+        <hr>
+    </div>
 {% empty %}
-    Todavía no hay soluciones <a href="{{ url_agregar_solucion }}">
-      ¿Querés agregar una? </a>
+    <p>Todavía no hay soluciones.</p>
 {% endfor %}
-{% if enunciado.soluciones.all %}
-    <a href="{{ url_agregar_solucion }}"> Agregar solución </a>
-{% endif %}
+
+<a class="btn btn-primary mb-4 font-weight-bold" href="{{ url_agregar_solucion }}">
+    + Agregar solución
+</a>
 
 {% endblock %}

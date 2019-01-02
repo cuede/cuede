@@ -1,6 +1,8 @@
 {%load urls_soluciones %}
 
-<a href="{% url_editar_solucion materia_carrera solucion %}">editar</a> |
+<a class="mr-3" href="{% url_editar_solucion materia_carrera solucion %}">
+    <span class="fas fa-pen"></span> Editar
+</a>
 <a href="{% url_versiones_solucion materia_carrera solucion %}">
-    versiones anteriores
+    <span class="fas fa-undo"></span> Versiones anteriores
 </a>
