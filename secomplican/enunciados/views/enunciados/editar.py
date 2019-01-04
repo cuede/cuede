@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 from enunciados.utils import enunciados_url_parser
 
 from .forms import EnunciadoConConjuntoForm, VersionTextoForm
+from enunciados.views.breadcrumb import breadcrumb_editar_enunciado
 
 
 def se_cambio_texto(enunciado, texto_nuevo):
@@ -56,5 +57,7 @@ def enunciado(request, **kwargs):
         'carrera': materia_carrera.carrera,
         'enunciado_form': enunciado_form,
         'version_texto_form': version_texto_form,
+        'breadcrumb': breadcrumb_editar_enunciado(
+            materia_carrera, enunciado_encontrado)
     }
     return render(request, 'enunciados/editar_enunciado.html', context)
