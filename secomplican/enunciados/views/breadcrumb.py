@@ -2,6 +2,7 @@ from django.urls import reverse
 
 from enunciados.utils import conjuntos_utils
 from enunciados.utils import conjuntos_url_parser
+from enunciados.utils import enunciados_url_parser
 
 
 class BreadcrumbPage:
@@ -34,7 +35,12 @@ def breadcrumb_ver_enunciado(materia_carrera, enunciado):
     breadcrumb_conjunto = breadcrumb_conjunto_de_enunciados(
         materia_carrera, conjuntos_utils.castear_a_subclase(enunciado.conjunto)
     )
-    return breadcrumb_conjunto + [BreadcrumbPage(enunciado)]
+    return breadcrumb_conjunto + [
+        BreadcrumbPage(
+            enunciado,
+            enunciados_url_parser.url_enunciado(materia_carrera, enunciado)
+        )
+    ]
 
 
 def breadcrumb_crear_enunciado(materia_carrera, conjunto):
