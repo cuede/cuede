@@ -22,6 +22,12 @@ def breadcrumb_materia(materia_carrera):
     ]
 
 
+def breadcrumb_practicas(materia_carrera):
+    return breadcrumb_materia(materia_carrera) + [
+        BreadcrumbPage("Prácticas")
+    ]
+
+
 def breadcrumb_conjunto_de_enunciados(materia_carrera, conjunto):
     return breadcrumb_materia(materia_carrera) + [
         BreadcrumbPage(
@@ -61,7 +67,7 @@ def breadcrumb_versiones_enunciado(materia_carrera, enunciado):
     ]
 
 
-def breadcrumb_practicas(materia_carrera):
-    return breadcrumb_materia(materia_carrera) + [
-        BreadcrumbPage("Prácticas")
+def breadcrumb_editar_solucion(materia_carrera, enunciado):
+    return breadcrumb_ver_enunciado(materia_carrera, enunciado) + [
+        BreadcrumbPage("Editar solución")
     ]

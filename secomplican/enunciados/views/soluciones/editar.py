@@ -4,6 +4,7 @@ from django.utils.translation import gettext as _
 
 from enunciados.models import Solucion, VersionTextoSolucion
 from enunciados.utils import enunciados_url_parser
+from enunciados.views.breadcrumb import breadcrumb_editar_solucion
 
 
 class VersionTextoSolucionForm(ModelForm):
@@ -46,5 +47,7 @@ def editar_solucion(request, pk_solucion, **kwargs):
         'carrera': materia_carrera.carrera,
         'form': form,
         'solucion': solucion,
+        'breadcrumb': breadcrumb_editar_solucion(
+            materia_carrera, solucion.enunciado),
     }
     return render(request, 'enunciados/editar_solucion.html', contexto)
