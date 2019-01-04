@@ -3,6 +3,7 @@ from django.views.generic.edit import CreateView
 
 from enunciados.utils import cuatrimestres_url_parser, enunciados_url_parser
 from enunciados.models import Solucion, VersionTextoSolucion
+from enunciados.views.breadcrumb import breadcrumb_crear_solucion
 
 
 class CrearSolucion(CreateView):
@@ -24,6 +25,8 @@ class CrearSolucion(CreateView):
         context['enunciado'] = self.enunciado
         context['materia_carrera'] = self.materia_carrera
         context['carrera'] = self.materia_carrera.carrera
+        context['breadcrumb'] = breadcrumb_crear_solucion(
+            self.materia_carrera, self.enunciado)
         return context
 
     def form_valid(self, form):
