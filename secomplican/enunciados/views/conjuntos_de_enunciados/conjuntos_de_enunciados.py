@@ -4,8 +4,10 @@ from django.views.generic.edit import CreateView
 
 from enunciados.models import Final, Parcial, Practica
 from enunciados.utils import conjuntos_url_parser, enunciados_url_parser
-from enunciados.views.conjuntos_de_enunciados import conjuntos_de_enunciados_forms
-from enunciados.views.breadcrumb import breadcrumb_conjunto_de_enunciados
+from enunciados.views.breadcrumb import (breadcrumb_conjunto_de_enunciados,
+                                         breadcrumb_crear_conjunto_de_enunciados)
+from enunciados.views.conjuntos_de_enunciados import \
+    conjuntos_de_enunciados_forms
 
 
 def conjunto_de_enunciados(request, **kwargs):
@@ -29,9 +31,12 @@ class CrearConjuntoDeEnunciadosView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        materia_carrera = self.kwargs['materia_carrera']
         context['titulo'] = self.titulo
-        context['carrera'] = self.kwargs['materia_carrera'].carrera
-        context['materia_carrera'] = self.kwargs['materia_carrera']
+        context['carrera'] = materia_carrera.carrera
+        context['materia_carrera'] = materia_carrera
+        context['breadcrumb'] = breadcrumb_crear_conjunto_de_enunciados(
+            materia_carrera, self.titulo)
         return context
 
     def get_form_kwargs(self):

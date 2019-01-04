@@ -28,6 +28,12 @@ def breadcrumb_practicas(materia_carrera):
     ]
 
 
+def breadcrumb_crear_conjunto_de_enunciados(materia_carrera, titulo):
+    return breadcrumb_materia(materia_carrera) + [
+        BreadcrumbPage(titulo)
+    ]
+
+
 def breadcrumb_conjunto_de_enunciados(materia_carrera, conjunto):
     return breadcrumb_materia(materia_carrera) + [
         BreadcrumbPage(
