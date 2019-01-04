@@ -5,10 +5,12 @@ from django.views.generic.edit import CreateView
 from enunciados.models import Materia, Enunciado
 from enunciados.utils import conjuntos_url_parser, enunciados_url_parser
 from .forms import EnunciadoConConjuntoForm, VersionTextoForm
+from enunciados.views.breadcrumb import breadcrumb_crear_enunciado
 
 
 def nuevo_enunciado(request, **kwargs):
     conjunto = conjuntos_url_parser.kwargs_a_conjunto(kwargs)
+    materia_carrera = kwargs['materia_carrera']
     if request.method == 'POST':
         enunciado_form = EnunciadoConConjuntoForm(conjunto, request.POST)
         version_texto_form = VersionTextoForm(request.POST)
@@ -17,7 +19,6 @@ def nuevo_enunciado(request, **kwargs):
             version_texto = version_texto_form.save(commit=False)
             version_texto.enunciado = enunciado
             version_texto.save()
-            materia_carrera = kwargs['materia_carrera']
             success_url = enunciados_url_parser.url_enunciado(
                 materia_carrera, enunciado)
             return redirect(success_url)
@@ -28,5 +29,6 @@ def nuevo_enunciado(request, **kwargs):
     context = {
         'enunciado_form': enunciado_form,
         'version_texto_form': version_texto_form,
+        'breadcrumb': breadcrumb_crear_enunciado(materia_carrera, conjunto),
     }
     return render(request, 'enunciados/nuevo_enunciado.html', context)

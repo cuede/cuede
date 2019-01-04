@@ -35,3 +35,9 @@ def breadcrumb_ver_enunciado(materia_carrera, enunciado):
         materia_carrera, conjuntos_utils.castear_a_subclase(enunciado.conjunto)
     )
     return breadcrumb_conjunto + [BreadcrumbPage(enunciado)]
+
+
+def breadcrumb_crear_enunciado(materia_carrera, conjunto):
+    return breadcrumb_conjunto_de_enunciados(materia_carrera, conjunto) + [
+        BreadcrumbPage("Nuevo ejercicio")
+    ]
