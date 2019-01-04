@@ -27,6 +27,8 @@ def nuevo_enunciado(request, **kwargs):
         version_texto_form = VersionTextoForm()
 
     context = {
+        'carrera': materia_carrera.carrera,
+        'materia_carrera': materia_carrera,
         'enunciado_form': enunciado_form,
         'version_texto_form': version_texto_form,
         'breadcrumb': breadcrumb_crear_enunciado(materia_carrera, conjunto),
