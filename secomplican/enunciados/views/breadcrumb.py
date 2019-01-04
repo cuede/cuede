@@ -41,3 +41,9 @@ def breadcrumb_crear_enunciado(materia_carrera, conjunto):
     return breadcrumb_conjunto_de_enunciados(materia_carrera, conjunto) + [
         BreadcrumbPage("Nuevo ejercicio")
     ]
+
+
+def breadcrumb_practicas(materia_carrera):
+    return breadcrumb_materia(materia_carrera) + [
+        BreadcrumbPage("Prácticas")
+    ]

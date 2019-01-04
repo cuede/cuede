@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, render
 
 from enunciados.models import Practica, Materia
 from enunciados.utils import cuatrimestres_parser
+from enunciados.views.breadcrumb import breadcrumb_practicas
 
 
 def cuatrimestre_y_anio_a_texto(conjunto):
@@ -31,6 +32,7 @@ def practicas(request, materia_carrera):
         'carrera': materia_carrera.carrera,
         'materia_carrera': materia_carrera,
         'practicas': practicas_materia,
+        'breadcrumb': breadcrumb_practicas(materia_carrera),
     }
     return render(
         request, 'enunciados/practicas.html', contexto
