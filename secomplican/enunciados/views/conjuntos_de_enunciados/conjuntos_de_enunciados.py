@@ -30,6 +30,8 @@ class CrearConjuntoDeEnunciadosView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = self.titulo
+        context['carrera'] = self.kwargs['materia_carrera'].carrera
+        context['materia_carrera'] = self.kwargs['materia_carrera']
         return context
 
     def get_form_kwargs(self):
