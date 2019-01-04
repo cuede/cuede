@@ -55,6 +55,12 @@ def breadcrumb_editar_enunciado(materia_carrera, enunciado):
     ]
 
 
+def breadcrumb_versiones_enunciado(materia_carrera, enunciado):
+    return breadcrumb_ver_enunciado(materia_carrera, enunciado) + [
+        BreadcrumbPage("Versiones anteriores")
+    ]
+
+
 def breadcrumb_practicas(materia_carrera):
     return breadcrumb_materia(materia_carrera) + [
         BreadcrumbPage("Prácticas")
