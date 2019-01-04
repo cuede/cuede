@@ -1,60 +1,25 @@
 {% load static %}
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
   <title>qed</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {# bootstrap #}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  {# Para que la página sea responsive #}
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  {# MathJax #}
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
+  {# Font Awesome, para los iconos #}
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
   <style>
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin-left: 0%;
-      color: rgb(22, 22, 22);
-      background-color: #FcFcFc;
-      word-wrap: break-word;
+      padding-top: 70px;
     }
 
-    .content {
-      margin-top: 60px;
-      margin-left: 5%;
-      margin-right: 5%;
-      line-height: 1.45;
-    }
-
-    .content a,
-    .submit-link {
-      text-decoration: none;
-      color: #0366d6;
-    }
-
-    .content a.important {
+    .important {
       font-weight: bold;
-    }
-
-    .content a:hover,
-    .submit-link:hover {
-      text-decoration: underline;
-    }
-
-    .content ul {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    .submit-link {
-      background: none;
-      border: none;
-      padding: 0;
-      font: inherit;
-      cursor: pointer;
-    }
-
-    .tiempo-version {
-      display: inline-block;
-      margin-bottom: 0px;
-      margin-top: 10px;
-      margin-right: 10px;
     }
   </style>
 </head>
@@ -62,9 +27,16 @@
 <body>
   {% include "navbar.html" %}
 
-  <div class="content">
+  <div class="container">
+    {% include "breadcrumb.html" %}
+
     {% block content %}{% endblock %}
   </div>
+
+  {# Scripts para bootstrap, incluyendo jquery y popper #}
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 
 </html>

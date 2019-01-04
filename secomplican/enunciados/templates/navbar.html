@@ -1,115 +1,61 @@
 <style>
-    #logo {
-        padding: 0;
-        margin-right: 5px;
-    }
-
     .logo-square {
         background-color:rgb(22, 22, 22);
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
     }
 
-    .logo-text {
-        display: table-cell;
-        vertical-align: middle;
-    }
-
-    .navbar {
-        display: table-row;
-        list-style-type: none;
-        margin: 0;
-        padding: 0 5%;
-        position: fixed;
-        top: 0;
-        width: 90%;
-        border-bottom: 1px solid #222;
-        background-color: #FcFcFc;
-        text-align: center;
-        box-shadow: 0px 0px 5px grey;
-    }
-
-    .navbar li {
-        line-height: 40px;
-        font-weight: bold;
-    }
-
-    .navbar li.izquierda {
-        float: left;
-    }
-
-    .navbar li.derecha {
-        float: right;
-        margin-left: 5px;
-    }
-
-    .navbar a {
-        display: block;
-        text-align: center;
-        color: rgb(22, 22, 22);
-        text-decoration: none;
-        padding: 0 10px;
-    }
-
-    .navbar a:hover {
-        color: #666;
-    }
-
-    .navbar li.texto {
-        font-weight: normal;
-        color: #777;
-    }
-
-    .boton-oscuro {
-        background-color: rgb(22, 22, 22);
-    }
-
-    .boton-oscuro a:hover {
-        color: #DDD;
-    }
-
-    .boton-oscuro a {
-        color: white;
+    .navbar-light .navbar-text {
+        color: rgba(0,0,0,.9);
     }
 </style>
-<ul class="navbar">
-    <li class="izquierda">
-        <a href="/" id="logo">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top border-bottom">
+    <div class="container">
+        <a class="navbar-brand" id="logo" href="/">
             <table>
                 <tr>
                     <td>
-                        <div class="logo-square"></div>
+                        <div class="logo-square mr-1"></div>
                     </td>
                     <td>
-                        <h2 class="logo-text">qed</h2>
+                        qed
                     </td>
                 </tr>
             </table>
         </a>
-    </li>
-    {% if carrera %}
-    <li class="izquierda">
-        <a href="{% url 'materias' carrera=carrera %}">
-            Materias
-        </a>
-    </li>
-    {% endif %}
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    {% if user.is_authenticated %}
-        <li class="derecha">
-            <a href="{% url 'logout' %}">Salir</a>
-        </li>
-        <li class="derecha texto">
-            Hola {{ user.username|title }}.
-        </li>
-        {% else %}
-        <li class="derecha boton-oscuro">
-            <a href="{% url 'signup' %}">Registrarse</a>
-        </li>
-        <li class="derecha">
-            <a href="{% url 'login' %}">Entrar</a>
-        </li>
-
-        {% endif %}
-    </li>
-</ul>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                {% if carrera %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'materias' carrera=carrera %}">
+                            Materias
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <span class="navbar-text">
+                        {{ user.username|title }}
+                    </span>
+                    <li class="nav-item ml-lg-3">
+                        <a class="btn btn-secondary" href="{% url 'logout' %}">Salir</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item mr-lg-2">
+                        <a class="nav-link" href="{% url 'login' %}">Entrar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="{% url 'signup' %}">Registrarse</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -4,6 +4,7 @@ from django.urls import reverse
 from enunciados.utils import (
     enunciados_url_parser, cuatrimestres_url_parser,
     soluciones_url_parser, conjuntos_utils)
+from enunciados.views.breadcrumb import breadcrumb_ver_enunciado
 
 
 def render_enunciado(request, materia_carrera,
@@ -14,6 +15,8 @@ def render_enunciado(request, materia_carrera,
         'enunciado': enunciado_elegido,
         'url_agregar_solucion': url_agregar_solucion,
         'conjunto': conjunto,
+        'breadcrumb': breadcrumb_ver_enunciado(
+            materia_carrera, enunciado_elegido),
     }
     return render(request, 'enunciados/enunciado.html', contexto)
 

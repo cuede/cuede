@@ -4,6 +4,7 @@ from django.views import generic
 
 from enunciados.models import MateriaCarrera
 from enunciados.utils import models_utils, url_utils, conjuntos_url_parser
+from enunciados.views.breadcrumb import breadcrumb_materia
 
 
 class MateriasView(generic.ListView):
@@ -56,6 +57,7 @@ def materia(request, materia_carrera):
     contexto = {
         'carrera': materia_carrera.carrera,
         'materia_carrera': materia_carrera,
+        'breadcrumb': breadcrumb_materia(materia_carrera),
         'practicas_con_urls': practicas_con_urls(materia_carrera),
         'parciales_con_urls': parciales_con_urls(materia_carrera),
         'finales': finales_con_urls(materia_carrera),
