@@ -11,13 +11,17 @@ class BreadcrumbPage:
         self.url = url
 
 
-def breadcrumb_materia(materia_carrera):
+def breadcrumb_materias(carrera):
     return [
         BreadcrumbPage(
-            materia_carrera.carrera,
-            reverse('materias', kwargs={
-                'carrera': materia_carrera.carrera})
-        ),
+            carrera,
+            reverse('materias', kwargs={'carrera': carrera})
+        )
+    ]
+
+
+def breadcrumb_materia(materia_carrera):
+    return breadcrumb_materias(materia_carrera.carrera) + [
         BreadcrumbPage(materia_carrera, materia_carrera.get_absolute_url()),
     ]
 

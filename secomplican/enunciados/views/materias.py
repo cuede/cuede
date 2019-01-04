@@ -4,7 +4,7 @@ from django.views import generic
 
 from enunciados.models import MateriaCarrera
 from enunciados.utils import models_utils, url_utils, conjuntos_url_parser
-from enunciados.views.breadcrumb import breadcrumb_materia
+from enunciados.views.breadcrumb import breadcrumb_materias, breadcrumb_materia
 
 
 class MateriasView(generic.ListView):
@@ -17,7 +17,9 @@ class MateriasView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['carrera'] = self.kwargs.get('carrera')
+        carrera = self.kwargs.get('carrera')
+        context['carrera'] = carrera
+        context['breadcrumb'] = breadcrumb_materias(carrera)
         return context
 
 
