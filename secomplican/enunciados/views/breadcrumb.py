@@ -71,3 +71,9 @@ def breadcrumb_editar_solucion(materia_carrera, enunciado):
     return breadcrumb_ver_enunciado(materia_carrera, enunciado) + [
         BreadcrumbPage("Editar solución")
     ]
+
+
+def breadcrumb_versiones_solucion(materia_carrera, enunciado):
+    return breadcrumb_ver_enunciado(materia_carrera, enunciado) + [
+        BreadcrumbPage("Versiones de solución")
+    ]

@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from enunciados.models import Solucion
 from enunciados.views.versiones_view import VersionesView
 from enunciados.utils import enunciados_url_parser
+from enunciados.views.breadcrumb import breadcrumb_versiones_solucion
 
 
 class VersionesSolucionView(VersionesView):
@@ -23,4 +24,6 @@ class VersionesSolucionView(VersionesView):
         context['materia_carrera'] = materia_carrera
         context['carrera'] = materia_carrera.carrera
         context['solucion'] = self.get_object()
+        context['breadcrumb'] = breadcrumb_versiones_solucion(
+            materia_carrera, self.get_object().enunciado)
         return context
