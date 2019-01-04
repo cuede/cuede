@@ -35,6 +35,10 @@ Los pasos para hacer esto son:
     ```
     > CREATE USER qed_user WITH PASSWORD 'PWD-.,';
     ```
+3. Permitir que el usuario genere bases de datos para poder correr los tests:
+    ```
+    > ALTER USER qed_user CREATEDB;
+    ```
 3. Crear la base de datos:
     ```
     > CREATE DATABASE qed WITH OWNER qed_user;
