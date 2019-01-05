@@ -2,13 +2,48 @@
 {% block content %}
 
 <h1>Materias</h1>
-<ul>
-{% for materia_carrera in object_list %}
-    <li><a href="{{ materia_carrera.get_absolute_url }}" class="important">
-        {{ materia_carrera.nombre }}</a></li>
-{% empty %}
-    <li>No hay materias.</li>
-{% endfor %}
-</ul>
+<div class="row">
+    <div class="col-md">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h2 class="card-title">Tronco común</h1>
+                <ul class="pl-3">
+                    {% for materia_carrera in materias_obligatorias %}
+                    <li>
+                        <h5>
+                            <a href="{{ materia_carrera.get_absolute_url }}">
+                                {{ materia_carrera.nombre }}
+                            </a>
+                        </h5>
+                    </li>
+                    {% empty %}
+                    <li>No hay materias.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="card mb-md-0 mb-3">
+            <div class="card-body">
+                <h2 class="card-title">Optativas</h1>
+                <ul class="pl-3">
+                    {% for materia_carrera in materias_optativas %}
+                    <li>
+                        <h5>
+                            <a href="{{ materia_carrera.get_absolute_url }}">
+                                {{ materia_carrera.nombre }}
+                            </a>
+                        </h5>
+                    </li>
+                    {% empty %}
+                    <li>No hay materias.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}

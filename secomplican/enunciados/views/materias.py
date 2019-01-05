@@ -7,19 +7,18 @@ from enunciados.utils import models_utils, url_utils, conjuntos_url_parser
 from enunciados.views.breadcrumb import breadcrumb_materias, breadcrumb_materia
 
 
-class MateriasView(generic.ListView):
-    model = MateriaCarrera
+class MateriasView(generic.TemplateView):
     template_name = 'enunciados/materias.html'
-
-    def get_queryset(self):
-        carrera = self.kwargs.get('carrera')
-        return super().get_queryset().filter(carrera=carrera)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         carrera = self.kwargs.get('carrera')
         context['carrera'] = carrera
         context['breadcrumb'] = breadcrumb_materias(carrera)
+        materia_carreras = MateriaCarrera.objects.filter(carrera=carrera)
+        context['materias_optativas'] = materia_carreras.filter(optativa=True)
+        context['materias_obligatorias'] = materia_carreras.filter(
+            optativa=False)
         return context
 
 
