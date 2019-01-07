@@ -9,6 +9,7 @@ django = "*"
 gunicorn = "*"
 django-heroku = "*"
 "psycopg2-binary" = "*"
+django-bootstrap4 = "*"
 
 [dev-packages]
 pylint = "*"
