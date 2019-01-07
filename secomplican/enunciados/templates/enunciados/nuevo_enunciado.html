@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% load bootstrap4 %}
+
 <h1>Nuevo ejercicio</h1>
 
 <form method="post">
     {% csrf_token %}
-    <table>
-        {{ enunciado_form.as_table }}
-        {{ version_texto_form.as_table }}
-    </table>
-    <input type="submit" value="Crear" />
+
+    {% bootstrap_form enunciado_form %}
+    {% bootstrap_form version_texto_form %}
+    {% buttons %}
+        <input type="submit" value="Crear" />
+    {% endbuttons %}
 </form>
 {% endblock %}
