@@ -3,12 +3,22 @@
 
 {% load urls_conjuntos %}
 
+<h1>Prácticas de {{ materia_carrera }}</h1>
+<hr class="mb-3">
+
 {% for cuatri, practicas_de_cuatri in practicas.items %}
     <h2>{{ cuatri }}</h2>
-    {% for practica in practicas_de_cuatri %}
-        <a href="{% url_conjunto materia_carrera practica %}" class="important">
-            Práctica {{ practica.numero }}</a><br>
-    {% endfor %}
+    <ul class="pl-3">
+        {% for practica in practicas_de_cuatri %}
+            <li>
+                <h5>
+                    <a href="{% url_conjunto materia_carrera practica %}">
+                        Práctica {{ practica.numero }}
+                    </a>
+                </h5>
+            </li>
+        {% endfor %}
+    </ul>
 {% endfor %}
 
 {% endblock %}
