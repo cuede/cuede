@@ -4,11 +4,7 @@
 {% load urls_conjuntos %}
 {% load urls_enunciados %}
 
-<h1>{{ enunciado }}</h1>
-<hr>
-<p class="mt-3">
-    {{ enunciado.versiones.ultima }}
-</p>
+{% include "enunciados/header_enunciado.html" %}
 
 
 <a class="mr-3"
