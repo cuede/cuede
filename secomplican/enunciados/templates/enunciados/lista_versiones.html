@@ -1,13 +1,24 @@
-<h2>Versiones</h2>
 {% for version in versiones.all %}
-    <h4 class="tiempo-version">{{ version.tiempo }}</h4>
+    <h3 class="mb-3">{{ version.tiempo }}
+        {% if forloop.counter0 > 0 %}
+            <form class="d-md-inline d-none" method="post">
+                {% csrf_token %}
+                <input type="text" name="version_pk" value="{{ version.pk }}" hidden />
+                <button type="submit" class="btn btn-link py-0">
+                    <span class="fas fa-undo"></span> Volver a esta versión
+                </button>
+            </form>
+        {% endif %}
+    </h3>
+    <p>{{ version }}</p>
     {% if forloop.counter0 > 0 %}
-        <form style="display: inline" method="post">
+        <form class="d-md-none" method="post">
             {% csrf_token %}
             <input type="text" name="version_pk" value="{{ version.pk }}" hidden />
-            <input class="submit-link" type="submit" value="Volver a esta versión" />
+            <button type="submit" class="btn btn-link pl-0 py-0">
+                <span class="fas fa-undo"></span> Volver a esta versión
+            </button>
         </form>
     {% endif %}
-    <p>{{ version }}</p>
     <hr/>
 {% endfor %}

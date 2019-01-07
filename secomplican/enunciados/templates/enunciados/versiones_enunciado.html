@@ -3,7 +3,7 @@
 
 {% load urls_enunciados %}
 
-<h3><a href="{% url_enunciado materia_carrera enunciado %}">Volver a enunciado</a></h3>
-
+<h1>Versiones de {{enunciado}}</h2>
+<hr>
 {% include 'enunciados/lista_versiones.html' with versiones=enunciado.versiones %}
 {% endblock %}
