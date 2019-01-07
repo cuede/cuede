@@ -47,7 +47,8 @@ def editar_solucion(request, pk_solucion, **kwargs):
         'carrera': materia_carrera.carrera,
         'form': form,
         'solucion': solucion,
+        'enunciado': solucion.enunciado,
         'breadcrumb': breadcrumb_editar_solucion(
             materia_carrera, solucion.enunciado),
     }
-    return render(request, 'enunciados/editar_solucion.html', contexto)
+    return render(request, 'enunciados/nueva_solucion.html', contexto)

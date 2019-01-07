@@ -7,7 +7,7 @@
 
 
 <h2 class="mb-3">Solución</h2>
-{%bootstrap_form_errors form %}
+{% bootstrap_form_errors form %}
 <form method="post">{% csrf_token %}
     {% bootstrap_field form.texto show_label=False %}
     {% buttons %}
