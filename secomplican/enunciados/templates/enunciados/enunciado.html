@@ -20,7 +20,7 @@
 {% for solucion in enunciado.soluciones.all %}
     <div class="mb-4">
         <p>
-            {{ solucion }}
+            {{ solucion|linebreaks }}
         </p>
         {% include 'enunciados/acciones_solucion.html' %}
         <hr>

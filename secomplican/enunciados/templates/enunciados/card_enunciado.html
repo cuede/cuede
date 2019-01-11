@@ -17,7 +17,7 @@
             </a></small>
         </h2>
         <p class="card-text">
-            {{ enunciado.versiones.ultima }}
+            {{ enunciado.versiones.ultima|linebreaks }}
         </p>
         <a class="card-link"
             href="{% url_editar_enunciado materia_carrera enunciado %}">
