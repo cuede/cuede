@@ -10,7 +10,7 @@
             </form>
         {% endif %}
     </h3>
-    <p>{{ version }}</p>
+    <p>{{ version|linebreaks }}</p>
     {% if forloop.counter0 > 0 %}
         <form class="d-md-none" method="post">
             {% csrf_token %}
