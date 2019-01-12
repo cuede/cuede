@@ -1,4 +1,5 @@
 {% load urls_enunciados %}
+{% load i18n %}
 
 <div class="card my-3">
     <div class="card-body">
@@ -6,14 +7,11 @@
             Ejercicio {{ enunciado.numero }}
             <small class="align-middle"><a class="badge badge-primary align-middle"
                 href="{% url_enunciado materia_carrera enunciado %}">
-                {% with cant_soluciones=enunciado.soluciones.count %}
-                    {{ cant_soluciones }}
-                    {% if cant_soluciones == 1 %}
-                        solución
-                    {% else %}
-                        soluciones
-                    {% endif %}
-                {% endwith %}
+                {% blocktrans count cant_soluciones=enunciado.soluciones.count %}
+                    {{ cant_soluciones }} solución
+                {% plural %}
+                    {{ cant_soluciones }} soluciones
+                {% endblocktrans %}
             </a></small>
         </h2>
         <p class="card-text">
