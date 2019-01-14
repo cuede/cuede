@@ -86,9 +86,8 @@ class FinalForm(ConjuntoDeEnunciadosForm):
         # Tenemos que poner los años del field fecha dinámicamente.
         ahora = timezone.now()
         self.fields['fecha'] = forms.DateField(
-            widget=forms.SelectDateWidget(
-                years=range(ahora.year, ahora.year - self.ANIOS, -1),
-            ), initial=ahora, label=_('Fecha'))
+            widget=forms.widgets.DateInput(attrs={'type': 'date'}),
+            initial=ahora, label=_('Fecha'))
 
     class Meta:
         model = Final
