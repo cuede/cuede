@@ -3,6 +3,7 @@ from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 from django.utils import timezone
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 from enunciados.models import ConjuntoDeEnunciadosConCuatrimestre, Final, \
     Parcial, Practica
 from enunciados.utils import conjuntos_url_parser
@@ -41,17 +42,17 @@ class ConjuntoDeEnunciadosForm(forms.ModelForm):
 
 
 class ConjuntoDeEnunciadosConCuatrimestreForm(ConjuntoDeEnunciadosForm):
-    anio = forms.IntegerField(initial=timezone.now().year)
+    anio = forms.IntegerField(initial=timezone.now().year, label=_('Año'))
     cuatrimestre = forms.TypedChoiceField(
         choices=ConjuntoDeEnunciadosConCuatrimestre.NUMERO_CHOICES,
-        widget=forms.RadioSelect, coerce=int)
+        widget=forms.RadioSelect, coerce=int, label=_('Cuatrimestre'))
 
     class Meta:
         fields = ['anio', 'cuatrimestre']
 
 
 class PracticaForm(ConjuntoDeEnunciadosConCuatrimestreForm):
-    numero = forms.IntegerField(initial=1)
+    numero = forms.IntegerField(initial=1, label=_('Número'))
 
     class Meta(ConjuntoDeEnunciadosConCuatrimestreForm.Meta):
         model = Practica
@@ -66,7 +67,8 @@ class ParcialForm(ConjuntoDeEnunciadosConCuatrimestreForm):
         (3, 'Tercer parcial'),
     ]
     numero = forms.TypedChoiceField(
-        choices=NUMERO_CHOICES, coerce=int, widget=forms.RadioSelect)
+        choices=NUMERO_CHOICES, coerce=int, widget=forms.RadioSelect,
+        label=_('Número'))
 
     class Meta(ConjuntoDeEnunciadosConCuatrimestreForm.Meta):
         model = Parcial
@@ -86,7 +88,7 @@ class FinalForm(ConjuntoDeEnunciadosForm):
         self.fields['fecha'] = forms.DateField(
             widget=forms.SelectDateWidget(
                 years=range(ahora.year, ahora.year - self.ANIOS, -1),
-            ), initial=ahora)
+            ), initial=ahora, label=_('Fecha'))
 
     class Meta:
         model = Final
