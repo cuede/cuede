@@ -4,7 +4,7 @@
 </div>
 <div id="editor" class="rounded-bottom" style="height: 200px">
     {% if field.value %}
-        {{ field.value }}
+        {{ field.value|linebreaksbr }}
     {% endif %}
 </div>
 <textarea id="hidden_textarea" style="display: none" name="{{field.html_name}}">
