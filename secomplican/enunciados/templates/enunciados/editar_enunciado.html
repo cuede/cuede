@@ -1,17 +1,25 @@
 {% extends "base.html" %}
-{% block content %}
-
+{% load static %}
 {% load bootstrap4 %}
+
+{% block scripts %}
+{% include 'enunciados/quill_scripts.html' %}
+{% endblock %}
+
+{% block content %}
 
 <h1 class="mb-3">Editar ejercicio</h1>
 
-<form method="post">
+<form id="form" method="post">
     {% csrf_token %}
     {% bootstrap_form enunciado_form %}
-    {% bootstrap_form version_texto_form %}
+    {% bootstrap_form_errors version_texto_form %}
+    {% include 'enunciados/quill_form_widget.html' with field=version_texto_form.texto %}
     {% buttons %}
-        <input type="submit" value="Guardar"/>
+        <input class='mt-3' type="submit" value="Guardar"/>
     {% endbuttons %}
 </form>
+
+<script type="text/javascript" src="{% static 'enunciados/editor.js' %}"></script>
 
 {% endblock %}
