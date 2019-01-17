@@ -1,8 +1,8 @@
 from django.shortcuts import redirect
+from django.utils.translation import gettext
 from django.views.generic.edit import CreateView
-
-from enunciados.utils import cuatrimestres_url_parser, enunciados_url_parser
 from enunciados.models import Solucion, VersionTextoSolucion
+from enunciados.utils import cuatrimestres_url_parser, enunciados_url_parser
 from enunciados.views.breadcrumb import breadcrumb_crear_solucion
 
 
@@ -27,6 +27,7 @@ class CrearSolucion(CreateView):
         context['carrera'] = self.materia_carrera.carrera
         context['breadcrumb'] = breadcrumb_crear_solucion(
             self.materia_carrera, self.enunciado)
+        context['texto_boton'] = gettext('Crear')
         return context
 
     def form_valid(self, form):

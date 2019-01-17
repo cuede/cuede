@@ -50,5 +50,6 @@ def editar_solucion(request, pk_solucion, **kwargs):
         'enunciado': solucion.enunciado,
         'breadcrumb': breadcrumb_editar_solucion(
             materia_carrera, solucion.enunciado),
+        'texto_boton': _('Enviar'),
     }
     return render(request, 'enunciados/nueva_solucion.html', contexto)
