@@ -1,10 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block scripts %}
-<!-- Include Quill stylesheet -->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<!-- Include the Quill library -->
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+{% include 'enunciados/quill_scripts.html' %}
 {% endblock %}
 
 {% block content %}
