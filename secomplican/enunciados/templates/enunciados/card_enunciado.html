@@ -1,6 +1,14 @@
 {% load urls_enunciados %}
 {% load i18n %}
 
+<style>
+    #ej{{ enunciado.numero }}{
+        margin-top: -50px;
+        padding-top: 50px;
+    }
+</style>
+
+<span id="ej{{ enunciado.numero }}"></span>
 <div class="card my-3">
     <div class="card-body">
         <h2 class="card-title">
