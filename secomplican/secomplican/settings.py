@@ -87,7 +87,7 @@ DATABASES = {
         'NAME': 'qed',
         'USER': 'qed_user',
         'PASSWORD': 'PWD-.,',
-        'HOST': 'localhost',
+        'HOST': 'database',
         'PORT': '',
     }
 }
