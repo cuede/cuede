@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
     'bootstrap4',
+    'django_registration',
 ]
 
 MIDDLEWARE = [
@@ -98,6 +98,12 @@ DATABASES = {
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+# django-registration
+# https://django-registration.readthedocs.io/en/3.0.1/quickstart.html#quickstart
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 # Password validation
