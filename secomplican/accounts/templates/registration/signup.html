@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}Sign Up{% endblock %}
 
 {% block content %}
-  <h2>Registrarse</h2>
-  <form method="post">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-    </table>
-    <button type="submit">Sign up</button>
+
+{% load bootstrap4 %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% bootstrap_form form %}
+
+        {% buttons %}
+            <input type="submit" value="Registrarse" />
+        {% endbuttons %}
   </form>
 {% endblock %}
