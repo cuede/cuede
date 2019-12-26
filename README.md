@@ -22,6 +22,24 @@ sudo docker-compose up --build
 Esto descarga todas las dependencias necesarias,
 corre todas las migraciones, y levanta el servidor en http://127.0.0.1:8000/.
 
+### Conectarse a la base de datos de Postgres
+
+
+```
+psql -h localhost -U qed_user -d qed
+```
+
+Te va a pedir una contraseña, hay que poner la que está en `docker/database/Dockerfile`.
+
+### Correr un comando en el container del webserver
+
+```
+sudo docker ps # Para ver el nombre del container
+sudo docker exec -it <nombre de container> /bin/bash # Esto te abre un shell en el container
+pipenv shell # Si querés correr comandos usando manage.py
+python manage.py createsuperuser # Para crear un usuario en el server
+```
+
 ## Contribuyendo
 
 Sentite libre de postear un Issue o hacer un Pull Request.
