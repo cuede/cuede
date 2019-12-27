@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 
 from enunciados.modelmanagers.versiones_manager import VersionesManager
 
@@ -161,3 +162,8 @@ class Solucion(models.Model):
 class VersionTextoSolucion(VersionTexto):
     solucion = models.ForeignKey(
         Solucion, on_delete=models.CASCADE, related_name='versiones')
+
+
+class InformacionUsuario(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    puntos = models.PositiveIntegerField(default=0)
