@@ -22,8 +22,17 @@ sudo docker-compose up --build
 Esto descarga todas las dependencias necesarias,
 corre todas las migraciones, y levanta el servidor en http://127.0.0.1:8000/.
 
-### Conectarse a la base de datos de Postgres
+### Corriendo los tests
 
+Teniendo el proyecto andando, correr
+
+```
+./run_tests.sh
+```
+
+Esto se conecta con el container del webserver en `qed_webserver_1` y corre los tests.
+
+### Conectarse a la base de datos de Postgres
 
 ```
 psql -h localhost -U qed_user -d qed
