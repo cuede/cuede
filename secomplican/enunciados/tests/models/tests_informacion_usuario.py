@@ -20,3 +20,11 @@ class InformacionUsuarioTests(TestCase):
         with self.assertRaises(Exception):
             info.save()
 
+    def test_se_puede_actualizar_un_usuario(self):
+        """No se debería crear dos veces la InformacionUsuario"""
+        usuario = User.objects.create(username='user', password='pass')
+        usuario.set_password('pass')
+        usuario.save()
+        info = InformacionUsuario.objects.get(usuario=usuario)
+
+        self.assertEquals(info.usuario, usuario)
