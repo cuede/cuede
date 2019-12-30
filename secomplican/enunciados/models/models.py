@@ -122,6 +122,7 @@ class Enunciado(models.Model):
         ConjuntoDeEnunciados, on_delete=models.CASCADE)
     # El numero de enunciado en el conjunto de enunciados.
     numero = models.IntegerField()
+    votos = models.IntegerField(default=0)
 
     def __str__(self):
         return 'Ejercicio {}'.format(self.numero)
@@ -167,3 +168,10 @@ class VersionTextoSolucion(VersionTexto):
 class InformacionUsuario(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     puntos = models.PositiveIntegerField(default=0)
+    votos_enunciados = models.ManyToManyField(Enunciado, through='VotoEnunciado')
+
+
+class VotoEnunciado(models.Model):
+    usuario = models.ForeignKey(InformacionUsuario, on_delete=models.CASCADE)
+    enunciado = models.ForeignKey(Enunciado, on_delete=models.CASCADE)
+    positivo = models.BooleanField()
