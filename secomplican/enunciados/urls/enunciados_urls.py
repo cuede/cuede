@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from enunciados.views.enunciados import crear, editar, ver, versiones, votar
+from enunciados.views.enunciados import crear, editar, ver, versiones
 from enunciados.views.soluciones import crear as crear_solucion
 from enunciados.views.soluciones import editar as editar_solucion
 from enunciados.views.soluciones import versiones as versiones_solucion
@@ -16,16 +16,9 @@ soluciones_urlpatterns = [
     ),
 ]
 
-votar_urlpatterns = [
-    path('arriba/', votar.VotarArribaView.as_view(), name='votar_arriba'),
-    path('abajo/', votar.VotarAbajoView.as_view(), name='votar_abajo'),
-    path('sacar/', votar.SacarVotoView.as_view(), name='sacar_voto'),
-]
-
 enunciado_urlpatterns = [
     path('', ver.enunciado, name='ver_enunciado'),
     path('editar/', editar.enunciado, name='editar_enunciado'),
-    path('votos/', include(votar_urlpatterns)),
     path(
         'versiones/',
         versiones.VersionesEnunciadoView.as_view(),
