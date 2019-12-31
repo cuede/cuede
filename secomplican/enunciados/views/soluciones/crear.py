@@ -1,13 +1,13 @@
 from django.shortcuts import redirect
 from django.utils.translation import gettext
 from django.views.generic.edit import CreateView
-from enunciados.models import Solucion, VersionTextoSolucion
+from enunciados.models import Solucion, VersionTexto
 from enunciados.utils import cuatrimestres_url_parser, enunciados_url_parser
 from enunciados.views.breadcrumb import breadcrumb_crear_solucion
 
 
 class CrearSolucion(CreateView):
-    model = VersionTextoSolucion
+    model = VersionTexto
     fields = ['texto']
     template_name = 'enunciados/nueva_solucion.html'
 

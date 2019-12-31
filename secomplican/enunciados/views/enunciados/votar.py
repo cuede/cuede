@@ -5,7 +5,7 @@ from django.db.models import F
 from django.views import View
 
 from enunciados.utils import enunciados_url_parser
-from enunciados.models import VotoEnunciado
+from enunciados.models import Voto
 
 
 def get_or_none(model, **kwargs):
@@ -23,7 +23,7 @@ class VotarView(View):
 
         enunciado = enunciados_url_parser.kwargs_a_enunciado(kwargs)
         voto = get_or_none(
-            VotoEnunciado,
+            Voto,
             usuario=usuario.informacionusuario, enunciado=enunciado
         )
 
@@ -40,7 +40,7 @@ class AgregarVotoView(VotarView):
                 sumado *= 2
                 voto.positivo = self.positivo
             else:
-                voto = VotoEnunciado(
+                voto = Voto(
                     usuario=usuario.informacionusuario,
                     enunciado=enunciado,
                     positivo=self.positivo

@@ -117,12 +117,18 @@ class Final(ConjuntoDeEnunciados):
             )
 
 
-class Enunciado(models.Model):
+class Posteo(models.Model):
+    puntos = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.versiones.ultima())
+
+
+class Enunciado(Posteo):
     conjunto = models.ForeignKey(
         ConjuntoDeEnunciados, on_delete=models.CASCADE)
     # El numero de enunciado en el conjunto de enunciados.
     numero = models.IntegerField()
-    votos = models.IntegerField(default=0)
 
     def __str__(self):
         return 'Ejercicio {}'.format(self.numero)
@@ -133,10 +139,17 @@ class Enunciado(models.Model):
         unique_together = ('numero', 'conjunto')
 
 
+class Solucion(Posteo):
+    enunciado_padre = models.ForeignKey(
+        Enunciado, on_delete=models.CASCADE, related_name='soluciones')
+
+
 class VersionTexto(models.Model):
     tiempo = models.DateTimeField(auto_now_add=True)
     texto = models.TextField(blank=False)
     versiones = VersionesManager()
+    posteo = models.ForeignKey(Posteo, on_delete=models.CASCADE,
+        related_name='versiones')
 
     def __str__(self):
         return self.texto
@@ -144,34 +157,15 @@ class VersionTexto(models.Model):
     class Meta:
         # Ordenamos del más reciente al más viejo.
         ordering = ['-tiempo']
-        abstract = True
-
-
-class VersionTextoEnunciado(VersionTexto):
-    enunciado = models.ForeignKey(
-        Enunciado, on_delete=models.CASCADE, related_name='versiones')
-
-
-class Solucion(models.Model):
-    enunciado = models.ForeignKey(
-        Enunciado, on_delete=models.CASCADE, related_name='soluciones')
-
-    def __str__(self):
-        return str(self.versiones.ultima())
-
-
-class VersionTextoSolucion(VersionTexto):
-    solucion = models.ForeignKey(
-        Solucion, on_delete=models.CASCADE, related_name='versiones')
 
 
 class InformacionUsuario(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     puntos = models.PositiveIntegerField(default=0)
-    votos_enunciados = models.ManyToManyField(Enunciado, through='VotoEnunciado')
+    votos = models.ManyToManyField(Posteo, through='Voto')
 
 
-class VotoEnunciado(models.Model):
+class Voto(models.Model):
     usuario = models.ForeignKey(InformacionUsuario, on_delete=models.CASCADE)
-    enunciado = models.ForeignKey(Enunciado, on_delete=models.CASCADE)
+    posteo = models.ForeignKey(Posteo, on_delete=models.CASCADE)
     positivo = models.BooleanField()

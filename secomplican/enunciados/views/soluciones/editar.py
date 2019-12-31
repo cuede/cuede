@@ -2,7 +2,7 @@ from django.forms import ModelForm, ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 
-from enunciados.models import Solucion, VersionTextoSolucion
+from enunciados.models import Solucion, VersionTexto
 from enunciados.utils import enunciados_url_parser
 from enunciados.views.breadcrumb import breadcrumb_editar_solucion
 
@@ -24,7 +24,7 @@ class VersionTextoSolucionForm(ModelForm):
         return super().save()
 
     class Meta:
-        model = VersionTextoSolucion
+        model = VersionTexto
         fields = ['texto']
 
 
