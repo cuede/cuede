@@ -38,7 +38,7 @@ def enunciado(request, **kwargs):
                 enunciado = enunciado_form.save()
                 if cambio_texto:
                     version_texto = version_texto_form.save(commit=False)
-                    version_texto.enunciado = enunciado
+                    version_texto.posteo = enunciado
                     version_texto.save()
                 success_url = enunciados_url_parser.url_enunciado(
                     materia_carrera, enunciado)

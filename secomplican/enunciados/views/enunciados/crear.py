@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic.edit import CreateView
 
-from enunciados.models import Materia, Enunciado
+from enunciados.models import Materia, Enunciado, Posteo
 from enunciados.utils import conjuntos_url_parser, enunciados_url_parser
 from .forms import EnunciadoConConjuntoForm, VersionTextoForm
 from enunciados.views.breadcrumb import breadcrumb_crear_enunciado
@@ -17,7 +17,7 @@ def nuevo_enunciado(request, **kwargs):
         if enunciado_form.is_valid() and version_texto_form.is_valid():
             enunciado = enunciado_form.save()
             version_texto = version_texto_form.save(commit=False)
-            version_texto.enunciado = enunciado
+            version_texto.posteo = enunciado
             version_texto.save()
             success_url = enunciados_url_parser.url_enunciado(
                 materia_carrera, enunciado)

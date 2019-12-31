@@ -31,10 +31,9 @@ class CrearSolucion(CreateView):
         return context
 
     def form_valid(self, form):
-        solucion = Solucion(enunciado=self.enunciado)
-        solucion.enunciado = self.enunciado
+        solucion = Solucion(enunciado_padre=self.enunciado)
         solucion.save()
         self.object = form.save(commit=False)
-        self.object.solucion = solucion
+        self.object.posteo = solucion
         self.object.save()
         return redirect(self.get_success_url())

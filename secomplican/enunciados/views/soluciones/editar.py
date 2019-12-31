@@ -20,7 +20,7 @@ class VersionTextoSolucionForm(ModelForm):
         return texto_nuevo
 
     def save(self):
-        self.instance.solucion = self.solucion
+        self.instance.posteo = self.solucion
         return super().save()
 
     class Meta:
@@ -36,7 +36,7 @@ def editar_solucion(request, pk_solucion, **kwargs):
         if form.is_valid():
             form.save()
             success_url = enunciados_url_parser.url_enunciado(
-                materia_carrera, solucion.enunciado)
+                materia_carrera, solucion.enunciado_padre)
             return redirect(success_url)
     else:
         form = VersionTextoSolucionForm(
@@ -47,9 +47,9 @@ def editar_solucion(request, pk_solucion, **kwargs):
         'carrera': materia_carrera.carrera,
         'form': form,
         'solucion': solucion,
-        'enunciado': solucion.enunciado,
+        'enunciado': solucion.enunciado_padre,
         'breadcrumb': breadcrumb_editar_solucion(
-            materia_carrera, solucion.enunciado),
+            materia_carrera, solucion.enunciado_padre),
         'texto_boton': _('Enviar'),
     }
     return render(request, 'enunciados/nueva_solucion.html', contexto)

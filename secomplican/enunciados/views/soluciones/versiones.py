@@ -15,7 +15,7 @@ class VersionesSolucionView(VersionesView):
 
     def get_success_url(self):
         materia_carrera = self.kwargs['materia_carrera']
-        enunciado = self.get_object().enunciado
+        enunciado = self.get_object().enunciado_padre
         return enunciados_url_parser.url_enunciado(materia_carrera, enunciado)
 
     def get_context_data(self, **kwargs):
@@ -25,5 +25,5 @@ class VersionesSolucionView(VersionesView):
         context['carrera'] = materia_carrera.carrera
         context['solucion'] = self.get_object()
         context['breadcrumb'] = breadcrumb_versiones_solucion(
-            materia_carrera, self.get_object().enunciado)
+            materia_carrera, self.get_object().enunciado_padre)
         return context
