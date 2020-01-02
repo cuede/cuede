@@ -1,8 +1,8 @@
 from django.urls import include, path
 
-from enunciados.views.posteos import votar
+from enunciados.views.soluciones import votar
 
-app_name = 'votos'
+app_name = 'soluciones'
 
 votos_urlpatterns = [
     path('arriba/', votar.VotarArribaView.as_view(), name='votar_arriba'),

@@ -1,4 +1,3 @@
-
 from http import HTTPStatus
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseNotAllowed
@@ -7,15 +6,30 @@ from django.views import View
 from django.contrib.auth.decorators import login_required
 
 from enunciados.utils import enunciados_url_parser
-from enunciados.models import Voto, Posteo
+from enunciados.models import Voto, Solucion
+
+
+PUNTOS_USUARIO_POR_VOTO = 10
 
 
 def get_object_or_none(model, **kwargs):
     return model.objects.filter(**kwargs).first()
 
 
+def sumar_puntos_a_creador(solucion, puntos):
+    informacion_creador = solucion.creador.informacionusuario
+    informacion_creador.puntos = F('puntos') + puntos
+    informacion_creador.save()
+
+
+def sumar_puntos_a_solucion(solucion, puntos):
+    sumar_puntos_a_creador(solucion, puntos * PUNTOS_USUARIO_POR_VOTO)
+    solucion.puntos = F('puntos') + puntos
+    solucion.save()
+
+
 class VotarView(View):
-    def procesar_voto(self, usuario, voto, posteo):
+    def procesar_voto(self, usuario, voto, solucion):
         pass
 
     def post(self, request, *args, **kwargs):
@@ -23,19 +37,19 @@ class VotarView(View):
         if not usuario.is_authenticated:
             return HttpResponse('Unauthorized', status=HTTPStatus.UNAUTHORIZED)
 
-        posteo = get_object_or_404(Posteo, id=kwargs['id_posteo'])
+        solucion = get_object_or_404(Solucion, id=kwargs['id_solucion'])
         voto = get_object_or_none(
             Voto,
-            usuario=usuario.informacionusuario, posteo=posteo
+            usuario=usuario.informacionusuario, solucion=solucion
         )
 
-        self.procesar_voto(usuario, voto, posteo)
+        self.procesar_voto(usuario, voto, solucion)
 
         return HttpResponse()
 
 
 class AgregarVotoView(VotarView):
-    def procesar_voto(self, usuario, voto, posteo):
+    def procesar_voto(self, usuario, voto, solucion):
         if not voto or voto.positivo != self.positivo:
             sumado = self.cambio_puntos
             if voto:
@@ -44,12 +58,12 @@ class AgregarVotoView(VotarView):
             else:
                 voto = Voto(
                     usuario=usuario.informacionusuario,
-                    posteo=posteo,
+                    solucion=solucion,
                     positivo=self.positivo
                 )
-            posteo.puntos = F('puntos') + sumado
-            voto.save()
-            posteo.save()
+            if solucion.puntos + sumado >= 0:
+                sumar_puntos_a_solucion(solucion, sumado)
+                voto.save()
 
 
 class VotarArribaView(AgregarVotoView):
@@ -63,12 +77,12 @@ class VotarAbajoView(AgregarVotoView):
 
 
 class SacarVotoView(VotarView):
-    def procesar_voto(self, usuario, voto, posteo):
+    def procesar_voto(self, usuario, voto, solucion):
         if voto:
             if voto.positivo:
-                restado = 1
+                sumado = -1
             else:
-                restado = -1
-            posteo.puntos = F('puntos') - restado
+                sumado = 1
+
+            sumar_puntos_a_solucion(solucion, sumado)
             voto.delete()
-            posteo.save()

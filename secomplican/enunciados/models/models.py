@@ -1,8 +1,9 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from enunciados.modelmanagers.versiones_manager import VersionesManager
 
@@ -118,8 +119,6 @@ class Final(ConjuntoDeEnunciados):
 
 
 class Posteo(models.Model):
-    puntos = models.IntegerField(default=0)
-
     def __str__(self):
         return str(self.versiones.ultima())
 
@@ -139,7 +138,14 @@ class Enunciado(Posteo):
         unique_together = ('numero', 'conjunto')
 
 
+def get_sentinel_user():
+    return get_user_model().objects.get_or_create(username='deleted')[0]
+
+
 class Solucion(Posteo):
+    creador = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET(get_sentinel_user))
+    puntos = models.PositiveIntegerField(default=0)
     enunciado_padre = models.ForeignKey(
         Enunciado, on_delete=models.CASCADE, related_name='soluciones')
 
@@ -160,12 +166,12 @@ class VersionTexto(models.Model):
 
 
 class InformacionUsuario(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     puntos = models.PositiveIntegerField(default=0)
-    votos = models.ManyToManyField(Posteo, through='Voto')
+    votos = models.ManyToManyField(Solucion, through='Voto')
 
 
 class Voto(models.Model):
     usuario = models.ForeignKey(InformacionUsuario, on_delete=models.CASCADE)
-    posteo = models.ForeignKey(Posteo, on_delete=models.CASCADE)
+    solucion = models.ForeignKey(Solucion, on_delete=models.CASCADE)
     positivo = models.BooleanField()

@@ -21,7 +21,7 @@ urlpatterns = [
         include('enunciados.urls.materia_urls', namespace='materia')
     ),
     path(
-        'posteos/<int:id_posteo>/',
-        include('enunciados.urls.posteo_urls', namespace='posteo')
+        'soluciones/<int:id_solucion>/',
+        include('enunciados.urls.soluciones_urls', namespace='solucion')
     ),
 ]
