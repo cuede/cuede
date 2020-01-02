@@ -1,12 +1,14 @@
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.generic.edit import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from enunciados.models import Solucion, VersionTexto
 from enunciados.utils import cuatrimestres_url_parser, enunciados_url_parser
 from enunciados.views.breadcrumb import breadcrumb_crear_solucion
 
 
-class CrearSolucion(CreateView):
+class CrearSolucion(LoginRequiredMixin, CreateView):
     model = VersionTexto
     fields = ['texto']
     template_name = 'enunciados/nueva_solucion.html'
@@ -31,7 +33,7 @@ class CrearSolucion(CreateView):
         return context
 
     def form_valid(self, form):
-        solucion = Solucion(enunciado_padre=self.enunciado)
+        solucion = Solucion(enunciado_padre=self.enunciado, creador=self.request.user)
         solucion.save()
         self.object = form.save(commit=False)
         self.object.posteo = solucion
