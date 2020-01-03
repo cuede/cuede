@@ -55,6 +55,7 @@ class VotarSolucionTests(TestCase):
 
         response = client.post(self.url_votar_arriba())
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '1')
         self.assert_puntos_de_solucion_son(1)
 
     def test_votar_arriba_deslogueado_no_deberia_sumar_votos(self):
@@ -71,6 +72,7 @@ class VotarSolucionTests(TestCase):
         client.post(url)
         response = client.post(url)
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '1')
         self.assert_puntos_de_solucion_son(1)
 
     def test_votar_arriba_por_dos_usuarios_deberia_sumar_un_voto_por_cada_uno(self):
@@ -84,6 +86,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '2')
         self.assert_puntos_de_solucion_son(2)
 
     def test_solo_se_puede_votar_arriba_en_una_solucion_valido(self):
@@ -120,6 +123,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '0')
         self.assert_puntos_de_solucion_son(0)
 
     def test_sacar_voto_despues_de_votar_arriba(self):
@@ -131,6 +135,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_sacar)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '0')
         self.assert_puntos_de_solucion_son(0)
 
     def test_no_se_puede_sacar_voto_de_otro_usuario(self):
@@ -145,6 +150,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_sacar)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '1')
         self.assert_puntos_de_solucion_son(1)
 
     def test_no_se_puede_sacar_voto_dos_veces_seguidas(self):
@@ -158,6 +164,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_sacar)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '0')
         self.assert_puntos_de_solucion_son(0)
 
     def test_solo_se_puede_sacar_voto_con_un_post(self):
@@ -191,6 +198,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_abajo)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '0')
         self.assert_puntos_de_solucion_son(0)
 
     def test_no_se_puede_votar_abajo_deslogueado(self):
@@ -217,6 +225,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_abajo)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '1')
         self.assert_puntos_de_solucion_son(1)
 
     def test_votar_abajo_por_dos_usuarios_deberia_sacar_un_voto_por_cada_usuario(self):
@@ -239,6 +248,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_abajo)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '0')
         self.assert_puntos_de_solucion_son(0)
 
     def test_votar_abajo_despues_de_votar_arriba(self):
@@ -252,6 +262,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_abajo)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '1')
         self.assert_puntos_de_solucion_son(1)
 
     def test_votar_arriba_despues_de_votar_abajo(self):
@@ -265,6 +276,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_arriba)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '1')
         self.assert_puntos_de_solucion_son(1)
 
     def test_votar_arriba_abajo_arriba(self):
@@ -279,6 +291,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_arriba)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '1')
         self.assert_puntos_de_solucion_son(1)
 
     def test_sacar_voto_despues_de_votar_abajo(self):
@@ -291,6 +304,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_sacar)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '0')
         self.assert_puntos_de_solucion_son(0)
 
     def test_solo_se_puede_votar_abajo_en_un_solucion_valido(self):
@@ -316,6 +330,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_sacar)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '1')
         self.assert_puntos_de_solucion_son(1)
 
     def test_sacar_voto_negativo_deberia_aumentar_puntos(self):
@@ -334,6 +349,7 @@ class VotarSolucionTests(TestCase):
         response = client.post(url_sacar)
 
         self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(response['Puntos'], '1')
         self.assert_puntos_de_solucion_son(1)
 
 

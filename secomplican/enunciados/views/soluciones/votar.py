@@ -3,7 +3,6 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.db.models import F
 from django.views import View
-from django.contrib.auth.decorators import login_required
 
 from enunciados.utils import enunciados_url_parser
 from enunciados.models import Voto, Solucion
@@ -45,7 +44,10 @@ class VotarView(View):
 
         self.procesar_voto(usuario, voto, solucion)
 
-        return HttpResponse()
+        response = HttpResponse()
+        solucion.refresh_from_db()
+        response['Puntos'] = solucion.puntos
+        return response
 
 
 class AgregarVotoView(VotarView):
