@@ -3,46 +3,12 @@
 
 {% load urls_conjuntos %}
 {% load urls_enunciados %}
+{% load static %}
 
 {% include "enunciados/header_enunciado.html" %}
 
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
-<script type="text/javascript">
-    const csrftoken = Cookies.get('csrftoken');
-
-    function hacerPostAUrlYActualizarPuntos(url, idElemento) {
-        const puntosElement = document.getElementById(idElemento);
-        var request = new Request(url);
-
-        fetch(request, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrftoken,
-            }
-        }).then(function(response) {
-            if (response.status === 200) {
-                const puntos = response.headers.get('Puntos');
-                puntosElement.innerHTML = puntos;
-            }
-        });
-    }
-
-    function upvote(idSolucion) {
-        hacerPostAUrlYActualizarPuntos(
-            '/soluciones/' + idSolucion + '/votos/arriba/', 'puntos-' + idSolucion);
-    }
-
-    function removeVote(idSolucion) {
-        hacerPostAUrlYActualizarPuntos(
-            '/soluciones/' + idSolucion + '/votos/sacar/', 'puntos-' + idSolucion);
-    }
-
-    function downvote(idSolucion) {
-        hacerPostAUrlYActualizarPuntos(
-            '/soluciones/' + idSolucion + '/votos/abajo/', 'puntos-' + idSolucion);
-    }
-</script>
-
+<script type="text/javascript" src="{% static 'enunciados/votos.js' %}"></script>
 
 <a class="mr-3"
     href="{% url_editar_enunciado materia_carrera enunciado %}">
@@ -55,23 +21,30 @@
 <h2 class="mt-4"> Soluciones </h2>
 <hr>
 {% for solucion in enunciado.soluciones.all %}
-    Puntos: <div id='puntos-{{ solucion.id }}'>{{ solucion.puntos }}</div>
-    <button onclick="upvote({{ solucion.id }})">
-        Votar arriba
-    </button>
-    <button onclick="removeVote({{ solucion.id }})">
-        Sacar voto
-    </button>
-    <button onclick="downvote({{ solucion.id }})">
-        Votar abajo
-    </button>
-    <div class="mb-4">
-        <p>
+
+    <div class="row mb-3">
+        <div class="col-auto">
+            <div id="votar-arriba-{{ solucion.id }}" onclick="apretarFlechaArriba({{ solucion.id }})" style="cursor: pointer; color: lightgrey;"><span
+                class="fas fa-caret-up col-md-1 fa-2x"></span></div>
+            <!-- <button onclick="upvote({{ solucion.id }})">
+                Votar arriba
+            </button> -->
+            <div class="text-center" style="font-size: 1.3em;" id='puntos-{{ solucion.id }}'>{{ solucion.puntos }}</div>
+            <!-- <button onclick="removeVote({{ solucion.id }})">
+                Sacar voto
+            </button> -->
+            <div id="votar-abajo-{{ solucion.id }}" onclick="apretarFlechaAbajo({{ solucion.id }})" style="cursor: pointer; color: lightgrey;"><span
+                class="fas fa-caret-down col-md-1 fa-2x"></span></div>
+            <!-- <button onclick="downvote({{ solucion.id }})">
+                Votar abajo
+            </button> -->
+        </div>
+        <div class="col">
             {{ solucion|linebreaks }}
-        </p>
-        {% include 'enunciados/acciones_solucion.html' %}
-        <hr>
+        </div>
     </div>
+    {% include 'enunciados/acciones_solucion.html' %}
+    <hr>
 {% empty %}
     <p>Todavía no hay soluciones.</p>
 {% endfor %}
