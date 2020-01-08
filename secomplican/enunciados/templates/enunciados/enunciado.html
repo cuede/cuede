@@ -5,10 +5,10 @@
 {% load urls_enunciados %}
 {% load static %}
 
-{% include "enunciados/header_enunciado.html" %}
-
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 <script type="text/javascript" src="{% static 'enunciados/votos.js' %}"></script>
+
+{% include "enunciados/header_enunciado.html" %}
 
 <a class="mr-3"
     href="{% url_editar_enunciado materia_carrera enunciado %}">
@@ -20,24 +20,37 @@
 
 <h2 class="mt-4"> Soluciones </h2>
 <hr>
-{% for solucion in enunciado.soluciones.all %}
+{% for solucion, voto in soluciones_con_votos %}
 
     <div class="row mb-3">
         <div class="col-auto">
-            <div id="votar-arriba-{{ solucion.id }}" onclick="apretarFlechaArriba({{ solucion.id }})" style="cursor: pointer; color: lightgrey;"><span
-                class="fas fa-caret-up col-md-1 fa-2x"></span></div>
-            <!-- <button onclick="upvote({{ solucion.id }})">
-                Votar arriba
-            </button> -->
-            <div class="text-center" style="font-size: 1.3em;" id='puntos-{{ solucion.id }}'>{{ solucion.puntos }}</div>
-            <!-- <button onclick="removeVote({{ solucion.id }})">
-                Sacar voto
-            </button> -->
-            <div id="votar-abajo-{{ solucion.id }}" onclick="apretarFlechaAbajo({{ solucion.id }})" style="cursor: pointer; color: lightgrey;"><span
-                class="fas fa-caret-down col-md-1 fa-2x"></span></div>
-            <!-- <button onclick="downvote({{ solucion.id }})">
-                Votar abajo
-            </button> -->
+            <div
+                id="votar-arriba-{{ solucion.id }}"
+                onclick="apretarFlechaArriba({{ solucion.id }})"
+                {% if voto and voto.positivo %}
+                    style="cursor: pointer;"
+                    class="text-primary"
+                    data-activo=""
+                {% else %}
+                    style="cursor: pointer; color: lightgray;"
+                {% endif %}>
+                <span class="fas fa-caret-up col-md-1 fa-2x"></span>
+            </div>
+            <div id='puntos-{{ solucion.id }}' class="text-center"
+                style="font-size: 1.3em;">
+                {{ solucion.puntos }}
+            </div>
+            <div id="votar-abajo-{{ solucion.id }}"
+                onclick="apretarFlechaAbajo({{ solucion.id }})"
+                {% if voto and not voto.positivo %}
+                    style="cursor: pointer;"
+                    class="text-primary"
+                    data-activo=""
+                {% else %}
+                    style="cursor: pointer; color: lightgray;"
+                {% endif %}>
+                <span class="fas fa-caret-down col-md-1 fa-2x"></span>
+            </div>
         </div>
         <div class="col">
             {{ solucion|linebreaks }}
