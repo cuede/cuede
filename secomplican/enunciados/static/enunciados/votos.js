@@ -1,4 +1,6 @@
 const csrftoken = Cookies.get('csrftoken');
+const ATRIBUTO_ACTIVO = "data-activo";
+
 
 function post(url, callback) {
     var request = new Request(url);
@@ -28,13 +30,13 @@ function hacerPostASubDominioDeVotosYActualizarPuntos(subdominio, idSolucion, on
 function activarFlecha(flecha) {
     flecha.style.removeProperty("color");
     flecha.classList.add("text-primary");
-    flecha.setAttribute("data-activo", "");
+    flecha.setAttribute(ATRIBUTO_ACTIVO, "");
 }
 
 function desactivarFlecha(flecha) {
     flecha.classList.remove("text-primary");
     flecha.style.color = "lightgrey";
-    flecha.removeAttribute("data-activo");
+    flecha.removeAttribute(ATRIBUTO_ACTIVO);
 }
 
 function cambiarColores(desactivado, activado) {
@@ -48,7 +50,7 @@ function sacarVoto(idSolucion, elementoDesactivado) {
 }
 
 function apretarFlecha(idSolucion, flechaApretada, otraFlecha, subdominio) {
-    if (flechaApretada.hasAttribute("data-activo")) {
+    if (flechaApretada.hasAttribute(ATRIBUTO_ACTIVO)) {
         sacarVoto(idSolucion, flechaApretada);
     } else {
         hacerPostASubDominioDeVotosYActualizarPuntos(
@@ -65,5 +67,11 @@ function apretarFlechaArriba(idSolucion) {
 function apretarFlechaAbajo(idSolucion) {
     const votarAbajo = document.getElementById('votar-abajo-' + idSolucion);
     const votarArriba = document.getElementById('votar-arriba-' + idSolucion);
-    apretarFlecha(idSolucion, votarAbajo, votarArriba, 'abajo');
+    const puntosElement = document.getElementById('puntos-' + idSolucion);
+    const puntos = parseInt(puntosElement.innerHTML);
+    const abajoActivo = votarAbajo.hasAttribute(ATRIBUTO_ACTIVO);
+    const arribaActivo = votarArriba.hasAttribute(ATRIBUTO_ACTIVO);
+    if (abajoActivo || puntos >= 2 || (!arribaActivo && puntos >= 1)) {
+        apretarFlecha(idSolucion, votarAbajo, votarArriba, 'abajo');
+    }
 }
