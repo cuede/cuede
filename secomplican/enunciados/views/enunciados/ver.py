@@ -31,9 +31,11 @@ def enunciado(request, **kwargs):
     url_agregar_solucion = soluciones_url_parser.url_nueva_solucion(
         materia_carrera, enunciado_encontrado)
 
+    soluciones = enunciado_encontrado.soluciones.order_by('-puntos')
+
     soluciones_con_votos = [
         (solucion, voto_de_solucion(request.user, solucion))
-        for solucion in enunciado_encontrado.soluciones.all()
+        for solucion in soluciones
     ]
 
     contexto = {
