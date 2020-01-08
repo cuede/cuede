@@ -21,39 +21,40 @@
 <h2 class="mt-4"> Soluciones </h2>
 <hr>
 {% for solucion, voto in soluciones_con_votos %}
-
-    <div class="row mb-3">
-        <div class="col-auto">
-            <div
-                id="votar-arriba-{{ solucion.id }}"
-                onclick="apretarFlechaArriba({{ solucion.id }})"
-                {% if voto and voto.positivo %}
-                    style="cursor: pointer;"
-                    class="text-primary"
-                    data-activo=""
-                {% else %}
-                    style="cursor: pointer; color: lightgray;"
-                {% endif %}>
-                <span class="fas fa-caret-up col-md-1 fa-2x"></span>
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-auto">
+                <div
+                    id="votar-arriba-{{ solucion.id }}"
+                    onclick="apretarFlechaArriba({{ solucion.id }})"
+                    {% if voto and voto.positivo %}
+                        style="cursor: pointer;"
+                        class="text-primary"
+                        data-activo=""
+                    {% else %}
+                        style="cursor: pointer; color: lightgray;"
+                    {% endif %}>
+                    <span class="fas fa-angle-up col-md-1 fa-2x"></span>
+                </div>
+                <div id='puntos-{{ solucion.id }}' class="text-center"
+                    style="font-size: 1.3em;">
+                    {{ solucion.puntos }}
+                </div>
+                <div id="votar-abajo-{{ solucion.id }}"
+                    onclick="apretarFlechaAbajo({{ solucion.id }})"
+                    {% if voto and not voto.positivo %}
+                        style="cursor: pointer;"
+                        class="text-primary"
+                        data-activo=""
+                    {% else %}
+                        style="cursor: pointer; color: lightgray;"
+                    {% endif %}>
+                    <span class="fas fa-angle-down col-md-1 fa-2x"></span>
+                </div>
             </div>
-            <div id='puntos-{{ solucion.id }}' class="text-center"
-                style="font-size: 1.3em;">
-                {{ solucion.puntos }}
+            <div class="col">
+                {{ solucion|linebreaks }}
             </div>
-            <div id="votar-abajo-{{ solucion.id }}"
-                onclick="apretarFlechaAbajo({{ solucion.id }})"
-                {% if voto and not voto.positivo %}
-                    style="cursor: pointer;"
-                    class="text-primary"
-                    data-activo=""
-                {% else %}
-                    style="cursor: pointer; color: lightgray;"
-                {% endif %}>
-                <span class="fas fa-caret-down col-md-1 fa-2x"></span>
-            </div>
-        </div>
-        <div class="col">
-            {{ solucion|linebreaks }}
         </div>
     </div>
     {% include 'enunciados/acciones_solucion.html' %}
