@@ -32,6 +32,8 @@
                 {% if user.is_authenticated %}
                     <span class="navbar-text">
                         {{ user.username|title }}
+                        <span class="text-secondary">|</span>
+                        <b>{{ user.informacionusuario.puntos }}</b>
                     </span>
                     <li class="nav-item ml-lg-3">
                         <a class="btn btn-secondary" href="{% url 'logout' %}">Salir</a>
