@@ -1,0 +1,41 @@
+{% if usuario_logueado %}
+    <div id="votar-arriba-{{ solucion.id }}"
+        onclick="apretarFlechaArriba({{ solucion.id }})"
+        {% if voto and voto.positivo %}
+            class="flecha-voto text-primary"
+            data-activo=""
+        {% else %}
+            class="flecha-voto desactivada"
+        {% endif %}>
+        <span class="fas fa-angle-up col-md-1 fa-2x"></span>
+    </div>
+    {% else %}
+    <a href="{% url 'login'%}">
+        <div id="votar-arriba-{{ solucion.id }}"
+            class="flecha-voto desactivada">
+            <span class="fas fa-angle-up col-md-1 fa-2x"></span>
+        </div>
+    </a>
+    {% endif %}
+    <div id='puntos-{{ solucion.id }}' class="text-center puntos-voto">
+        {{ solucion.puntos }}
+    </div>
+    {% if usuario_logueado %}
+    <div id="votar-abajo-{{ solucion.id }}"
+        onclick="apretarFlechaAbajo({{ solucion.id }})"
+        {% if voto and not voto.positivo %}
+            class="flecha-voto text-primary"
+            data-activo=""
+        {% else %}
+            class="flecha-voto desactivada"
+        {% endif %}>
+        <span class="fas fa-angle-down col-md-1 fa-2x"></span>
+    </div>
+    {% else %}
+    <a href="{% url 'login'%}">
+        <div id="votar-abajo-{{ solucion.id }}"
+            class="flecha-voto desactivada">
+            <span class="fas fa-angle-down col-md-1 fa-2x"></span>
+        </div>
+    </a>
+{% endif %}

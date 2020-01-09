@@ -7,6 +7,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 <script type="text/javascript" src="{% static 'enunciados/votos.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'enunciados/votos.css' %}">
 
 {% include "enunciados/header_enunciado.html" %}
 
@@ -24,33 +25,7 @@
     <div class="container">
         <div class="row mb-3">
             <div class="col-auto">
-                <div
-                    id="votar-arriba-{{ solucion.id }}"
-                    onclick="apretarFlechaArriba({{ solucion.id }})"
-                    {% if voto and voto.positivo %}
-                        style="cursor: pointer;"
-                        class="text-primary"
-                        data-activo=""
-                    {% else %}
-                        style="cursor: pointer; color: lightgray;"
-                    {% endif %}>
-                    <span class="fas fa-angle-up col-md-1 fa-2x"></span>
-                </div>
-                <div id='puntos-{{ solucion.id }}' class="text-center"
-                    style="font-size: 1.3em;">
-                    {{ solucion.puntos }}
-                </div>
-                <div id="votar-abajo-{{ solucion.id }}"
-                    onclick="apretarFlechaAbajo({{ solucion.id }})"
-                    {% if voto and not voto.positivo %}
-                        style="cursor: pointer;"
-                        class="text-primary"
-                        data-activo=""
-                    {% else %}
-                        style="cursor: pointer; color: lightgray;"
-                    {% endif %}>
-                    <span class="fas fa-angle-down col-md-1 fa-2x"></span>
-                </div>
+                {% include 'enunciados/columna_voto.html' %}
             </div>
             <div class="col">
                 {{ solucion|linebreaks }}

@@ -47,5 +47,6 @@ def enunciado(request, **kwargs):
         'breadcrumb': breadcrumb_ver_enunciado(
             materia_carrera, enunciado_encontrado),
         'soluciones_con_votos': soluciones_con_votos,
+        'usuario_logueado': request.user.is_authenticated,
     }
     return render(request, 'enunciados/enunciado.html', contexto)
