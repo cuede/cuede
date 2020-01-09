@@ -175,3 +175,6 @@ class Voto(models.Model):
     usuario = models.ForeignKey(InformacionUsuario, on_delete=models.CASCADE)
     solucion = models.ForeignKey(Solucion, on_delete=models.CASCADE)
     positivo = models.BooleanField()
+
+    class Meta:
+        unique_together = ('usuario', 'solucion')
