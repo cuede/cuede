@@ -156,6 +156,7 @@ class VersionTexto(models.Model):
     versiones = VersionesManager()
     posteo = models.ForeignKey(Posteo, on_delete=models.CASCADE,
         related_name='versiones')
+    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET(get_sentinel_user))
 
     def __str__(self):
         return self.texto
