@@ -105,10 +105,6 @@ class CrearEnunciadoTests(TestCase):
             PUNTOS_USUARIO_POR_CREAR_ENUNCIADO * 2
         )
 
-    @skip(
-        'Por alguna razón tratar de hacer render en tests hace que te tire un error de' \
-        'staticfiles.'
-    )
     def test_get_no_deberia_sumar_puntos(self):
         user = self.loguear_usuario()
 

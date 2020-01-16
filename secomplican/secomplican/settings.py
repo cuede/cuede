@@ -145,4 +145,6 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-django_heroku.settings(locals())
+
+# Esto hace que rompan los tests de staticfiles por alguna razón.
+# django_heroku.settings(locals())
