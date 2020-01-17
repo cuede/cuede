@@ -57,6 +57,7 @@ def handle_post(request, materia_carrera, conjunto, enunciado_encontrado):
             if cambio_texto:
                 version_texto = version_texto_form.save(commit=False)
                 version_texto.posteo = enunciado
+                version_texto.autor = request.user
                 version_texto.save()
                 sumar_puntos_por_edicion(request.user)
             success_url = enunciados_url_parser.url_enunciado(

@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.contrib.auth import get_user_model
 
 from enunciados.models import Materia, Practica, Enunciado
 
@@ -21,10 +22,11 @@ class VersionTextoEnunciadoTests(TestCase):
 
     def test_ordenamiento(self):
         """Deberían estar ordenados por tiempo de más reciente a menos reciente."""
-        self.enunciado.versiones.create(texto='hola')
-        self.enunciado.versiones.create(texto='chau')
-        self.enunciado.versiones.create(texto='que tal')
-        self.enunciado.versiones.create(texto='foobar')
+        usuario = get_user_model().objects.create_user(username='user', password='pass')
+        self.enunciado.versiones.create(texto='hola', autor=usuario)
+        self.enunciado.versiones.create(texto='chau', autor=usuario)
+        self.enunciado.versiones.create(texto='que tal', autor=usuario)
+        self.enunciado.versiones.create(texto='foobar', autor=usuario)
 
         versiones = self.enunciado.versiones.all()
         for index, version in enumerate(versiones):

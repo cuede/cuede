@@ -1,3 +1,4 @@
+from unittest import skip
 from http import HTTPStatus
 
 from django.test import TestCase
@@ -25,12 +26,13 @@ class EditarEnunciadoTests(TestCase):
         self.practica = Practica.objects.create(
             materia=materia, anio=2018, cuatrimestre=1, numero=1
         )
+        self.user = get_user_model().objects.create_user(username='user', password='')
         self.enunciado = self.crear_enunciado(NUMERO_ENUNCIADO)
         self.version_texto = self.enunciado.versiones.ultima()
 
     def crear_enunciado(self, numero):
         enunciado = Enunciado.objects.create(conjunto=self.practica, numero=numero)
-        VersionTexto.versiones.create(texto='hola', posteo=enunciado)
+        VersionTexto.versiones.create(texto='hola', posteo=enunciado, autor=self.user)
         return enunciado
 
     def url_editar_enunciado(self, numero=NUMERO_ENUNCIADO):
@@ -43,9 +45,8 @@ class EditarEnunciadoTests(TestCase):
         })
 
     def loguear_usuario(self):
-        user = get_user_model().objects.create_user(username='user', password='')
         self.client.login(username='user', password='')
-        return user
+        return self.user
 
     def assert_redirecciona_a_login(self, response, next_url):
         self.assertEquals(response.status_code, HTTPStatus.FOUND)
@@ -69,56 +70,56 @@ class EditarEnunciadoTests(TestCase):
         self.assertEquals(self.enunciado.versiones.ultima(), self.version_texto)
 
     def test_editar_enunciado_suma_puntos_al_usuario(self):
-        usuario = self.loguear_usuario()
+        self.loguear_usuario()
 
         url = self.url_editar_enunciado()
         response = self.client.post(url, {'numero': NUMERO_ENUNCIADO, 'texto': 'asdsadsad'})
 
-        usuario.refresh_from_db()
-        self.assertEquals(usuario.informacionusuario.puntos, PUNTOS_USUARIO_EDITAR_ENUNCIADO)
+        self.user.refresh_from_db()
+        self.assertEquals(self.user.informacionusuario.puntos, PUNTOS_USUARIO_EDITAR_ENUNCIADO)
 
     def test_editar_enunciado_en_un_get_no_suma_puntos_al_usuario(self):
-        usuario = self.loguear_usuario()
+        self.loguear_usuario()
 
         url = self.url_editar_enunciado()
         response = self.client.get(url)
 
-        usuario.refresh_from_db()
-        self.assertEquals(usuario.informacionusuario.puntos, 0)
+        self.user.refresh_from_db()
+        self.assertEquals(self.user.informacionusuario.puntos, 0)
 
     def test_editar_enunciado_invalido_no_suma_puntos_al_usuario(self):
-        usuario = self.loguear_usuario()
+        self.loguear_usuario()
 
         url = self.url_editar_enunciado()
         response = self.client.post(url, {'numero': NUMERO_ENUNCIADO, 'texto': ''})
 
-        usuario.refresh_from_db()
-        self.assertEquals(usuario.informacionusuario.puntos, 0)
+        self.user.refresh_from_db()
+        self.assertEquals(self.user.informacionusuario.puntos, 0)
 
     def test_editar_enunciado_sin_cambiar_texto_no_suma_puntos_al_usuario(self):
-        usuario = self.loguear_usuario()
+        self.loguear_usuario()
 
         url = self.url_editar_enunciado()
         response = self.client.post(url, {
             'numero': NUMERO_ENUNCIADO, 'texto': self.version_texto.texto
         })
 
-        usuario.refresh_from_db()
-        self.assertEquals(usuario.informacionusuario.puntos, 0)
+        self.user.refresh_from_db()
+        self.assertEquals(self.user.informacionusuario.puntos, 0)
 
     def test_cambiar_solo_numero_de_enunciado_no_suma_puntos(self):
-        usuario = self.loguear_usuario()
+        self.loguear_usuario()
 
         url = self.url_editar_enunciado()
         response = self.client.post(url, {
             'numero': NUMERO_ENUNCIADO + 1, 'texto': self.version_texto.texto
         })
 
-        usuario.refresh_from_db()
-        self.assertEquals(usuario.informacionusuario.puntos, 0)
+        self.user.refresh_from_db()
+        self.assertEquals(self.user.informacionusuario.puntos, 0)
 
     def test_editar_dos_enunciados_diferentes_suma_una_vez_por_cada_uno(self):
-        usuario = self.loguear_usuario()
+        self.loguear_usuario()
 
         numero_enunciado_2 = NUMERO_ENUNCIADO + 1
         enunciado_2 = self.crear_enunciado(numero_enunciado_2)
@@ -132,12 +133,12 @@ class EditarEnunciadoTests(TestCase):
             'numero': numero_enunciado_2, 'texto': self.version_texto.texto + 'ASDSADASD'
         })
 
-        usuario.refresh_from_db()
+        self.user.refresh_from_db()
         self.assertEquals(
-            usuario.informacionusuario.puntos, PUNTOS_USUARIO_EDITAR_ENUNCIADO * 2)
+            self.user.informacionusuario.puntos, PUNTOS_USUARIO_EDITAR_ENUNCIADO * 2)
 
     def test_editar_mismo_enunciado_dos_veces_no_da_puntos_mas_de_una_vez(self):
-        usuario = self.loguear_usuario()
+        self.loguear_usuario()
 
         url = self.url_editar_enunciado()
         self.client.post(url, {
@@ -147,7 +148,7 @@ class EditarEnunciadoTests(TestCase):
             'numero': NUMERO_ENUNCIADO, 'texto': self.version_texto.texto + 'sdsds'
         })
 
-        usuario.refresh_from_db()
+        self.user.refresh_from_db()
         self.assertEquals(
-            usuario.informacionusuario.puntos, PUNTOS_USUARIO_EDITAR_ENUNCIADO)
+            self.user.informacionusuario.puntos, PUNTOS_USUARIO_EDITAR_ENUNCIADO)
 

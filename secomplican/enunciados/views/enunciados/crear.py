@@ -31,6 +31,7 @@ def crear_enunciado_con_forms(enunciado_form, version_texto_form, usuario_creado
     enunciado = enunciado_form.save()
     version_texto = version_texto_form.save(commit=False)
     version_texto.posteo = enunciado
+    version_texto.autor = usuario_creador
     version_texto.save()
     informacion_usuario = usuario_creador.informacionusuario
     informacion_usuario.puntos = F('puntos') + PUNTOS_USUARIO_POR_CREAR_ENUNCIADO

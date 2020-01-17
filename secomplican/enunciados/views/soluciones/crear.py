@@ -37,5 +37,6 @@ class CrearSolucion(LoginRequiredMixin, CreateView):
         solucion.save()
         self.object = form.save(commit=False)
         self.object.posteo = solucion
+        self.object.autor = self.request.user
         self.object.save()
         return redirect(self.get_success_url())
