@@ -37,6 +37,24 @@ def render_editar_enunciado(
     return render(request, 'enunciados/editar_enunciado.html', context)
 
 
+def no_edito_enunciado(enunciado, usuario):
+    return enunciado.versiones.filter(autor=usuario).count() == 0
+
+
+def crear_enunciado_con_forms(
+    enunciado_form, version_texto_form, usuario_creador, cambio_texto):
+    enunciado = enunciado_form.save()
+    if cambio_texto:
+        deberia_sumar_puntos = no_edito_enunciado(enunciado, usuario_creador)
+        version_texto = version_texto_form.save(commit=False)
+        version_texto.posteo = enunciado
+        version_texto.autor = usuario_creador
+        version_texto.save()
+        if deberia_sumar_puntos:
+            sumar_puntos_por_edicion(usuario_creador)
+    return enunciado
+
+
 def handle_post(request, materia_carrera, conjunto, enunciado_encontrado):
     numero_anterior = enunciado_encontrado.numero
     enunciado_form = EnunciadoConConjuntoForm(
@@ -50,16 +68,10 @@ def handle_post(request, materia_carrera, conjunto, enunciado_encontrado):
         cambio_texto = se_cambio_texto(enunciado_encontrado, texto_nuevo)
         if numero_anterior == nuevo_numero and not cambio_texto:
             version_texto_form.add_error(
-                'texto', ValidationError(_('No se cambió el texto.'))
-            )
+                'texto', ValidationError(_('No se cambió el texto.')))
         else:
-            enunciado = enunciado_form.save()
-            if cambio_texto:
-                version_texto = version_texto_form.save(commit=False)
-                version_texto.posteo = enunciado
-                version_texto.autor = request.user
-                version_texto.save()
-                sumar_puntos_por_edicion(request.user)
+            enunciado = crear_enunciado_con_forms(
+                enunciado_form, version_texto_form, request.user, cambio_texto)
             success_url = enunciados_url_parser.url_enunciado(
                 materia_carrera, enunciado)
             response = redirect(success_url)
