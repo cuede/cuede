@@ -6,11 +6,10 @@ from enunciados.models import InformacionUsuario
 class InformacionUsuarioTests(TestCase):
     def test_crear_un_usuario_deberia_crear_informacion_con_cero_puntos(self):
         usuario = User.objects.create(username='user', password='pass')
-        info = InformacionUsuario.objects.all()
+        info = InformacionUsuario.objects.get(usuario__username='user')
 
-        self.assertEquals(len(info), 1)
-        self.assertEquals(info[0].usuario, usuario)
-        self.assertEquals(info[0].puntos, 0)
+        self.assertEquals(info.usuario, usuario)
+        self.assertEquals(info.puntos, 0)
 
     def test_no_se_pueden_poner_puntos_negativos(self):
         usuario = User.objects.create(username='user', password='pass')
