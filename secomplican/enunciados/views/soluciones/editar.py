@@ -4,7 +4,7 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
 
-from enunciados.models import Solucion, VersionTexto
+from enunciados.models import Solucion, VersionTexto, get_sentinel_user
 from enunciados.utils import enunciados_url_parser
 from enunciados.views.breadcrumb import breadcrumb_editar_solucion
 
@@ -45,11 +45,10 @@ def dar_puntos_a_usuario(usuario):
     informacion_usuario.save()
 
 
-@login_required
 def editar_solucion(request, pk_solucion, **kwargs):
     materia_carrera = kwargs['materia_carrera']
     solucion = get_object_or_404(Solucion, pk=pk_solucion)
-    usuario = request.user
+    usuario = get_sentinel_user()
     if request.method == 'POST':
         form = VersionTextoSolucionForm(solucion, usuario, request.POST)
         if form.is_valid():
