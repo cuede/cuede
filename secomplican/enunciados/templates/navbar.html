@@ -28,25 +28,6 @@
                     </li>
                 {% endif %}
             </ul>
-            <ul class="navbar-nav">
-                {% if user.is_authenticated %}
-                    <span class="navbar-text">
-                        {{ user.username|title }}
-                        <span class="text-secondary">|</span>
-                        <b>{{ user.informacionusuario.puntos }}</b>
-                    </span>
-                    <li class="nav-item ml-lg-3">
-                        <a class="btn btn-secondary" href="{% url 'logout' %}">Salir</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item mr-lg-2">
-                        <a class="nav-link" href="{% url 'login' %}">Entrar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-primary" href="{% url 'signup' %}">Registrarse</a>
-                    </li>
-                {% endif %}
-            </ul>
         </div>
     </div>
 </nav>
