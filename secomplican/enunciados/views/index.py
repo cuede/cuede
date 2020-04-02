@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
 
 from enunciados.models import Carrera
 
 def index(request):
     computacion = Carrera.objects.get(slug='computacion')
-    return render(request, 'index.html', {'carrera': computacion})
+    return redirect('materias', carrera=computacion)
