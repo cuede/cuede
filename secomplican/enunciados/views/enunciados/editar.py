@@ -8,6 +8,7 @@ from enunciados.utils import enunciados_url_parser
 
 from .forms import EnunciadoConConjuntoForm, VersionTextoForm
 from enunciados.views.breadcrumb import breadcrumb_editar_enunciado
+from enunciados.models import get_sentinel_user
 
 
 PUNTOS_USUARIO_EDITAR_ENUNCIADO = 5
@@ -71,7 +72,7 @@ def handle_post(request, materia_carrera, conjunto, enunciado_encontrado):
                 'texto', ValidationError(_('No se cambió el texto.')))
         else:
             enunciado = crear_enunciado_con_forms(
-                enunciado_form, version_texto_form, request.user, cambio_texto)
+                enunciado_form, version_texto_form, get_sentinel_user(), cambio_texto)
             success_url = enunciados_url_parser.url_enunciado(
                 materia_carrera, enunciado)
             response = redirect(success_url)
@@ -95,7 +96,6 @@ def handle_get(request, materia_carrera, conjunto, enunciado_encontrado):
         request, materia_carrera, enunciado_form, version_texto_form, enunciado_encontrado)
 
 
-@login_required
 def enunciado(request, **kwargs):
     materia_carrera = kwargs['materia_carrera']
     enunciado_encontrado = enunciados_url_parser.kwargs_a_enunciado(kwargs)
