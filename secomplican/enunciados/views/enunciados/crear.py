@@ -6,7 +6,7 @@ from django.db.models import F
 
 from django.contrib.auth.decorators import login_required
 
-from enunciados.models import Materia, Enunciado, Posteo
+from enunciados.models import Materia, Enunciado, Posteo, get_sentinel_user
 from enunciados.utils import conjuntos_url_parser, enunciados_url_parser
 from .forms import EnunciadoConConjuntoForm, VersionTextoForm
 from enunciados.views.breadcrumb import breadcrumb_crear_enunciado
@@ -43,7 +43,7 @@ def handle_post(request, materia_carrera, conjunto):
     enunciado_form = EnunciadoConConjuntoForm(conjunto, request.POST)
     version_texto_form = VersionTextoForm(request.POST)
     if enunciado_form.is_valid() and version_texto_form.is_valid():
-        enunciado = crear_enunciado_con_forms(enunciado_form, version_texto_form, request.user)
+        enunciado = crear_enunciado_con_forms(enunciado_form, version_texto_form, get_sentinel_user())
         success_url = enunciados_url_parser.url_enunciado(
             materia_carrera, enunciado)
         response = redirect(success_url)
@@ -62,7 +62,6 @@ def handle_get(request, materia_carrera, conjunto):
         request, materia_carrera, enunciado_form, version_texto_form, conjunto)
 
 
-@login_required
 def nuevo_enunciado(request, **kwargs):
     conjunto = conjuntos_url_parser.kwargs_a_conjunto(kwargs)
     materia_carrera = kwargs['materia_carrera']
