@@ -1,3 +1,4 @@
+{% load code_markers %}
 {% load urls_enunciados %}
 {% load i18n %}
 
@@ -23,7 +24,7 @@
             </a></small>
         </h2>
         <p class="card-text">
-            {{ enunciado.versiones.ultima|linebreaks }}
+            {{ enunciado.versiones.ultima|code_markers|linebreaks }}
         </p>
         <a class="card-link"
             href="{% url_editar_enunciado materia_carrera enunciado %}">
