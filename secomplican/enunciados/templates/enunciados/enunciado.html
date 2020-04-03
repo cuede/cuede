@@ -7,8 +7,6 @@
 {% load static %}
 
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
-<script type="text/javascript" src="{% static 'enunciados/votos.js' %}"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'enunciados/votos.css' %}">
 
 {% include "enunciados/header_enunciado.html" %}
 
@@ -23,16 +21,7 @@
 <h2 class="mt-4"> Soluciones </h2>
 <hr>
 {% for solucion, voto in soluciones_con_votos %}
-    <div class="container">
-        <div class="row mb-3">
-            <div class="col-auto">
-                {% include 'enunciados/columna_voto.html' %}
-            </div>
-            <div class="col">
-                {{ solucion|format_post }}
-            </div>
-        </div>
-    </div>
+    {{ solucion|format_post }}
     {% include 'enunciados/acciones_solucion.html' %}
     <hr>
 {% empty %}
