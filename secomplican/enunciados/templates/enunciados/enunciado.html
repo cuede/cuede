@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% load format_post %}
 {% load urls_conjuntos %}
 {% load urls_enunciados %}
 {% load static %}
@@ -28,7 +29,7 @@
                 {% include 'enunciados/columna_voto.html' %}
             </div>
             <div class="col">
-                {{ solucion|linebreaks }}
+                {{ solucion|format_post }}
             </div>
         </div>
     </div>
