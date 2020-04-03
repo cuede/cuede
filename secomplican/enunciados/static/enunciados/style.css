@@ -12,6 +12,10 @@ body {
     color: rgba(0,0,0,.9);
 }
 
+.ql-editor {
+    white-space: pre !important;
+}
+
 pre {
     background-color: #f0f0f0;
     padding: 1em;
