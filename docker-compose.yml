@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: ./docker/webserver/Dockerfile
       args:
-        WAIT_FOR_SCRIPT: ./docker/wait-for
+        WAIT_FOR_SCRIPT: ./docker/wait-for-it
         STARTUP_SCRIPT: ./docker/webserver/django-migrate-and-runserver
     volumes:
       - .:/workdir
@@ -14,7 +14,7 @@ services:
       - 8000:8000
     depends_on:
       - database
-    command: django-migrate-and-runserver secomplican 8000 
+    command: wait-for-it database:5432 --timeout=0 -- django-migrate-and-runserver secomplican 8000 
 
   database:
     build:
