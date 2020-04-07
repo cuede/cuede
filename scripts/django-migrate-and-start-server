@@ -1,0 +1,8 @@
+#!/bin/sh -eu
+
+[ $# -eq 2 ] || { echo "Usage: $0 <project-dir> <port>" &&  exit 1; }
+
+project_dir="$1"
+port="$2"
+
+django-migrate "$project_dir" && start-server "$project_dir" "$port"
