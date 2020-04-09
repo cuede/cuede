@@ -1,0 +1,12 @@
+setup:
+  addons:
+   - plan: heroku-postgresql
+build:
+  docker:
+    web: Dockerfile.web
+release:
+  image: web
+  command:
+    - django-migrate secomplican
+run:
+  web: start-server secomplican "$PORT"

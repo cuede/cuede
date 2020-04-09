@@ -4,21 +4,20 @@ services:
   webserver:
     build:
       context: .
-      dockerfile: ./docker/webserver/Dockerfile
-      args:
-        WAIT_FOR_SCRIPT: ./docker/wait-for-it
-        STARTUP_SCRIPT: ./docker/webserver/django-migrate-and-runserver
+      dockerfile: Dockerfile.web
     volumes:
       - .:/workdir
+    environment:
+      - DATABASE_URL=postgres://database/qed?user=qed_user&password=PWD-.,
     ports:
       - 8000:8000
     depends_on:
       - database
-    command: wait-for-it database:5432 --timeout=0 -- django-migrate-and-runserver secomplican 8000 
+    command: wait-for-it database:5432 --timeout=0 -- django-migrate-and-start-server secomplican 8000
 
   database:
     build:
       context: .
-      dockerfile: ./docker/database/Dockerfile
+      dockerfile: Dockerfile.db
     ports:
       - "5432:5432"

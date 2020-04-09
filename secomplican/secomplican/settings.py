@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 import os
 import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # .../qed/secomplican
@@ -30,7 +31,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '.herokuapp.com']
 
 
 # Application definition
@@ -82,14 +83,7 @@ WSGI_APPLICATION = 'secomplican.wsgi.application'
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'qed',
-        'USER': 'qed_user',
-        'PASSWORD': 'PWD-.,',
-        'HOST': 'database',
-        'PORT': '',
-    }
+    'default': dj_database_url.config(default='DATABASE_URL')
 }
 
 # DATABASES = {
