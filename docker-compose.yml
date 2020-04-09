@@ -9,12 +9,11 @@ services:
       - .:/workdir
     environment:
       - DATABASE_URL=postgres://database/qed?user=qed_user&password=PWD-.,
-      - PIPENV_VENV_IN_PROJECT=true
     ports:
       - 8000:8000
     depends_on:
       - database
-    command: wait-for-it database:5432 --timeout=0 -- django-migrate-and-start-server secomplican 8000 
+    command: wait-for-it database:5432 --timeout=0 -- django-migrate-and-start-server secomplican 8000
 
   database:
     build:
