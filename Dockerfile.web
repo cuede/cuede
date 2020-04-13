@@ -1,0 +1,16 @@
+FROM python:3.6
+
+WORKDIR /workdir
+
+# Copy project files
+COPY secomplican secomplican
+COPY Pipfile .
+COPY Pipfile.lock .
+
+# Install pipenv and dependencies
+RUN pip install pipenv
+ENV PIPENV_VENV_IN_PROJECT true
+RUN pipenv install
+
+# Copy scripts
+COPY scripts/ /usr/local/bin

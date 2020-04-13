@@ -1,1 +1,0 @@
-web: cd secomplican && gunicorn secomplican.wsgi
