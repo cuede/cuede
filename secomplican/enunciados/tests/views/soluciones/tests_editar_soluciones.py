@@ -6,9 +6,11 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 
 from enunciados.models import (
-    Universidad, Carrera, Materia, MateriaCarrera, Practica, Enunciado, Solucion, VersionTexto
+    Universidad, Carrera, Materia, MateriaCarrera, Practica, Enunciado, Solucion, VersionTexto,
+    get_sentinel_user
 )
 from enunciados.views.soluciones.editar import PUNTOS_USUARIO_POR_EDITAR_SOLUCION
+from enunciados.utils import enunciados_url_parser
 
 class EditarSolucionTests(TestCase):
     def setUp(self):
@@ -24,7 +26,7 @@ class EditarSolucionTests(TestCase):
         )
         self.enunciado = Enunciado.objects.create(conjunto=practica, numero=1)
         self.creador = get_user_model().objects.create_user(username='user', password='')
-        self.editor = get_user_model().objects.create_user(username='editor', password='')
+        self.editor = get_sentinel_user()
         self.solucion = Solucion.objects.create(
             enunciado_padre=self.enunciado, creador=self.creador)
         self.version_texto = VersionTexto.versiones.create(
@@ -42,27 +44,23 @@ class EditarSolucionTests(TestCase):
             'pk_solucion': pk_solucion,
         })
 
+    def url_ver_enunciado(self):
+        return enunciados_url_parser.url_enunciado(self.materia_carrera, self.enunciado)
+
     def assert_puntos_de_editor_son(self, puntos):
         self.editor.refresh_from_db()
         self.assertEquals(self.editor.informacionusuario.puntos, puntos)
 
-    def test_no_se_puede_editar_solucion_sin_loguearse(self):
+    def test_se_puede_editar_solucion_sin_loguearse(self):
         url = self.url_editar_solucion()
-        response = self.client.post(url)
+        texto = 'un texto muy largo'
+        response = self.client.post(url, {'texto': texto})
 
         self.assertEquals(response.status_code, HTTPStatus.FOUND)
-        url_redir = reverse('login') + '?next=' + url
+        url_redir = self.url_ver_enunciado()
         self.assertEquals(response.url, url_redir)
-        self.assertEquals(self.solucion.versiones.ultima(), self.version_texto)
-
-    def test_no_se_puede_hacer_get_a_editar_solucion_sin_loguearse(self):
-        url = self.url_editar_solucion()
-        response = self.client.get(url)
-
-        self.assertEquals(response.status_code, HTTPStatus.FOUND)
-        url_redir = reverse('login') + '?next=' + url
-        self.assertEquals(response.url, url_redir)
-        self.assertEquals(self.solucion.versiones.ultima(), self.version_texto)
+        self.assertEquals(self.solucion.versiones.ultima().texto, texto)
+        self.assertEquals(self.solucion.versiones.ultima().autor, get_sentinel_user())
 
     def test_editar_solucion_da_puntos_al_usuario(self):
         self.client.login(username=self.editor.username, password='')
