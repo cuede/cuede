@@ -20,7 +20,7 @@ sudo docker-compose up --build
 ```
 
 Esto descarga todas las dependencias necesarias,
-corre todas las migraciones, y levanta el servidor en http://127.0.0.1:8000/.
+corre todas las migraciones, y levanta el servidor en http://localhost:8000/.
 
 ### Corriendo los tests
 
