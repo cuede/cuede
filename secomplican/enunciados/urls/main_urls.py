@@ -20,4 +20,8 @@ urlpatterns = [
         '<materiacarrera:materia_carrera>/',
         include('enunciados.urls.materia_urls', namespace='materia')
     ),
+    path(
+        'soluciones/<int:id_solucion>/',
+        include('enunciados.urls.soluciones_urls', namespace='solucion')
+    ),
 ]

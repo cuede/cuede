@@ -1,0 +1,11 @@
+.flecha-voto {
+    cursor: pointer;
+}
+
+.flecha-voto.desactivada {
+    color: lightgray;
+}
+
+.puntos-voto {
+    font-size: 1.3em;
+}

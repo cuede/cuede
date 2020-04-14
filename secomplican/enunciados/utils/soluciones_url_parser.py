@@ -10,14 +10,14 @@ def url_nueva_solucion(materia_carrera, enunciado):
 
 def kwargs_de_solucion(materia_carrera, solucion):
     kwargs = enunciados_url_parser.kwargs_de_enunciado(
-        materia_carrera, solucion.enunciado)
+        materia_carrera, solucion.enunciado_padre)
     kwargs['pk_solucion'] = solucion.pk
     return kwargs
 
 
 def url_solucion_con_nombre(materia_carrera, nombre, solucion):
     namespace = enunciados_url_parser.namespace_enunciado(
-        solucion.enunciado.conjunto)
+        solucion.enunciado_padre.conjunto)
     nombre_url = '{}:{}'.format(namespace, nombre)
     kwargs = kwargs_de_solucion(materia_carrera, solucion)
     return reverse(nombre_url, kwargs=kwargs)

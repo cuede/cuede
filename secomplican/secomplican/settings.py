@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 import os
 import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # .../qed/secomplican
@@ -22,12 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'iynt*x$0lw1v7c$g8#^li#2(k6g@l*p83)7hylb14t**em@s6v'
+SECRET_KEY = os.environ.get(
+    'secomplican_KEY',
+    'iynt*x$0lw1v7c$g8#^li#2(k6g@l*p83)7hylb14t**em@s6v'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '.herokuapp.com']
 
 
 # Application definition
@@ -79,14 +83,7 @@ WSGI_APPLICATION = 'secomplican.wsgi.application'
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'qed',
-        'USER': 'qed_user',
-        'PASSWORD': 'PWD-.,',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
+    'default': dj_database_url.config(default='DATABASE_URL')
 }
 
 # DATABASES = {
@@ -138,7 +135,10 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-django_heroku.settings(locals())
+
+# Esto hace que rompan los tests de staticfiles por alguna razón.
+# django_heroku.settings(locals())

@@ -1,15 +1,21 @@
 from django.forms import ModelForm, ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
+from django.contrib.auth.decorators import login_required
+from django.db.models import F
 
-from enunciados.models import Solucion, VersionTextoSolucion
+from enunciados.models import Solucion, VersionTexto, get_sentinel_user
 from enunciados.utils import enunciados_url_parser
 from enunciados.views.breadcrumb import breadcrumb_editar_solucion
 
 
+PUNTOS_USUARIO_POR_EDITAR_SOLUCION = 5
+
+
 class VersionTextoSolucionForm(ModelForm):
-    def __init__(self, solucion, *args, **kwargs):
+    def __init__(self, solucion, autor, *args, **kwargs):
         self.solucion = solucion
+        self.autor = autor
         super().__init__(*args, **kwargs)
 
     def clean_texto(self):
@@ -20,35 +26,51 @@ class VersionTextoSolucionForm(ModelForm):
         return texto_nuevo
 
     def save(self):
-        self.instance.solucion = self.solucion
+        self.instance.posteo = self.solucion
+        self.instance.autor = self.autor
         return super().save()
 
     class Meta:
-        model = VersionTextoSolucion
+        model = VersionTexto
         fields = ['texto']
+
+
+def no_edito_solucion(solucion, usuario):
+    return solucion.versiones.filter(autor=usuario).count() == 0
+
+
+def dar_puntos_a_usuario(usuario):
+    informacion_usuario = usuario.informacionusuario
+    informacion_usuario.puntos = F('puntos') + PUNTOS_USUARIO_POR_EDITAR_SOLUCION
+    informacion_usuario.save()
 
 
 def editar_solucion(request, pk_solucion, **kwargs):
     materia_carrera = kwargs['materia_carrera']
     solucion = get_object_or_404(Solucion, pk=pk_solucion)
+    usuario = get_sentinel_user()
     if request.method == 'POST':
-        form = VersionTextoSolucionForm(solucion, request.POST)
+        form = VersionTextoSolucionForm(solucion, usuario, request.POST)
         if form.is_valid():
+            deberia_sumar_puntos = no_edito_solucion(solucion, usuario)
             form.save()
+            if deberia_sumar_puntos:
+                dar_puntos_a_usuario(usuario)
             success_url = enunciados_url_parser.url_enunciado(
-                materia_carrera, solucion.enunciado)
+                materia_carrera, solucion.enunciado_padre)
             return redirect(success_url)
     else:
         form = VersionTextoSolucionForm(
-            solucion, initial={'texto': solucion.versiones.ultima().texto})
+            solucion, usuario, initial={'texto': solucion.versiones.ultima().texto})
 
     contexto = {
         'materia_carrera': materia_carrera,
         'carrera': materia_carrera.carrera,
         'form': form,
         'solucion': solucion,
-        'enunciado': solucion.enunciado,
+        'enunciado': solucion.enunciado_padre,
         'breadcrumb': breadcrumb_editar_solucion(
-            materia_carrera, solucion.enunciado),
+            materia_carrera, solucion.enunciado_padre),
+        'texto_boton': _('Enviar'),
     }
     return render(request, 'enunciados/nueva_solucion.html', contexto)

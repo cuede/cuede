@@ -1,17 +1,26 @@
 {% extends "base.html" %}
+{% load static %}
+{% block scripts %}
+{% include 'enunciados/quill_scripts.html' %}
+{% endblock %}
+
 {% block content %}
 
 {% load bootstrap4 %}
 
 <h1>Nuevo ejercicio</h1>
 
-<form method="post">
+<form id="form" method="post">
     {% csrf_token %}
 
-    {% bootstrap_form enunciado_form %}
-    {% bootstrap_form version_texto_form %}
+    {% bootstrap_form enunciado_form layout='inline' %}
+    {% bootstrap_form_errors version_texto_form %}
+    {% include 'enunciados/quill_form_widget.html' with field=version_texto_form.texto %}
     {% buttons %}
-        <input type="submit" value="Crear" />
+        <input class="mt-3" type="submit" value="Crear" />
     {% endbuttons %}
 </form>
+
+<script type="text/javascript" src="{% static 'enunciados/editor.js' %}"></script>
+
 {% endblock %}

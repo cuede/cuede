@@ -1,7 +1,9 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
 
 from enunciados.modelmanagers.versiones_manager import VersionesManager
 
@@ -116,7 +118,12 @@ class Final(ConjuntoDeEnunciados):
             )
 
 
-class Enunciado(models.Model):
+class Posteo(models.Model):
+    def __str__(self):
+        return str(self.versiones.ultima())
+
+
+class Enunciado(Posteo):
     conjunto = models.ForeignKey(
         ConjuntoDeEnunciados, on_delete=models.CASCADE)
     # El numero de enunciado en el conjunto de enunciados.
@@ -131,10 +138,25 @@ class Enunciado(models.Model):
         unique_together = ('numero', 'conjunto')
 
 
+def get_sentinel_user():
+    return get_user_model().objects.get_or_create(username='Eliminado')[0]
+
+
+class Solucion(Posteo):
+    creador = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET(get_sentinel_user))
+    puntos = models.PositiveIntegerField(default=0)
+    enunciado_padre = models.ForeignKey(
+        Enunciado, on_delete=models.CASCADE, related_name='soluciones')
+
+
 class VersionTexto(models.Model):
     tiempo = models.DateTimeField(auto_now_add=True)
     texto = models.TextField(blank=False)
     versiones = VersionesManager()
+    posteo = models.ForeignKey(Posteo, on_delete=models.CASCADE,
+        related_name='versiones')
+    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET(get_sentinel_user))
 
     def __str__(self):
         return self.texto
@@ -142,22 +164,18 @@ class VersionTexto(models.Model):
     class Meta:
         # Ordenamos del más reciente al más viejo.
         ordering = ['-tiempo']
-        abstract = True
 
 
-class VersionTextoEnunciado(VersionTexto):
-    enunciado = models.ForeignKey(
-        Enunciado, on_delete=models.CASCADE, related_name='versiones')
+class InformacionUsuario(models.Model):
+    usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    puntos = models.PositiveIntegerField(default=0)
+    votos = models.ManyToManyField(Solucion, through='Voto')
 
 
-class Solucion(models.Model):
-    enunciado = models.ForeignKey(
-        Enunciado, on_delete=models.CASCADE, related_name='soluciones')
+class Voto(models.Model):
+    usuario = models.ForeignKey(InformacionUsuario, on_delete=models.CASCADE)
+    solucion = models.ForeignKey(Solucion, on_delete=models.CASCADE)
+    positivo = models.BooleanField()
 
-    def __str__(self):
-        return str(self.versiones.ultima())
-
-
-class VersionTextoSolucion(VersionTexto):
-    solucion = models.ForeignKey(
-        Solucion, on_delete=models.CASCADE, related_name='versiones')
+    class Meta:
+        unique_together = ('usuario', 'solucion')

@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    volumes:
+      - .:/workdir
+    environment:
+      - DATABASE_URL=postgres://database/qed?user=qed_user&password=PWD-.,
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+    command: wait-for-it database:5432 --timeout=0 -- django-migrate-and-start-server secomplican 8000
+
+  database:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    ports:
+      - "5432:5432"

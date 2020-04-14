@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% load format_post %}
 {% load urls_conjuntos %}
 {% load urls_enunciados %}
+{% load static %}
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
 {% include "enunciados/header_enunciado.html" %}
-
 
 <a class="mr-3"
     href="{% url_editar_enunciado materia_carrera enunciado %}">
@@ -15,16 +18,13 @@
     <span class="fas fa-undo"></span> Versiones anteriores
 </a>
 
+<hr>
 <h2 class="mt-4"> Soluciones </h2>
 <hr>
-{% for solucion in enunciado.soluciones.all %}
-    <div class="mb-4">
-        <p>
-            {{ solucion|linebreaks }}
-        </p>
-        {% include 'enunciados/acciones_solucion.html' %}
-        <hr>
-    </div>
+{% for solucion, voto in soluciones_con_votos %}
+    {{ solucion|format_post }}
+    {% include 'enunciados/acciones_solucion.html' %}
+    <hr>
 {% empty %}
     <p>Todavía no hay soluciones.</p>
 {% endfor %}
