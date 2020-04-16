@@ -9,4 +9,4 @@ release:
   command:
     - django-migrate secomplican
 run:
-  web: start-server secomplican "$PORT"
+  web: django-collectstatic secomplican && start-server secomplican "$PORT"
