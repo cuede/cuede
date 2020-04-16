@@ -5,4 +5,4 @@
 project_dir="$1"
 port="$2"
 
-django-migrate "$project_dir" && start-server "$project_dir" "$port"
+django-migrate-and-collectstatic "$project_dir" && start-server "$project_dir" "$port"
