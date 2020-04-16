@@ -145,4 +145,4 @@ LOGOUT_REDIRECT_URL = '/'
 
 
 # Esto hace que rompan los tests de staticfiles por alguna razón.
-django_heroku.settings(locals(), databases=False)
+# django_heroku.settings(locals(), databases=False)
