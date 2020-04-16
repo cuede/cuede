@@ -10,6 +10,7 @@ gunicorn = "*"
 django-heroku = "*"
 "psycopg2-binary" = "*"
 django-bootstrap4 = "*"
+whitenoise = "*"
 
 [dev-packages]
 pylint = "*"
