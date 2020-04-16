@@ -7,6 +7,6 @@ build:
 release:
   image: web
   command:
-    - django-migrate-and-collectstatic secomplican
+    - django-migrate secomplican
 run:
-  web: start-server secomplican "$PORT"
+  web: django-collectstatic secomplican && start-server secomplican "$PORT"

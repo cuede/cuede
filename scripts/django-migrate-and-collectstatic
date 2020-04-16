@@ -1,5 +1,0 @@
-#!/bin/sh -eu
-
-[ $# -eq 1 ] || { echo "Usage: $0 <project dir>" && exit 1; }
-
-pipenv run sh -c "cd $1 && python manage.py migrate && python manage.py collectstatic --noinput"
