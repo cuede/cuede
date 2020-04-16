@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'enunciados.apps.EnunciadosConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,10 +51,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # Simplified static file serving.
-    # https://warehouse.python.org/project/whitenoise/
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -146,4 +145,4 @@ LOGOUT_REDIRECT_URL = '/'
 
 
 # Esto hace que rompan los tests de staticfiles por alguna razón.
-django_heroku.settings(locals(), databases=not DEBUG)
+django_heroku.settings(locals(), databases=False)
