@@ -2,4 +2,4 @@
 
 [ $# -eq 2 ] || { echo "Usage: $0 <project-dir> <port>" &&  exit 1; }
 
-pipenv run sh -c "cd $1 && python manage.py runserver 0.0.0.0:$2"
+pipenv run sh -c "cd $1 && gunicorn secomplican.wsgi --bind=0.0.0.0:$2"
