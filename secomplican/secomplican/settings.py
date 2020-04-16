@@ -17,6 +17,7 @@ import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # .../qed/secomplican
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 # Quick-start development settings - unsuitable for production
@@ -132,6 +133,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
@@ -144,4 +146,4 @@ LOGOUT_REDIRECT_URL = '/'
 
 
 # Esto hace que rompan los tests de staticfiles por alguna razón.
-django_heroku.settings(locals(), logging=not DEBUG, databases=False)
+django_heroku.settings(locals(), databases=not DEBUG)
