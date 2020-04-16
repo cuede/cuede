@@ -12,5 +12,8 @@ RUN pip install pipenv
 ENV PIPENV_VENV_IN_PROJECT true
 RUN pipenv install
 
+# collect static assets
+RUN python manage.py collectstatic --noinput
+
 # Copy scripts
 COPY scripts/ /usr/local/bin
