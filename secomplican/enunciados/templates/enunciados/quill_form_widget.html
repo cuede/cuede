@@ -1,8 +1,12 @@
 <div id="toolbar" class="rounded-top">
     <button class="ql-code"></button>
     <button class="ql-formula"></button>
+    <a href="https://math.meta.stackexchange.com/q/5020/386164"
+    target="_blank" rel="noopener noreferrer" class="ql-right-link">
+        <small>Guía de formato</small>
+    </a>
 </div>
-<div id="editor" class="rounded-bottom" style="height: 200px">
+<div id="editor" class="rounded-bottom tex2jax_ignore" style="height: 200px">
     {% if field.value %}
         {{ field.value|linebreaksbr }}
     {% endif %}

@@ -16,11 +16,11 @@ function surroundSelectionBy(before, after) {
 }
 
 function toolbarCodeHandler() {
-    surroundSelectionBy('```\n', '\n```');
+    surroundSelectionBy('```\n', '\n```\n');
 }
 
 function toolbarFormulaHandler() {
-    surroundSelectionBy('$$\n', '\n$$');
+    surroundSelectionBy('\\[\n', '\n\\]\n');
 }
 
 var toolbar = quill.getModule('toolbar');
