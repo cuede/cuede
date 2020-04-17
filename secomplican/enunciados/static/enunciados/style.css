@@ -16,6 +16,11 @@ body {
     white-space: pre !important;
 }
 
+.ql-right-link {
+    margin-right: 5px;
+    float: right;
+}
+
 pre {
     background-color: #f0f0f0;
     padding: 1em;
