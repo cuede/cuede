@@ -13,7 +13,7 @@ body {
 }
 
 .ql-editor {
-    white-space: pre !important;
+    white-space: pre-wrap !important;
 }
 
 .ql-right-link {
