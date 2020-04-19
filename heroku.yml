@@ -7,6 +7,6 @@ build:
 release:
   image: web
   command:
-    - django-migrate secomplican
+    - django-migrate src
 run:
-  web: django-collectstatic secomplican && start-server secomplican "$PORT"
+  web: django-collectstatic src && start-server src "$PORT"
