@@ -162,5 +162,4 @@ LOGGING = {
     },
 }
 
-# Esto hace que rompan los tests de staticfiles por alguna razón.
 django_heroku.settings(locals(), logging=False, databases=not DEBUG)
