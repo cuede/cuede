@@ -1,4 +1,4 @@
-# QED
+# Cuedé
 
 Página con los ejercicios y sus soluciones y discusiones
 de las distintas materias de la facu.
