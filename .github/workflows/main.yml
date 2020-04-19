@@ -11,4 +11,4 @@ jobs:
 
     - name: Build & Test
       run: |
-        docker-compose run webserver wait-for-it database:5432 --timeout=0 -- pipenv run bash -c 'cd src && python manage.py test'
+        docker-compose run webserver wait-for-it database:5432 --timeout=0 -- pipenv install && pipenv run bash -c 'cd src && python manage.py test'
