@@ -11,6 +11,4 @@ jobs:
 
     - name: Build & Test
       run: |
-        docker-compose up --build --detach
-        echo "Built"
-        docker exec cuede_webserver_1 pipenv run bash -c 'cd src && python manage.py test'
+        docker-compose run webserver wait-for-it database:5432 --timeout=0 -- pipenv run bash -c 'python manage.py test'
