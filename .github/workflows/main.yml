@@ -1,0 +1,14 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build & Test
+      run: |
+        docker-compose run webserver wait-for-it database:5432 --timeout=0 -- install-and-run-tests
