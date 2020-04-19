@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+pipenv install && pipenv run bash -c 'cd src && python manage.py test'
