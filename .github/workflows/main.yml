@@ -12,4 +12,5 @@ jobs:
     - name: Build & Test
       run: |
         docker-compose up --build --detach
-        ./run_tests.sh
+        echo "Built"
+        docker exec cuede_webserver_1 pipenv run bash -c 'cd src && python manage.py test'
