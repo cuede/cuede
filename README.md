@@ -30,7 +30,7 @@ Teniendo el proyecto andando, correr
 ./run_tests.sh
 ```
 
-Esto se conecta con el container del webserver en `qed_webserver_1` y corre los tests.
+Esto se conecta con el container del webserver en `cuede_webserver_1` y corre los tests.
 
 ### Conectarse a la base de datos de Postgres
 
