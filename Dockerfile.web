@@ -3,7 +3,7 @@ FROM python:3.6
 WORKDIR /workdir
 
 # Copy project files
-COPY secomplican secomplican
+COPY src src
 COPY Pipfile .
 COPY Pipfile.lock .
 
