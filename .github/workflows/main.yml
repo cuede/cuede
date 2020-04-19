@@ -9,8 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Build
-      run: docker-compose up --build
-
-    - name: Test
-      run: ./run_tests.sh
+    - name: Build & Test
+      run: |
+        docker-compose up --build --detach
+        ./run_tests.sh
