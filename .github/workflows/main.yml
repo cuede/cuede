@@ -11,4 +11,4 @@ jobs:
 
     - name: Build & Test
       run: |
-        docker-compose run webserver wait-for-it database:5432 --timeout=0 -- install-and-run-tests
+        docker-compose run webserver wait-for-it database:5432 --timeout=0 -- run-tests

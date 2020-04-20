@@ -9,8 +9,7 @@ COPY Pipfile.lock .
 
 # Install pipenv and dependencies
 RUN pip install pipenv
-ENV PIPENV_VENV_IN_PROJECT true
-RUN pipenv install
+RUN pipenv install --system --deploy
 
 # Copy scripts
 COPY scripts/ /usr/local/bin

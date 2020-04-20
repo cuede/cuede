@@ -16,7 +16,7 @@ Board de Trello para seguir el desarrollo: https://trello.com/b/v9runwuw
 ## Corriendo el proyecto
 
 ```
-sudo docker-compose up --build
+sudo docker-compose up
 ```
 
 Esto descarga todas las dependencias necesarias,
