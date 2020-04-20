@@ -2,4 +2,4 @@
 
 [ $# -eq 2 ] || { echo "Usage: $0 <project-dir> <port>" &&  exit 1; }
 
-pipenv run sh -c "cd $1 && gunicorn cuede.wsgi --bind=0.0.0.0:$2"
+cd $1 && gunicorn cuede.wsgi --bind=0.0.0.0:$2
