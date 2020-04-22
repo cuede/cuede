@@ -1,4 +1,4 @@
-# Cuedé 
+# Cuedé
 
 **https://cuede.herokuapp.com**
 
@@ -45,10 +45,9 @@ Te va a pedir una contraseña, hay que poner la que está en `docker/database/Do
 ### Correr un comando en el container del webserver
 
 ```
-sudo docker ps # Para ver el nombre del container
+sudo docker ps # Para ver el nombre del container, por ejemplo, cuede_webserver_1
 sudo docker exec -it <nombre de container> /bin/bash # Esto te abre un shell en el container
-pipenv shell # Si querés correr comandos usando manage.py
-python manage.py createsuperuser # Para crear un usuario en el server
+cd src/ && python manage.py createsuperuser # Para crear un usuario en el server
 ```
 
 ## Contribuyendo
