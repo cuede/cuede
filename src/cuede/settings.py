@@ -162,4 +162,8 @@ LOGGING = {
     },
 }
 
+# Google cloud file storage
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'cuede-f26a1.appspot.com'
+
 django_heroku.settings(locals(), logging=False, databases=not DEBUG)
