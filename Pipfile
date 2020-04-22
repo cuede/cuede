@@ -11,6 +11,7 @@ django-heroku = "*"
 "psycopg2-binary" = "*"
 django-bootstrap4 = "*"
 whitenoise = "*"
+django-storages = {extras = ["google"],version = "*"}
 
 [dev-packages]
 pylint = "*"
