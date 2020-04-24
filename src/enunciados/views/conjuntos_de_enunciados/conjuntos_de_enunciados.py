@@ -15,6 +15,7 @@ class ArchivoDeConjuntoDeEnunciadosForm(forms.Form):
 
     def save(self):
         archivo = self.cleaned_data['archivo']
+        self.conjunto.archivo.delete()
         self.conjunto.archivo = archivo
         self.conjunto.save()
 
