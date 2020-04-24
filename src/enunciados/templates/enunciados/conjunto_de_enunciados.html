@@ -4,12 +4,20 @@
 <h1>{{ conjunto }}</h1>
 
 <div class="alert alert-secondary" role="alert">
-    Todavía no hay archivo de enunciados. Subí uno:
+    {% if conjunto.archivo %}
+        <a href="{{ conjunto.archivo.url }}">Archivo de enunciados</a>
+        <small>¿Está mal? Cambialo:</small>
+    {% else %}
+        Todavía no hay archivo de enunciados. Subí uno:
+    {% endif %}
 
-    <form enctype="multipart/form-data" id="form" method="post" style="display: inline-block">
+    <form enctype="multipart/form-data" id="form" method="post"
+          style="display: inline-block; margin-left: 4px">
         {% csrf_token %}
+        <small>
         {{ archivo_de_conjunto_de_enunciados_form.archivo }}
-        <input type="submit" value="Subir"/>
+        <input type="submit" value="Subir" class="float-right"/>
+        </small>
     </form>
 </div>
 
