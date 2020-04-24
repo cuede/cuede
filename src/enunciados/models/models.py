@@ -1,3 +1,4 @@
+from os.path import splitext
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
@@ -11,12 +12,16 @@ class Materia(models.Model):
 
 
 def conjunto_de_enunciados_file_path(conjunto_de_enunciados, filename):
-    return conjunto_de_enunciados.file_path()
+    return conjunto_de_enunciados.file_path(filename)
 
 
 class ConjuntoDeEnunciados(models.Model):
     materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
     archivo = models.FileField(upload_to=conjunto_de_enunciados_file_path, null=True)
+
+    def file_path(self, filename):
+        (_, extension) = splitext(filename)
+        return self.file_path_without_extension() + extension
 
 
 class ConjuntoDeEnunciadosConCuatrimestre(ConjuntoDeEnunciados):
@@ -62,12 +67,12 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
                 code='exists'
             )
 
-    def file_path(self):
+    def file_path_without_extension(self):
         return '{materia}/practicas/{anio}/{cuatrimestre}/{numero}'.format(
             materia=self.materia.pk,
             anio=self.anio,
             cuatrimestre=self.cuatrimestre,
-            numero=self.numero
+            numero=self.numero,
         )
 
 
@@ -114,7 +119,7 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
         else:
             return ordinales[self.numero - 1]
 
-    def file_path(self):
+    def file_path_without_extension(self):
         if self.recuperatorio:
             tipo_archivos = 'recuperatorios'
         else:
@@ -142,7 +147,7 @@ class Final(ConjuntoDeEnunciados):
                 code='exists'
             )
 
-    def file_path(self):
+    def file_path_without_extension(self):
         return '{materia}/finales/{fecha}'.format(materia=self.materia.pk, fecha=self.fecha)
 
 
