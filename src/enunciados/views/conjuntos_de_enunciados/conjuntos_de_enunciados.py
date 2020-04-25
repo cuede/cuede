@@ -3,10 +3,11 @@ from django.shortcuts import render
 
 from enunciados.utils import conjuntos_url_parser, enunciados_url_parser
 from enunciados.views.breadcrumb import breadcrumb_conjunto_de_enunciados
+from enunciados.views.conjuntos_de_enunciados.validators.max_size_validator import validate_max_size
 
 
 class ArchivoDeConjuntoDeEnunciadosForm(forms.Form):
-    archivo = forms.FileField()
+    archivo = forms.FileField(validators=[validate_max_size])
 
     def __init__(self, data=None, files=None, conjunto=None, *args, **kwargs):
         super(ArchivoDeConjuntoDeEnunciadosForm, self).__init__(
