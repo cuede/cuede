@@ -15,9 +15,12 @@ class ArchivoDeConjuntoDeEnunciadosForm(forms.Form):
 
     def save(self):
         archivo = self.cleaned_data['archivo']
-        self.conjunto.archivo.delete()
+        archivo_anterior = self.conjunto.archivo
+        nombre_archivo_anterior = archivo_anterior.name
         self.conjunto.archivo = archivo
         self.conjunto.save()
+        if nombre_archivo_anterior != self.conjunto.archivo.name:
+            archivo_anterior.delete(save=False)
 
 
 def conjunto_de_enunciados(request, **kwargs):
@@ -28,6 +31,7 @@ def conjunto_de_enunciados(request, **kwargs):
         form = ArchivoDeConjuntoDeEnunciadosForm(request.POST, request.FILES, conjunto)
         if form.is_valid():
             form.save()
+            conjunto.refresh_from_db()
     else:
         form = ArchivoDeConjuntoDeEnunciadosForm()
     contexto = {
