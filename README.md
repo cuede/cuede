@@ -1,5 +1,7 @@
 # Cuedé
 
+**https://cuede.herokuapp.com**
+
 Página con los ejercicios y sus soluciones y discusiones
 de las distintas materias de la facu.
 
@@ -32,22 +34,23 @@ Teniendo el proyecto andando, correr
 
 Esto se conecta con el container del webserver en `cuede_webserver_1` y corre los tests.
 
+### Correr un comando en uno de los containers
+
+```
+sudo docker ps # Para ver el nombre del container, por ejemplo, cuede_webserver_1
+sudo docker exec -it <nombre de container> /bin/bash # Esto te abre un shell en el container
+cd src/ && python manage.py createsuperuser # Para crear un usuario en el server, por ejemplo
+```
+
 ### Conectarse a la base de datos de Postgres
+
+Primero, abrir un shell en el container de la base de datos (en general va a ser cuede_database_1) y después correr
 
 ```
 psql -h localhost -U qed_user -d qed
 ```
 
-Te va a pedir una contraseña, hay que poner la que está en `docker/database/Dockerfile`.
-
-### Correr un comando en el container del webserver
-
-```
-sudo docker ps # Para ver el nombre del container
-sudo docker exec -it <nombre de container> /bin/bash # Esto te abre un shell en el container
-pipenv shell # Si querés correr comandos usando manage.py
-python manage.py createsuperuser # Para crear un usuario en el server
-```
+Eso te va a abrir una consola de PostgreSQL en la que podés tirar queries a la base de datos.
 
 ## Contribuyendo
 
