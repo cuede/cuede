@@ -1,0 +1,23 @@
+<div class="card">
+    <div class="card-body">
+        {% if conjunto.archivo %}
+            <a href="{{ conjunto.archivo.url }}">
+                <span class="fas fa-external-link-alt"></span>
+                <span style="font-size: 1.5rem">Archivo de enunciados</span>
+            </a>
+            <small>¿Está mal? Cambialo:</small>
+        {% else %}
+            Todavía no hay archivo de enunciados. Subí uno:
+        {% endif %}
+
+        <small>
+            <form enctype="multipart/form-data" id="form" method="post"
+                  class="ml-1" style="display: inline-block">
+                {% csrf_token %}
+                {{ archivo_de_conjunto_de_enunciados_form.archivo }}
+                <input type="submit" value="Subir" class="float-right ml-1"/>
+            </form>
+        </small>
+        {% include 'enunciados/conjuntos_de_enunciados_form_errors.html' with errors=archivo_de_conjunto_de_enunciados_form.archivo.errors %}
+    </div>
+</div>

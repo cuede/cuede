@@ -1,31 +1,15 @@
 {% extends "base.html" %}
+{% load bootstrap4 %}
 {% block content %}
 
 <h1>{{ conjunto }}</h1>
 
-<div class="alert alert-secondary" role="alert">
-    {% if conjunto.archivo %}
-        <a href="{{ conjunto.archivo.url }}">Archivo de enunciados</a>
-        <small>¿Está mal? Cambialo:</small>
-    {% else %}
-        Todavía no hay archivo de enunciados. Subí uno:
-    {% endif %}
-
-    <form enctype="multipart/form-data" id="form" method="post"
-          style="display: inline-block; margin-left: 4px">
-        {% csrf_token %}
-        <small>
-        {{ archivo_de_conjunto_de_enunciados_form.archivo }}
-        <input type="submit" value="Subir" class="float-right"/>
-        {{ archivo_de_conjunto_de_enunciados_form.archivo.errors }}
-        </small>
-    </form>
-</div>
+{% include 'enunciados/card_archivo_conjunto_de_enunciados.html' %}
 
 {% for enunciado in conjunto.enunciado_set.all %}
 {% include "enunciados/card_enunciado.html" %}
 {% empty %}
-<div class="alert alert-secondary" role="alert">
+<div class="alert alert-secondary" role="alert" style="margin-top: 1rem">
     Todavía no hay ejercicios.
 </div>
 {% endfor %}
