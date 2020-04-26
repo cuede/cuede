@@ -1,6 +1,6 @@
 import unittest
 
-from enunciados.views.conjuntos_de_enunciados.validators.mimetype_validator import \
+from enunciados.views.conjuntos_de_enunciados.validators.mime_type_validator import \
     is_valid_mime_type
 
 
