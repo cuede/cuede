@@ -7,7 +7,7 @@ from enunciados.views.conjuntos_de_enunciados.validators.max_size_validator impo
     validate_max_size, MAX_FILE_SIZE
 
 
-class MyTestCase(unittest.TestCase):
+class MaxSizeValidatorTest(unittest.TestCase):
     def test_file_with_size_greater_than_max_should_not_validate(self):
         file = ContentFile('some content')
         file.size = MAX_FILE_SIZE + 1
