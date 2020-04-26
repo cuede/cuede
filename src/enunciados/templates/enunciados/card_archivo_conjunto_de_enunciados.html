@@ -1,23 +1,28 @@
 <div class="card">
     <div class="card-body">
         {% if conjunto.archivo %}
-            <a href="{{ conjunto.archivo.url }}">
-                <span class="fas fa-external-link-alt"></span>
-                <span style="font-size: 1.5rem">Archivo de enunciados</span>
-            </a>
-            <small>¿Está mal? Cambialo:</small>
+        <a href="{{ conjunto.archivo.url }}">
+            <span style="font-size: 1.5rem">
+                <span class="fas fa-file-alt mr-1"></span>
+                Archivo de enunciados
+            </span>
+        </a>
+        <div class="small float-right">
+            <em class="mr-1">¿Está mal? Cambialo:</em>
         {% else %}
-            Todavía no hay archivo de enunciados. Subí uno:
+        <div>
+                <span class="mr-1">
+                    Todavía no hay archivo de enunciados. Subí uno:
+                </span>
         {% endif %}
 
-        <small>
             <form enctype="multipart/form-data" id="form" method="post"
-                  class="ml-1" style="display: inline-block">
+                  style="display: inline-block">
                 {% csrf_token %}
                 {{ archivo_de_conjunto_de_enunciados_form.archivo }}
-                <input type="submit" value="Subir" class="float-right ml-1"/>
+                <input type="submit" value="Subir" class="ml-1"/>
             </form>
-        </small>
+        </div>
         {% include 'enunciados/conjuntos_de_enunciados_form_errors.html' with errors=archivo_de_conjunto_de_enunciados_form.archivo.errors %}
     </div>
 </div>
