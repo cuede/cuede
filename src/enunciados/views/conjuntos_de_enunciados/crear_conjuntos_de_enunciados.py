@@ -6,7 +6,7 @@ from enunciados.views.conjuntos_de_enunciados import conjuntos_de_enunciados_for
 
 
 class CrearConjuntoDeEnunciadosView(CreateView):
-    template_name = 'enunciados/nuevo_conjunto.html'
+    template_name = 'enunciados/conjunto/nuevo.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

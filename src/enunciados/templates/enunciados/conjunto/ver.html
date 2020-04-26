@@ -4,7 +4,7 @@
 
 <h1>{{ conjunto }}</h1>
 
-{% include 'enunciados/card_archivo_conjunto_de_enunciados.html' %}
+{% include 'enunciados/conjunto/archivo/card.html' %}
 
 {% for enunciado in conjunto.enunciado_set.all %}
 {% include "enunciados/card_enunciado.html" %}

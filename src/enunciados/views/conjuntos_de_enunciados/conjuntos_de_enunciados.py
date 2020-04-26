@@ -50,4 +50,4 @@ def conjunto_de_enunciados(request, **kwargs):
         'breadcrumb': breadcrumb_conjunto_de_enunciados(
             materia_carrera, conjunto),
     }
-    return render(request, 'enunciados/conjunto_de_enunciados.html', contexto)
+    return render(request, 'enunciados/conjunto/ver.html', contexto)
