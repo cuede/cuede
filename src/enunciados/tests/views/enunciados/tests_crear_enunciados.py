@@ -1,17 +1,13 @@
-from unittest import skip
 from http import HTTPStatus
-from django.test import TestCase, Client
+
+from django.test import TestCase
 from django.urls import reverse
 
-from django.contrib.auth import get_user_model
-
 from enunciados.models import Universidad, Carrera, Materia, MateriaCarrera, Practica, Enunciado
-from enunciados.views.enunciados.crear import PUNTOS_USUARIO_POR_CREAR_ENUNCIADO
-from enunciados.utils import enunciados_url_parser
-
 
 TEXTO_ENUNCIADO = 'asdsadsadsad'
 NUMERO_ENUNCIADO = 1
+
 
 class CrearEnunciadoTests(TestCase):
     def setUp(self):
@@ -43,19 +39,53 @@ class CrearEnunciadoTests(TestCase):
             'numero': NUMERO_ENUNCIADO,
         })
 
-    def post_crear_enunciado(self, url, numero=NUMERO_ENUNCIADO):
-        return self.client.post(url, {'numero': numero, 'texto': TEXTO_ENUNCIADO})
+    def post_crear_enunciado(self, url, texto=TEXTO_ENUNCIADO):
+        return self.client.post(url, {'numero': NUMERO_ENUNCIADO, 'texto': texto})
+
+    def assert_response_redirecciona_a_enunciado(self, response):
+        self.assertEquals(response.status_code, HTTPStatus.FOUND)
+        url_redir = self.url_enunciado_creado()
+        self.assertEquals(response.url, url_redir)
 
     def assert_enunciado_fue_creado(self):
         self.assertEquals(Enunciado.objects.count(), 1)
         enunciado = Enunciado.objects.all().first()
         self.assertEquals(enunciado.numero, NUMERO_ENUNCIADO)
-        self.assertEquals(enunciado.versiones.ultima().texto, TEXTO_ENUNCIADO)
+        return enunciado
 
-    def test_se_puede_crear_un_enunciado(self):
+    def test_se_puede_crear_un_enunciado_con_texto(self):
         response = self.post_crear_enunciado(self.url_crear_enunciado())
 
-        self.assertEquals(response.status_code, HTTPStatus.FOUND)
-        url_redir = self.url_enunciado_creado()
-        self.assertEquals(response.url, url_redir)
-        self.assert_enunciado_fue_creado()
+        self.assert_response_redirecciona_a_enunciado(response)
+        enunciado = self.assert_enunciado_fue_creado()
+        self.assertEquals(enunciado.versiones.ultima().texto, TEXTO_ENUNCIADO)
+
+    def test_no_se_puede_crear_un_enunciado_sin_texto_cuando_no_hay_archivo_de_enunciados(self):
+        url_crear_enunciado = self.url_crear_enunciado()
+        response = self.post_crear_enunciado(url_crear_enunciado, texto='')
+
+        self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertEquals(Enunciado.objects.count(), 0)
+
+    def test_se_puede_crear_un_enunciado_sin_texto_cuando_hay_archivo_de_enunciados(self):
+        self.practica.archivo = 'hola'
+        self.practica.save()
+        texto = ''
+
+        url_crear_enunciado = self.url_crear_enunciado()
+        response = self.post_crear_enunciado(url_crear_enunciado, texto=texto)
+
+        self.assert_response_redirecciona_a_enunciado(response)
+        enunciado = self.assert_enunciado_fue_creado()
+        self.assertEquals(enunciado.versiones.count(), 0)
+
+    def test_se_puede_crear_un_enunciado_con_texto_cuando_hay_archivo_de_enunciados(self):
+        self.practica.archivo = 'hola'
+        self.practica.save()
+
+        url_crear_enunciado = self.url_crear_enunciado()
+        response = self.post_crear_enunciado(url_crear_enunciado)
+
+        self.assert_response_redirecciona_a_enunciado(response)
+        enunciado = self.assert_enunciado_fue_creado()
+        self.assertEquals(enunciado.versiones.ultima().texto, TEXTO_ENUNCIADO)
