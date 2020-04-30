@@ -1,0 +1,5 @@
+<form enctype="multipart/form-data" id="form" method="post" style="display: inline-block">
+    {% csrf_token %}
+    {{ archivo_de_conjunto_de_enunciados_form.archivo }}
+    <input type="submit" value="Subir" class="ml-1"/>
+</form>

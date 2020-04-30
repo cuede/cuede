@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from enunciados.views import materias
-from enunciados.views.conjuntos_de_enunciados import conjuntos_de_enunciados
+from enunciados.views.conjuntos_de_enunciados import crear_conjuntos_de_enunciados
 
 app_name = 'materia'
 
@@ -27,17 +27,17 @@ urlpatterns = [
     ),
     path(
         'agregar-practica/',
-        conjuntos_de_enunciados.CrearPracticaView.as_view(),
+        crear_conjuntos_de_enunciados.CrearPracticaView.as_view(),
         name='crear_practica',
     ),
     path(
         'agregar-parcial/',
-        conjuntos_de_enunciados.CrearParcialView.as_view(),
+        crear_conjuntos_de_enunciados.CrearParcialView.as_view(),
         name='crear_parcial',
     ),
     path(
         'agregar-final/',
-        conjuntos_de_enunciados.CrearFinalView.as_view(),
+        crear_conjuntos_de_enunciados.CrearFinalView.as_view(),
         name='crear_final',
     ),
 ]

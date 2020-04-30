@@ -1,17 +1,20 @@
 {% extends "base.html" %}
+{% load bootstrap4 %}
 {% block content %}
 
 <h1>{{ conjunto }}</h1>
 
+{% include 'enunciados/conjunto/archivo/card.html' %}
 
 {% for enunciado in conjunto.enunciado_set.all %}
 {% include "enunciados/card_enunciado.html" %}
 {% empty %}
-<div class="alert alert-secondary" role="alert">
+<div class="alert alert-secondary" role="alert" style="margin-top: 1rem">
     Todavía no hay ejercicios.
 </div>
 {% endfor %}
 <a class="btn btn-primary mb-3 font-weight-bold" href="{{ url_nuevo_enunciado }}">
     + Agregar ejercicio
 </a>
+
 {% endblock %}

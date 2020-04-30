@@ -9,4 +9,4 @@ release:
   command:
     - django-migrate src
 run:
-  web: django-collectstatic src && start-server src "$PORT"
+  web: create-google-credentials-json && django-collectstatic src && start-server src "$PORT"
