@@ -21,6 +21,7 @@ def nuevo_enunciado(request, **kwargs):
 def handle_post(request, materia_carrera, conjunto):
     enunciado_form = EnunciadoConConjuntoForm(conjunto, request.POST)
     version_texto_form = VersionTextoForm(request.POST)
+
     if puede_guardar_enunciado(enunciado_form, version_texto_form, conjunto):
         response = guardar_enunciado(enunciado_form, materia_carrera, version_texto_form)
     else:
@@ -58,6 +59,7 @@ def render_nuevo_enunciado(
         'enunciado_form': enunciado_form,
         'version_texto_form': version_texto_form,
         'breadcrumb': breadcrumb_crear_enunciado(materia_carrera, conjunto),
+        'conjunto': conjunto,
     }
     return render(request, 'enunciados/nuevo_enunciado.html', context)
 

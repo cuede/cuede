@@ -13,12 +13,17 @@
 <form id="form" method="post">
     {% csrf_token %}
 
-    {% bootstrap_form enunciado_form layout='inline' %}
-    {% bootstrap_form_errors version_texto_form %}
-    {% include 'enunciados/quill_form_widget.html' with field=version_texto_form.texto %}
-    {% buttons %}
-        <input class="mt-3" type="submit" value="Crear" />
-    {% endbuttons %}
+    {% bootstrap_field enunciado_form.numero layout='inline' %}
+    {% bootstrap_form_errors enunciado_form layout='inline' %}
+    <input class="mb-3" type="checkbox">
+    <span class="ml-1">
+        Usar enunciado de <a href="{{ conjunto.archivo.url }}">Archivo de enunciados<a>
+    </span>
+    <div class="mb-3">
+        {% include 'enunciados/quill_form_widget.html' with field=version_texto_form.texto %}
+    </div>
+    {% bootstrap_form_errors version_texto_form layout='inline' %}
+    {% buttons submit='Crear' %}{% endbuttons %}
 </form>
 
 <script type="text/javascript" src="{% static 'enunciados/editor.js' %}"></script>
