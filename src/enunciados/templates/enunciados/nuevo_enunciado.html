@@ -15,10 +15,12 @@
 
     {% bootstrap_field enunciado_form.numero layout='inline' %}
     {% bootstrap_form_errors enunciado_form layout='inline' %}
+    {% if conjunto.archivo %}
     <input class="mb-3" type="checkbox">
     <span class="ml-1">
         Usar enunciado de <a href="{{ conjunto.archivo.url }}">Archivo de enunciados<a>
     </span>
+    {% endif %}
     <div class="mb-3">
         {% include 'enunciados/quill_form_widget.html' with field=version_texto_form.texto %}
     </div>
