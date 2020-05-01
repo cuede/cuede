@@ -2,20 +2,21 @@
 {% load urls_enunciados %}
 
 <h1>{{ enunciado }}</h1>
+
+{% if enunciado.versiones.ultima.texto %}
 <hr>
 <p class="mt-3">
-    {% if enunciado.versiones.ultima.texto %}
-        {{ enunciado.versiones.ultima|format_post }}
-    {% else %}
-        <div class="alert alert-secondary" role="alert">
-            Este ejercicio todavía no tiene texto. Podés
-            <a href="{% url_editar_enunciado materia_carrera enunciado %}">
-                <span class="fas fa-pen"></span>
-                Editarlo
-            </a>
-            o verlo en el
-            <a href="{{ enunciado.conjunto.archivo.url }}">
-                <span class="fas fa-file-alt"></span> Archivo de enunciados</a>.
-        </div>
-    {% endif %}
+    {{ enunciado.versiones.ultima|format_post }}
 </p>
+{% else %}
+<div class="alert alert-secondary mt-3" role="alert">
+    Este ejercicio todavía no tiene texto. Podés
+    <a href="{% url_editar_enunciado materia_carrera enunciado %}">
+        <span class="fas fa-pen"></span>
+        Editarlo
+    </a>
+    o verlo en el
+    <a href="{{ enunciado.conjunto.archivo.url }}">
+        <span class="fas fa-file-alt"></span> Archivo de enunciados</a>.
+</div>
+{% endif %}
