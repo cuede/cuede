@@ -20,7 +20,6 @@
     <span class="ml-1">
         Usar enunciado de <a href="{{ conjunto.archivo.url }}">Archivo de enunciados<a>
     </span>
-    <script type="text/javascript" src="{% static 'enunciados/checkbox-usar-archivo.js' %}"></script>
     {% endif %}
     <div id="editor-container" class="collapse show">
         <div class="mb-3" >
@@ -32,4 +31,7 @@
 </form>
 
 <script type="text/javascript" src="{% static 'enunciados/editor.js' %}"></script>
+{% if conjunto.archivo %}
+<script type="text/javascript" src="{% static 'enunciados/checkbox-usar-archivo.js' %}"></script>
+{% endif %}
 {% endblock %}
