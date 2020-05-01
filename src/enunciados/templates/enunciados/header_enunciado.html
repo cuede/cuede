@@ -1,7 +1,16 @@
 {% load format_post %}
+{% load urls_enunciados %}
 
 <h1>{{ enunciado }}</h1>
 <hr>
 <p class="mt-3">
-    {{ enunciado.versiones.ultima|format_post }}
+    {% if enunciado.versiones.ultima %}
+        {{ enunciado.versiones.ultima|format_post }}
+    {% else %}
+        <div class="alert alert-secondary" role="alert">
+            Este ejercicio todavía no tiene texto. Podés verlo en el
+            <a href="{{ enunciado.conjunto.archivo.url }}">archivo de enunciados</a>
+            o <a href="{% url_editar_enunciado materia_carrera enunciado %}">transcribirlo</a>.
+        </div>
+    {% endif %}
 </p>
