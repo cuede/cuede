@@ -14,6 +14,6 @@ document.addEventListener("DOMContentLoaded", toggleDisabledEditorOnCheckboxClic
 form.onsubmit = function () {
     const checkbox = document.getElementById(checkboxId);
     if (!checkbox.checked) {
-        textElement.innerHTML = quill.getText();
+        return putEditorTextInHiddenTextArea();
     }
 }

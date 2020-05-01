@@ -7,6 +7,7 @@
 {% block content %}
 
 {% load bootstrap4 %}
+{% load list %}
 
 <h1>Nuevo ejercicio</h1>
 
@@ -25,8 +26,12 @@
         <div class="mb-3" >
             {% include 'enunciados/quill_form_widget.html' with field=version_texto_form.texto %}
         </div>
+        <div id="empty-text-error" class="mb-3" hidden="">
+            {% bootstrap_form_errors version_texto_form layout='inline' %}
+            {% list 'El texto no puede estar vacío.' as errors %}
+            {% include 'enunciados/conjunto/archivo/form_errors.html' with errors=errors %}
+        </div>
     </div>
-    {% bootstrap_form_errors version_texto_form layout='inline' %}
     {% buttons submit='Crear' %}{% endbuttons %}
 </form>
 
