@@ -1,16 +1,16 @@
 from http import HTTPStatus
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-
-from django.contrib.auth import get_user_model
 
 from enunciados.models import (
     Universidad, Carrera, Materia, MateriaCarrera, Practica, Enunciado, Solucion, VersionTexto,
     get_sentinel_user
 )
-from enunciados.views.soluciones.editar import PUNTOS_USUARIO_POR_EDITAR_SOLUCION
 from enunciados.utils import enunciados_url_parser
+from enunciados.views.soluciones.editar import PUNTOS_USUARIO_POR_EDITAR_SOLUCION
+
 
 class EditarSolucionTests(TestCase):
     def setUp(self):
@@ -24,8 +24,9 @@ class EditarSolucionTests(TestCase):
         practica = Practica.objects.create(
             materia=materia, anio=2018, cuatrimestre=1, numero=1
         )
-        self.enunciado = Enunciado.objects.create(conjunto=practica, numero=1)
         self.creador = get_user_model().objects.create_user(username='user', password='')
+        self.enunciado = Enunciado.objects.create(conjunto=practica, numero=1)
+        VersionTexto.versiones.create(texto='un texto', posteo=self.enunciado, autor=self.creador)
         self.editor = get_sentinel_user()
         self.solucion = Solucion.objects.create(
             enunciado_padre=self.enunciado, creador=self.creador)
@@ -114,4 +115,3 @@ class EditarSolucionTests(TestCase):
         self.client.post(self.url_editar_solucion(), {'texto': 'otralakjsdlksajdlk'})
 
         self.assert_puntos_de_editor_son(PUNTOS_USUARIO_POR_EDITAR_SOLUCION)
-
