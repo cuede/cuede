@@ -10,6 +10,7 @@
 
 {% include "enunciados/header_enunciado.html" %}
 
+{% if enunciado.versiones.ultima.texto %}
 <a class="mr-3"
     href="{% url_editar_enunciado materia_carrera enunciado %}">
     <span class="fas fa-pen"></span> Editar
@@ -19,6 +20,8 @@
 </a>
 
 <hr>
+{% endif %}
+
 <h2 class="mt-4"> Soluciones </h2>
 <hr>
 {% for solucion, voto in soluciones_con_votos %}
