@@ -29,7 +29,7 @@
         <div id="empty-text-error" class="mb-3" hidden="">
             {% bootstrap_form_errors version_texto_form layout='inline' %}
             {% list 'El texto no puede estar vacío.' as errors %}
-            {% include 'enunciados/conjunto/archivo/form_errors.html' with errors=errors %}
+            {% include 'enunciados/form_errors.html' with errors=errors %}
         </div>
     </div>
     {% buttons submit='Crear' %}{% endbuttons %}
