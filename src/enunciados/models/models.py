@@ -1,10 +1,14 @@
 from os.path import splitext
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from enunciados.modelmanagers.versiones_manager import VersionesManager
+from enunciados.tests.models.fields.non_zero_positive_integer_field import \
+    NonZeroPositiveIntegerField
 
 
 class Materia(models.Model):
@@ -159,16 +163,17 @@ class Posteo(models.Model):
 class Enunciado(Posteo):
     conjunto = models.ForeignKey(
         ConjuntoDeEnunciados, on_delete=models.CASCADE)
-    # El numero de enunciado en el conjunto de enunciados.
-    numero = models.IntegerField()
+    numero = NonZeroPositiveIntegerField()
 
     def __str__(self):
         return 'Ejercicio {}'.format(self.numero)
 
     class Meta:
         ordering = ['numero']
-        # No puede haber dos ejercicios con el mismo número en el mismo conjunto.
         unique_together = ('numero', 'conjunto')
+        constraints = [
+            models.CheckConstraint(check=models.Q(numero__gt=0), name='numero_positivo'),
+        ]
 
 
 def get_sentinel_user():
