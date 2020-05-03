@@ -1,0 +1,15 @@
+<div class="card">
+    <div class="card-body">
+        <a href="{{ conjunto.archivo.url }}">
+            <span style="font-size: 1.5rem">
+                <span class="fas fa-file-alt mr-1"></span>
+                Archivo de enunciados
+            </span>
+        </a>
+        <div class="small float-right">
+            <em class="mr-1">¿Está mal? Cambialo:</em>
+            {% include 'enunciados/conjunto/archivo/form.html' %}
+        </div>
+        {% include 'enunciados/form_errors.html' with errors=archivo_de_conjunto_de_enunciados_form.archivo.errors %}
+    </div>
+</div>

@@ -15,8 +15,10 @@ import django_heroku
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-# .../cuede/src
+# .../cuede/src/
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# .../cuede/
+PROJECT_DIR = os.path.dirname(BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -161,5 +163,12 @@ LOGGING = {
         },
     },
 }
+
+if DEBUG:
+    MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
+else:
+    # Google cloud file storage
+    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    GS_BUCKET_NAME = os.environ['GS_BUCKET_NAME']
 
 django_heroku.settings(locals(), logging=False, databases=not DEBUG)

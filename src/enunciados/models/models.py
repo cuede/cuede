@@ -1,19 +1,31 @@
+from os.path import splitext
+
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import get_user_model
 
 from enunciados.modelmanagers.versiones_manager import VersionesManager
+from enunciados.tests.models.fields.non_zero_positive_integer_field import \
+    NonZeroPositiveIntegerField
 
 
 class Materia(models.Model):
     pass
 
 
+def conjunto_de_enunciados_file_path(conjunto_de_enunciados, filename):
+    return conjunto_de_enunciados.file_path(filename)
+
+
 class ConjuntoDeEnunciados(models.Model):
     materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
+    archivo = models.FileField(upload_to=conjunto_de_enunciados_file_path, null=True)
+
+    def file_path(self, filename):
+        (_, extension) = splitext(filename)
+        return self.file_path_without_extension() + extension
 
 
 class ConjuntoDeEnunciadosConCuatrimestre(ConjuntoDeEnunciados):
@@ -59,6 +71,14 @@ class Practica(ConjuntoDeEnunciadosConCuatrimestre):
                 code='exists'
             )
 
+    def file_path_without_extension(self):
+        return '{materia}/practicas/{anio}/{cuatrimestre}/{numero}'.format(
+            materia=self.materia.pk,
+            anio=self.anio,
+            cuatrimestre=self.cuatrimestre,
+            numero=self.numero,
+        )
+
 
 class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
     numero = models.IntegerField()
@@ -72,7 +92,8 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
         nombre = 'Parcial'
         if self.recuperatorio:
             nombre = 'Recuperatorio'
-        return '{} {} del {} del {}'.format(self.ordinal()['singular'], nombre, texto_cuatrimestre, self.anio)
+        return '{} {} del {} del {}'.format(self.ordinal()['singular'], nombre, texto_cuatrimestre,
+                                            self.anio)
 
     def clean(self):
         # Ver que no haya ya un Parcial con iguales atributos
@@ -102,6 +123,19 @@ class Parcial(ConjuntoDeEnunciadosConCuatrimestre):
         else:
             return ordinales[self.numero - 1]
 
+    def file_path_without_extension(self):
+        if self.recuperatorio:
+            tipo_archivos = 'recuperatorios'
+        else:
+            tipo_archivos = 'parciales'
+        return '{materia}/{tipo}/{anio}/{cuatrimestre}/{numero}'.format(
+            materia=self.materia.pk,
+            tipo=tipo_archivos,
+            anio=self.anio,
+            cuatrimestre=self.cuatrimestre,
+            numero=self.numero
+        )
+
 
 class Final(ConjuntoDeEnunciados):
     fecha = models.DateField()
@@ -117,6 +151,9 @@ class Final(ConjuntoDeEnunciados):
                 code='exists'
             )
 
+    def file_path_without_extension(self):
+        return '{materia}/finales/{fecha}'.format(materia=self.materia.pk, fecha=self.fecha)
+
 
 class Posteo(models.Model):
     def __str__(self):
@@ -126,16 +163,17 @@ class Posteo(models.Model):
 class Enunciado(Posteo):
     conjunto = models.ForeignKey(
         ConjuntoDeEnunciados, on_delete=models.CASCADE)
-    # El numero de enunciado en el conjunto de enunciados.
-    numero = models.IntegerField()
+    numero = NonZeroPositiveIntegerField()
 
     def __str__(self):
         return 'Ejercicio {}'.format(self.numero)
 
     class Meta:
         ordering = ['numero']
-        # No puede haber dos ejercicios con el mismo número en el mismo conjunto.
         unique_together = ('numero', 'conjunto')
+        constraints = [
+            models.CheckConstraint(check=models.Q(numero__gt=0), name='numero_positivo'),
+        ]
 
 
 def get_sentinel_user():
@@ -155,7 +193,7 @@ class VersionTexto(models.Model):
     texto = models.TextField(blank=False)
     versiones = VersionesManager()
     posteo = models.ForeignKey(Posteo, on_delete=models.CASCADE,
-        related_name='versiones')
+                               related_name='versiones')
     autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET(get_sentinel_user))
 
     def __str__(self):

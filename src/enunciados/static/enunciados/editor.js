@@ -29,6 +29,16 @@ toolbar.addHandler('formula', toolbarFormulaHandler);
 
 var textElement = document.getElementById('hidden_textarea');
 var form = document.getElementById('form');
-form.onsubmit = function () {
-    textElement.innerHTML = quill.getText();
+
+form.onsubmit = putEditorTextInHiddenTextArea;
+
+function putEditorTextInHiddenTextArea() {
+    const text = quill.getText();
+    textElement.innerHTML = text;
+    if (text.trim() === "") {
+        const emptyTextError = document.getElementById("empty-text-error");
+        emptyTextError.hidden = false;
+        return false;
+    }
 }
+
