@@ -42,3 +42,22 @@ function putEditorTextInHiddenTextArea() {
     }
 }
 
+function updatePreview() {
+    $.get({
+        url: "/ajax/format_post/",
+        data: {
+            'texto': quill.getText()
+        },
+        success: function (data) {
+            $("#vista-previa").html(data);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "vista-previa"]);
+        }
+    });
+}
+
+function setPreviewTabClickListener() {
+    const tab = document.getElementById("tab-vista-previa");
+    tab.onclick = updatePreview;
+}
+
+document.addEventListener("DOMContentLoaded", setPreviewTabClickListener);
