@@ -61,4 +61,16 @@ function setPreviewTabClickListener() {
     tab.onclick = updatePreview;
 }
 
-document.addEventListener("DOMContentLoaded", setPreviewTabClickListener);
+function setEditorTabClickListener() {
+    $('#tab-escribir').on('shown.bs.tab click', function (e) {
+        quill.focus();
+    });
+}
+
+function setTabsClickListeners() {
+    setEditorTabClickListener();
+    setPreviewTabClickListener();
+}
+
+document.addEventListener("DOMContentLoaded", setTabsClickListeners);
+
