@@ -41,16 +41,15 @@ h1 {
     border-bottom-style: none;
 }
 
+.nav-tabs .nav-link:hover {
+    border-bottom-color: var(--border-color);
+}
+
 .nav-tabs .nav-link.active {
     border-color: var(--border-color);
     border-bottom-color: #fff;
     color: inherit;
 }
-
-.nav-tabs .nav-link:hover {
-    border-bottom-color: var(--border-color);
-}
-
 
 .editor-toolbar, .editor, .vista-previa {
     border-color: var(--border-color) !important;
