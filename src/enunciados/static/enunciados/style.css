@@ -1,3 +1,7 @@
+:root {
+    --border-color: #ced4da;
+}
+
 body {
     padding-top: 70px;
 }
@@ -32,3 +36,31 @@ pre {
 h1 {
     margin-bottom: 1rem;
 }
+
+.nav-tabs {
+    border-bottom-style: none;
+}
+
+.nav-tabs .nav-link.active {
+    border-color: var(--border-color);
+    border-bottom-color: #fff;
+    color: inherit;
+}
+
+.nav-tabs .nav-link:hover {
+    border-bottom-color: var(--border-color);
+}
+
+
+.editor-toolbar, .editor, .vista-previa {
+    border-color: var(--border-color) !important;
+}
+
+.editor-toolbar {
+    border-top-right-radius: .25rem;
+}
+
+.editor {
+    height: 200px !important;
+}
+

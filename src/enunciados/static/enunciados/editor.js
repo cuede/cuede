@@ -49,8 +49,9 @@ function updatePreview() {
             'texto': quill.getText()
         },
         success: function (data) {
-            $("#vista-previa").html(data);
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "vista-previa"]);
+            const idVistaPrevia = 'vista-previa';
+            document.getElementById(idVistaPrevia).innerHTML = data;
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, idVistaPrevia]);
         }
     });
 }
