@@ -42,23 +42,11 @@ function putEditorTextInHiddenTextArea() {
     }
 }
 
-function updatePreview() {
-    $.get({
-        url: "/ajax/format_post/",
-        data: {
-            'texto': quill.getText()
-        },
-        success: function (data) {
-            const idVistaPrevia = 'vista-previa';
-            document.getElementById(idVistaPrevia).innerHTML = data;
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, idVistaPrevia]);
-        }
-    });
-}
+document.addEventListener("DOMContentLoaded", setTabsClickListeners);
 
-function setPreviewTabClickListener() {
-    const tab = document.getElementById("tab-vista-previa");
-    tab.onclick = updatePreview;
+function setTabsClickListeners() {
+    setEditorTabClickListener();
+    setPreviewTabClickListener();
 }
 
 function setEditorTabClickListener() {
@@ -67,10 +55,30 @@ function setEditorTabClickListener() {
     });
 }
 
-function setTabsClickListeners() {
-    setEditorTabClickListener();
-    setPreviewTabClickListener();
+function setPreviewTabClickListener() {
+    $('#tab-vista-previa').on('shown.bs.tab', updatePreview);
 }
 
-document.addEventListener("DOMContentLoaded", setTabsClickListeners);
+function updatePreview() {
+    const contenido = document.getElementById('contenido-vista-previa');
+    const spinner = document.getElementById('spinner-vista-previa');
+    contenido.innerHTML = "";
+    spinner.hidden = false;
+    $.get({
+        url: "/ajax/format_post/",
+        data: {
+            'texto': quill.getText()
+        },
+        success: (data) => {
+            spinner.hidden = true;
+            updatePreviewContent(contenido, data);
+        }
+    });
+}
+
+function updatePreviewContent(elementContenido, data) {
+    elementContenido.innerHTML = data;
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, elementContenido]);
+}
+
 

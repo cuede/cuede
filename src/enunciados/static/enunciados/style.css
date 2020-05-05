@@ -73,3 +73,16 @@ h1 {
     min-height: calc(var(--editor-toolbar-height) + var(--editor-height));
 }
 
+.vista-previa.active {
+    display: flex;
+}
+
+.flex-text-wrap {
+    min-width: 0;
+}
+
+.spinner-big {
+    width: 3rem;
+    height: 3rem;
+}
+
