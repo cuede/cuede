@@ -86,3 +86,7 @@ h1 {
     height: 3rem;
 }
 
+div {
+  word-wrap: break-word;
+}
+
