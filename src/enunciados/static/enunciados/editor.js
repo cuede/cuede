@@ -61,7 +61,7 @@ function setPreviewTabClickListener() {
 function updatePreview() {
     const contenido = document.getElementById('contenido-vista-previa');
     const spinner = document.getElementById('spinner-vista-previa');
-    contenido.innerHTML = "";
+    contenido.hidden = true;
     spinner.hidden = false;
     $.get({
         url: "/ajax/format_post/",
@@ -71,6 +71,7 @@ function updatePreview() {
         success: (data) => {
             spinner.hidden = true;
             updatePreviewContent(contenido, data);
+            contenido.hidden = false;
         }
     });
 }
