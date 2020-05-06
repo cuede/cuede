@@ -13,7 +13,7 @@ services:
       - 8000:8000
     depends_on:
       - database
-    command: wait-for-it database:5432 --timeout=0 -- bash -c 'cd src/ && python manage.py runserver 0:8000'
+    command: wait-for-it database:5432 --timeout=0 -- run-debug-server
 
   database:
     build:
