@@ -79,6 +79,7 @@ h1 {
 
 .flex-text-wrap {
     min-width: 0;
+    width: 100%;
 }
 
 .spinner-big {
