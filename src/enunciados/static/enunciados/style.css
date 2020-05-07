@@ -1,3 +1,9 @@
+:root {
+    --border-color: #ced4da;
+    --editor-height: 250px;
+    --editor-toolbar-height: 42px;
+}
+
 body {
     padding-top: 70px;
 }
@@ -33,6 +39,55 @@ h1 {
     margin-bottom: 1rem;
 }
 
+.nav-tabs {
+    border-bottom-style: none;
+}
+
+.nav-tabs .nav-link:hover {
+    border-bottom-color: var(--border-color);
+}
+
+.nav-tabs .nav-link.active {
+    border-color: var(--border-color);
+    border-bottom-color: #fff;
+    color: inherit;
+}
+
+.editor-toolbar, .editor, .vista-previa {
+    border-color: var(--border-color) !important;
+}
+
+.editor-toolbar {
+    border-top-right-radius: .25rem;
+    height: var(--editor-toolbar-height);
+}
+
+.editor {
+    height: var(--editor-height) !important;
+}
+
+.vista-previa {
+    border: solid 1px;
+    border-radius: 0.25rem;
+    padding: 1rem 1rem 0;
+    min-height: calc(var(--editor-toolbar-height) + var(--editor-height));
+}
+
+.vista-previa.active {
+    display: flex;
+}
+
+.flex-text-wrap {
+    min-width: 0;
+    width: 100%;
+}
+
+.spinner-big {
+    width: 3rem;
+    height: 3rem;
+}
+
 div {
   word-wrap: break-word;
 }
+

@@ -1,15 +1,23 @@
-<div id="toolbar" class="rounded-top">
-    <button class="ql-code"></button>
-    <button class="ql-formula"></button>
-    <a href="https://math.meta.stackexchange.com/q/5020/386164"
-    target="_blank" rel="noopener noreferrer" class="ql-right-link">
-        <small>Guía de formato</small>
-    </a>
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="tab-escribir" data-toggle="tab" href="#escribir" role="tab"
+           aria-controls="escribir" aria-selected="true">Escribir</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="tab-vista-previa" data-toggle="tab" href="#vista-previa" role="tab"
+           aria-controls="vista-previa" aria-selected="false">Vista previa</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane show active" id="escribir" role="tabpanel" aria-labelledby="tab-escribir">
+        {% include 'enunciados/editor.html' %}
+    </div>
+    <div class="tab-pane border-top vista-previa" id="vista-previa" role="tabpanel"
+         aria-labelledby="tab-vista-previa">
+        <div id="contenido-vista-previa" class="flex-text-wrap"></div>
+        <div id="spinner-vista-previa" class="spinner-big spinner-grow m-auto text-secondary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
 </div>
-<div id="editor" class="rounded-bottom tex2jax_ignore" style="height: 200px">
-    {% if field.value %}
-        {{ field.value|linebreaksbr }}
-    {% endif %}
-</div>
-<textarea id="hidden_textarea" style="display: none" name="{{field.html_name}}">
-</textarea>
+
