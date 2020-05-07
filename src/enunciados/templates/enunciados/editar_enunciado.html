@@ -14,7 +14,7 @@
     {% csrf_token %}
     {% bootstrap_form enunciado_form %}
     {% include 'enunciados/form_errors.html' with errors=enunciado_form.numero.errors %}
-    {% include 'enunciados/quill_form_widget.html' with field=version_texto_form.texto %}
+    {% include 'enunciados/editor_con_vista_previa.html' with field=version_texto_form.texto %}
     {% include 'enunciados/form_errors.html' with errors=version_texto_form.texto.errors %}
     <div class="mt-3">
         {% buttons submit="Guardar "%}{% endbuttons %}
