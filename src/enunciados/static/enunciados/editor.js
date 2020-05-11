@@ -58,27 +58,22 @@ function setPreviewTabClickListener() {
     $('#tab-vista-previa').on('shown.bs.tab', updatePreview);
 }
 
+// Si ponemos primero mathjax, cuando hay $$ adentro de ``` ``` se muestra el código html de mathjax.
+// Si ponemos primero marked, los \( por ejemplo se reemplazan por (, y esos son marcadores
+// alternativos de mathmode de latex. Podríamos dejar de soportarlos, pero habría que entonces
+// cambiar todos los \( ... \) y \[ ... \] presentes en posts por $ ... $ y $$ ... $$.
+
+// Usar marked implica cosas del markdown de github que quiza no queremos, o sea:
+// - Links
+// - hr (-------- por ejemplo)
+
 function updatePreview() {
     const contenido = document.getElementById('contenido-vista-previa');
-    const spinner = document.getElementById('spinner-vista-previa');
-    contenido.hidden = true;
-    spinner.hidden = false;
-    $.get({
-        url: "/ajax/format_post/",
-        data: {
-            'texto': quill.getText()
-        },
-        success: (data) => {
-            spinner.hidden = true;
-            updatePreviewContent(contenido, data);
-            contenido.hidden = false;
-        }
-    });
+    $(contenido).text(quill.getText());
+    formatMarkdown(contenido);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, contenido]);
 }
 
-function updatePreviewContent(elementContenido, data) {
-    elementContenido.innerHTML = data;
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub, elementContenido]);
+function formatMarkdown(element) {
+    element.innerHTML = marked(element.innerHTML);
 }
-
-
