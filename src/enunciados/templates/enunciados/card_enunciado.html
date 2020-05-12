@@ -24,7 +24,7 @@
             </a></small>
         </h2>
         <p class="card-text">
-            {{ enunciado.versiones.ultima|format_post }}
+            <div class="js-format-post">{{ enunciado.versiones.ultima }}</div>
         </p>
         <a class="card-link"
             href="{% url_editar_enunciado materia_carrera enunciado %}">
