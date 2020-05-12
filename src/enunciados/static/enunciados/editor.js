@@ -1,21 +1,33 @@
 const quill = new Quill('#editor', {
     theme: 'snow',
-    formats: ['code', 'formula'],
+    formats: [],
     modules: {
         toolbar: '#toolbar'
     },
 });
 
-const toolbar = quill.getModule('toolbar');
-toolbar.addHandler('code', toolbarCodeHandler);
-toolbar.addHandler('formula', toolbarFormulaHandler);
+document.addEventListener("DOMContentLoaded", setupToolbarButtons);
 
-function toolbarCodeHandler() {
-    surroundSelectionBy('```\n', '\n```\n');
-}
+function setupToolbarButtons() {
+    document.getElementById("toolbar-formula").onclick = function () {
+        surroundSelectionBy('$$\n', '\n$$\n');
+    }
 
-function toolbarFormulaHandler() {
-    surroundSelectionBy('$$\n', '\n$$\n');
+    document.getElementById("toolbar-code").onclick = function () {
+        surroundSelectionBy('```\n', '\n```\n');
+    }
+
+    document.getElementById("toolbar-header").onclick = function () {
+        surroundSelectionBy('### ', '');
+    }
+
+    document.getElementById("toolbar-bold").onclick = function () {
+        surroundSelectionBy('**', '**');
+    }
+
+    document.getElementById("toolbar-italic").onclick = function () {
+        surroundSelectionBy('_', '_');
+    }
 }
 
 function surroundSelectionBy(before, after) {
