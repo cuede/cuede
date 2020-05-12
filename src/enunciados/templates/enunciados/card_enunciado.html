@@ -23,7 +23,7 @@
             </a></small>
         </h2>
         <p class="card-text">
-            <div class="js-format-post">{{ enunciado.versiones.ultima }}</div>
+            {% include "enunciados/post.html" with post=enunciado.versiones.ultima %}
         </p>
         <a class="card-link"
             href="{% url_editar_enunciado materia_carrera enunciado %}">
