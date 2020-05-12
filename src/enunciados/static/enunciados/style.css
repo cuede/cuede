@@ -91,7 +91,7 @@ div {
   word-wrap: break-word;
 }
 
-img {
+.post img {
     max-width: 100%;
 }
 
