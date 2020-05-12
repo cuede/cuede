@@ -95,3 +95,7 @@ div {
     max-width: 100%;
 }
 
+.post hr {
+    max-width: 85%;
+    border-color: lightgray;
+}
