@@ -10,7 +10,7 @@
             </form>
         {% endif %}
     </h3>
-    {% include "enunciados/post.html" with post=version %}
+    {% include 'enunciados/post.html' with post=version %}
     {% if forloop.counter0 > 0 %}
         <form class="d-md-none" method="post">
             {% csrf_token %}

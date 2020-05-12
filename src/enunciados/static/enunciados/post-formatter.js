@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", formatAllPostsInPage);
 
 function formatAllPostsInPage() {
-    const postClass = "js-format-post";
+    const postClass = "post";
     const posts = document.getElementsByClassName(postClass);
     Array.from(posts).forEach(formatPost);
 }
