@@ -72,9 +72,3 @@ function updatePreview() {
     $(contenido).text(quill.getText());
     formatPost(contenido);
 }
-
-function formatPost(element) {
-    element.innerHTML = marked(element.innerHTML);
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub, contenido]);
-}
-

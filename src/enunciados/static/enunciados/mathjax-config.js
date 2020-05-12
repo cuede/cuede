@@ -10,5 +10,6 @@ MathJax.Hub.Config({
     },
     SVG: {
       linebreaks: { automatic: true }
-    }
+    },
+    skipStartupTypeset: true,
 });
