@@ -15,7 +15,7 @@ function toolbarCodeHandler() {
 }
 
 function toolbarFormulaHandler() {
-    surroundSelectionBy('\\[\n', '\n\\]\n');
+    surroundSelectionBy('$$\n', '\n$$\n');
 }
 
 function surroundSelectionBy(before, after) {
