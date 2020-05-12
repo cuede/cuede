@@ -70,10 +70,11 @@ function setPreviewTabClickListener() {
 function updatePreview() {
     const contenido = document.getElementById('contenido-vista-previa');
     $(contenido).text(quill.getText());
-    formatMarkdown(contenido);
+    formatPost(contenido);
+}
+
+function formatPost(element) {
+    element.innerHTML = marked(element.innerHTML);
     MathJax.Hub.Queue(["Typeset", MathJax.Hub, contenido]);
 }
 
-function formatMarkdown(element) {
-    element.innerHTML = marked(element.innerHTML);
-}
