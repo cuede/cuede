@@ -17,6 +17,8 @@ function setupToolbarButtons() {
         'toolbar-italic': handleItalicButton,
         'toolbar-link': handleLinkButton,
         'toolbar-image': handleImageButton,
+        'toolbar-unordered-list': handleUnorderedListButton,
+        'toolbar-ordered-list': handleOrderedListButton,
     }
 
     for (const id in toolbarButtonHandlers) {
@@ -50,6 +52,14 @@ function handleLinkButton() {
 
 function handleImageButton() {
     surroundSelectionBy('![', '](url)');
+}
+
+function handleUnorderedListButton() {
+    surroundSelectionBy('- ', '');
+}
+
+function handleOrderedListButton() {
+    surroundSelectionBy('1. ', '');
 }
 
 function surroundSelectionBy(before, after) {
