@@ -6,32 +6,45 @@ const quill = new Quill('#editor', {
     },
 });
 
-document.addEventListener("DOMContentLoaded", setupToolbarButtons);
+document.addEventListener('DOMContentLoaded', setupToolbarButtons);
 
 function setupToolbarButtons() {
-    document.getElementById("toolbar-formula").onclick = function () {
-        surroundSelectionBy('$$\n', '\n$$\n');
+    const toolbarButtonHandlers = {
+        'toolbar-formula': handleFormulaButton,
+        'toolbar-code': handleCodeButton,
+        'toolbar-header': handleHeaderButton,
+        'toolbar-bold': handleBoldButton,
+        'toolbar-italic': handleItalicButton,
+        'toolbar-link': handleLinkButton,
     }
 
-    document.getElementById("toolbar-code").onclick = function () {
-        surroundSelectionBy('```\n', '\n```\n');
+    for (const id in toolbarButtonHandlers) {
+        document.getElementById(id).onclick = toolbarButtonHandlers[id];
     }
+}
 
-    document.getElementById("toolbar-header").onclick = function () {
-        surroundSelectionBy('### ', '');
-    }
+function handleFormulaButton() {
+    surroundSelectionBy('$$\n', '\n$$\n');
+}
 
-    document.getElementById("toolbar-bold").onclick = function () {
-        surroundSelectionBy('**', '**');
-    }
+function handleCodeButton() {
+    surroundSelectionBy('```\n', '\n```\n');
+}
 
-    document.getElementById("toolbar-italic").onclick = function () {
-        surroundSelectionBy('_', '_');
-    }
+function handleHeaderButton() {
+    surroundSelectionBy('### ', '');
+}
 
-    document.getElementById("toolbar-link").onclick = function () {
-        surroundSelectionBy('[', '](url)');
-    }
+function handleBoldButton() {
+    surroundSelectionBy('**', '**');
+}
+
+function handleItalicButton() {
+    surroundSelectionBy('_', '_');
+}
+
+function handleLinkButton() {
+    surroundSelectionBy('[', '](url)');
 }
 
 function surroundSelectionBy(before, after) {
@@ -50,14 +63,14 @@ function putEditorTextInHiddenTextArea() {
     const text = quill.getText();
     const textElement = document.getElementById('hidden_textarea');
     textElement.innerHTML = text;
-    if (text.trim() === "") {
-        const emptyTextError = document.getElementById("empty-text-error");
+    if (text.trim() === '') {
+        const emptyTextError = document.getElementById('empty-text-error');
         emptyTextError.hidden = false;
         return false;
     }
 }
 
-document.addEventListener("DOMContentLoaded", setTabsClickListeners);
+document.addEventListener('DOMContentLoaded', setTabsClickListeners);
 
 function setTabsClickListeners() {
     setEditorTabClickListener();
@@ -73,15 +86,6 @@ function setEditorTabClickListener() {
 function setPreviewTabClickListener() {
     $('#tab-vista-previa').on('shown.bs.tab', updatePreview);
 }
-
-// Si ponemos primero mathjax, cuando hay $$ adentro de ``` ``` se muestra el código html de mathjax.
-// Si ponemos primero marked, los \( por ejemplo se reemplazan por (, y esos son marcadores
-// alternativos de mathmode de latex. Podríamos dejar de soportarlos, pero habría que entonces
-// cambiar todos los \( ... \) y \[ ... \] presentes en posts por $ ... $ y $$ ... $$.
-
-// Usar marked implica cosas del markdown de github que quiza no queremos, o sea:
-// - Links
-// - hr (-------- por ejemplo)
 
 function updatePreview() {
     const contenido = document.getElementById('contenido-vista-previa');
