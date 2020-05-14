@@ -5,7 +5,7 @@
                 {% csrf_token %}
                 <input type="text" name="version_pk" value="{{ version.pk }}" hidden />
                 <button type="submit" class="btn btn-link py-0">
-                    <span class="fas fa-undo"></span> Volver a esta versión
+                    <span class="fas fa-history"></span> Volver a esta versión
                 </button>
             </form>
         {% endif %}
@@ -16,7 +16,7 @@
             {% csrf_token %}
             <input type="text" name="version_pk" value="{{ version.pk }}" hidden />
             <button type="submit" class="btn btn-link pl-0 py-0">
-                <span class="fas fa-undo"></span> Volver a esta versión
+                <span class="fas fa-history"></span> Volver a esta versión
             </button>
         </form>
     {% endif %}
