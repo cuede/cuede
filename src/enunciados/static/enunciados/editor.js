@@ -16,6 +16,7 @@ function setupToolbarButtons() {
         'toolbar-bold': handleBoldButton,
         'toolbar-italic': handleItalicButton,
         'toolbar-link': handleLinkButton,
+        'toolbar-image': handleImageButton,
     }
 
     for (const id in toolbarButtonHandlers) {
@@ -45,6 +46,10 @@ function handleItalicButton() {
 
 function handleLinkButton() {
     surroundSelectionBy('[', '](url)');
+}
+
+function handleImageButton() {
+    surroundSelectionBy('![', '](url)');
 }
 
 function surroundSelectionBy(before, after) {
