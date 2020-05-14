@@ -28,6 +28,10 @@ function setupToolbarButtons() {
     document.getElementById("toolbar-italic").onclick = function () {
         surroundSelectionBy('_', '_');
     }
+
+    document.getElementById("toolbar-link").onclick = function () {
+        surroundSelectionBy('[', '](url)');
+    }
 }
 
 function surroundSelectionBy(before, after) {
