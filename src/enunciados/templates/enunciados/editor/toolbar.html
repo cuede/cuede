@@ -16,14 +16,5 @@
         <button id="toolbar-unordered-list" class="fas fa-list-ul" type="button"></button>
         <button id="toolbar-ordered-list" class="fas fa-list-ol" type="button"></button>
     </span>
-    <a href="https://math.meta.stackexchange.com/q/5020/386164"
-       target="_blank" rel="noopener noreferrer" class="ql-right-link">
-        <small>Guía de formato</small>
-    </a>
+    {% include 'enunciados/editor/dropdown-guia-de-formato.html' %}
 </div>
-<div id="editor" class="rounded-bottom tex2jax_ignore editor">
-    {% if field.value %}
-        {{ field.value|linebreaksbr }}
-    {% endif %}
-</div>
-<textarea id="hidden_textarea" style="display: none" name="{{ field.html_name }}"></textarea>

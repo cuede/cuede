@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block scripts %}
-{% include 'enunciados/quill_scripts.html' %}
+{% include 'enunciados/editor/quill_scripts.html' %}
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
     {% endif %}
     <div id="editor-container" class="collapse show">
         <div class="mb-3" >
-            {% include 'enunciados/editor_con_vista_previa.html' with field=version_texto_form.texto %}
+            {% include 'enunciados/editor/editor_con_vista_previa.html' with field=version_texto_form.texto %}
         </div>
         <div id="empty-text-error" class="mb-3" hidden="">
             {% bootstrap_form_errors version_texto_form layout='inline' %}

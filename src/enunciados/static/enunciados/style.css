@@ -62,6 +62,10 @@ h1 {
     height: var(--editor-toolbar-height);
 }
 
+.editor-toolbar .dropdown .editor-toolbar-dropdown-button {
+    width: auto;
+}
+
 .editor {
     height: var(--editor-height) !important;
 }

@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block scripts %}
-{% include 'enunciados/quill_scripts.html' %}
+{% include 'enunciados/editor/quill_scripts.html' %}
 {% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
 {% bootstrap_form_errors form %}
 <form id="form" method="post">
     {% csrf_token %}
-    {% include 'enunciados/editor_con_vista_previa.html' with field=form.texto %}
+    {% include 'enunciados/editor/editor_con_vista_previa.html' with field=form.texto %}
     {% buttons %}
         <input class="mt-3" type="submit" value="{{texto_boton}}" />
     {% endbuttons %}
