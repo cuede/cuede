@@ -3,7 +3,6 @@
 from django.db import migrations
 
 from enunciados.migrations.utils.math_delimiters import convert_math_delimiters_to_dollar_signs
-from enunciados.models import get_sentinel_user
 
 
 def replace_math_delimiters(apps, schema):
@@ -11,10 +10,12 @@ def replace_math_delimiters(apps, schema):
     VersionTexto = apps.get_model('enunciados', 'VersionTexto')
     User = apps.get_model('auth', 'User')
     for posteo in Posteo.objects.all():
-        texto_original = posteo.versiones.first().texto
-        nuevo_texto = convert_math_delimiters_to_dollar_signs(texto_original)
-        autor = User.objects.get(username='Eliminado')
-        VersionTexto.versiones.create(texto=nuevo_texto, posteo=posteo, autor=autor)
+        ultima_version = posteo.versiones.first()
+        if ultima_version:
+            texto_original = ultima_version.texto
+            nuevo_texto = convert_math_delimiters_to_dollar_signs(texto_original)
+            autor = User.objects.get(username='Eliminado')
+            VersionTexto.versiones.create(texto=nuevo_texto, posteo=posteo, autor=autor)
 
 
 class Migration(migrations.Migration):
