@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% load format_post %}
 {% load urls_conjuntos %}
 {% load urls_enunciados %}
 {% load static %}
@@ -25,7 +24,7 @@
 <h2 class="mt-4"> Soluciones </h2>
 <hr>
 {% for solucion, voto in soluciones_con_votos %}
-    {{ solucion|format_post }}
+    {% include 'enunciados/post.html' with post=solucion %}
     {% include 'enunciados/acciones_solucion.html' %}
     <hr>
 {% empty %}

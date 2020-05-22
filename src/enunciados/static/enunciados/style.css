@@ -62,6 +62,10 @@ h1 {
     height: var(--editor-toolbar-height);
 }
 
+.editor-toolbar .dropdown .editor-toolbar-dropdown-button {
+    width: auto;
+}
+
 .editor {
     height: var(--editor-height) !important;
 }
@@ -91,3 +95,11 @@ div {
   word-wrap: break-word;
 }
 
+.post img {
+    max-width: 100%;
+}
+
+.post hr {
+    max-width: 85%;
+    border-color: lightgray;
+}
