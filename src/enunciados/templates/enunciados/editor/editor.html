@@ -1,0 +1,7 @@
+{% include 'enunciados/editor/toolbar.html' %}
+<div id="editor" class="rounded-bottom tex2jax_ignore editor">
+    {% if field.value %}
+        {{ field.value|linebreaksbr }}
+    {% endif %}
+</div>
+<textarea id="hidden_textarea" style="display: none" name="{{ field.html_name }}"></textarea>

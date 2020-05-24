@@ -5,18 +5,18 @@
                 {% csrf_token %}
                 <input type="text" name="version_pk" value="{{ version.pk }}" hidden />
                 <button type="submit" class="btn btn-link py-0">
-                    <span class="fas fa-undo"></span> Volver a esta versión
+                    <span class="fas fa-history"></span> Volver a esta versión
                 </button>
             </form>
         {% endif %}
     </h3>
-    <p>{{ version|linebreaks }}</p>
+    {% include 'enunciados/post.html' with post=version %}
     {% if forloop.counter0 > 0 %}
         <form class="d-md-none" method="post">
             {% csrf_token %}
             <input type="text" name="version_pk" value="{{ version.pk }}" hidden />
             <button type="submit" class="btn btn-link pl-0 py-0">
-                <span class="fas fa-undo"></span> Volver a esta versión
+                <span class="fas fa-history"></span> Volver a esta versión
             </button>
         </form>
     {% endif %}

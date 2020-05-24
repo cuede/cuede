@@ -1,21 +1,65 @@
 const quill = new Quill('#editor', {
     theme: 'snow',
-    formats: ['code', 'formula'],
+    formats: [],
     modules: {
         toolbar: '#toolbar'
     },
 });
 
-const toolbar = quill.getModule('toolbar');
-toolbar.addHandler('code', toolbarCodeHandler);
-toolbar.addHandler('formula', toolbarFormulaHandler);
+document.addEventListener('DOMContentLoaded', setupToolbarButtons);
 
-function toolbarCodeHandler() {
+function setupToolbarButtons() {
+    const toolbarButtonHandlers = {
+        'toolbar-formula': handleFormulaButton,
+        'toolbar-code': handleCodeButton,
+        'toolbar-header': handleHeaderButton,
+        'toolbar-bold': handleBoldButton,
+        'toolbar-italic': handleItalicButton,
+        'toolbar-link': handleLinkButton,
+        'toolbar-image': handleImageButton,
+        'toolbar-unordered-list': handleUnorderedListButton,
+        'toolbar-ordered-list': handleOrderedListButton,
+    }
+
+    for (const id in toolbarButtonHandlers) {
+        document.getElementById(id).onclick = toolbarButtonHandlers[id];
+    }
+}
+
+function handleFormulaButton() {
+    surroundSelectionBy('$$\n', '\n$$\n');
+}
+
+function handleCodeButton() {
     surroundSelectionBy('```\n', '\n```\n');
 }
 
-function toolbarFormulaHandler() {
-    surroundSelectionBy('\\[\n', '\n\\]\n');
+function handleHeaderButton() {
+    surroundSelectionBy('### ', '');
+}
+
+function handleBoldButton() {
+    surroundSelectionBy('**', '**');
+}
+
+function handleItalicButton() {
+    surroundSelectionBy('_', '_');
+}
+
+function handleLinkButton() {
+    surroundSelectionBy('[', '](url)');
+}
+
+function handleImageButton() {
+    surroundSelectionBy('![', '](url)');
+}
+
+function handleUnorderedListButton() {
+    surroundSelectionBy('- ', '');
+}
+
+function handleOrderedListButton() {
+    surroundSelectionBy('1. ', '');
 }
 
 function surroundSelectionBy(before, after) {
@@ -34,14 +78,14 @@ function putEditorTextInHiddenTextArea() {
     const text = quill.getText();
     const textElement = document.getElementById('hidden_textarea');
     textElement.innerHTML = text;
-    if (text.trim() === "") {
-        const emptyTextError = document.getElementById("empty-text-error");
+    if (text.trim() === '') {
+        const emptyTextError = document.getElementById('empty-text-error');
         emptyTextError.hidden = false;
         return false;
     }
 }
 
-document.addEventListener("DOMContentLoaded", setTabsClickListeners);
+document.addEventListener('DOMContentLoaded', setTabsClickListeners);
 
 function setTabsClickListeners() {
     setEditorTabClickListener();
@@ -60,25 +104,6 @@ function setPreviewTabClickListener() {
 
 function updatePreview() {
     const contenido = document.getElementById('contenido-vista-previa');
-    const spinner = document.getElementById('spinner-vista-previa');
-    contenido.hidden = true;
-    spinner.hidden = false;
-    $.get({
-        url: "/ajax/format_post/",
-        data: {
-            'texto': quill.getText()
-        },
-        success: (data) => {
-            spinner.hidden = true;
-            updatePreviewContent(contenido, data);
-            contenido.hidden = false;
-        }
-    });
+    $(contenido).text(quill.getText());
+    formatPost(contenido);
 }
-
-function updatePreviewContent(elementContenido, data) {
-    elementContenido.innerHTML = data;
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub, elementContenido]);
-}
-
-

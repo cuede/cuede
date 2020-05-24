@@ -1,4 +1,3 @@
-{% load format_post %}
 {% load urls_enunciados %}
 {% load i18n %}
 
@@ -24,7 +23,7 @@
             </a></small>
         </h2>
         <p class="card-text">
-            {{ enunciado.versiones.ultima|format_post }}
+            {% include 'enunciados/post.html' with post=enunciado.versiones.ultima %}
         </p>
         <a class="card-link"
             href="{% url_editar_enunciado materia_carrera enunciado %}">
@@ -32,7 +31,7 @@
         </a>
         <a class="card-link"
             href="{% url_versiones_enunciado materia_carrera enunciado %}">
-            <span class="fas fa-undo"></span> Versiones anteriores
+            <span class="fas fa-history"></span> Versiones anteriores
         </a>
     </div>
 </div>

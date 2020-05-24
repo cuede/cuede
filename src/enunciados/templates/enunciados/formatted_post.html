@@ -1,9 +1,0 @@
-{% load format_post %}
-
-{% with post|format_post as formatted_post %}
-    {% if formatted_post %}
-        {{ formatted_post }}
-    {% else %}
-        <span class="text-secondary">Todavía no hay texto para ver.</span>
-    {% endif %}
-{% endwith %}
